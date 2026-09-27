@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop — Toys World & Gift Gallery</title>
+    <meta name="description"
+        content="Browse our full collection of toys, anime figures, die-cast cars, RC toys, plush, and collectibles at Toys World Palghar." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/global.css" />
+    <link rel="stylesheet" href="/src/css/components.css" />
+
+    <style>
+        .shop-hero {
+            background: var(--text-primary);
+            color: #fff;
+            padding: 4rem 0 3rem;
+        }
+
+        .shop-title {
+            font-size: clamp(2.25rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .shop-sub {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: 0.75rem;
+        }
+
+        /* Filters */
+        .filter-bar {
+            padding: 1.5rem 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 4rem;
+            z-index: 40;
+        }
+
+        .filter-scroll {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 2px;
+        }
+
+        .filter-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            flex-shrink: 0;
+            padding: 0.55rem 1.25rem;
+            border-radius: 9999px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all var(--t-fast);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .filter-chip.active {
+            background: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+
+        .shop-grid-wrap {
+            padding: 3rem 0 5rem;
+        }
+
+        .empty-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .empty-msg h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="shop-hero reveal">
+        <div class="container">
+            <p class="label" style="color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;">Browse Everything</p>
+            <h1 class="shop-title">Shop Collection</h1>
+            <p class="shop-sub">Toys · Collectibles · Gifts · Anime · Die-Cast · RC · Plush</p>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <div class="container">
+            <div class="filter-scroll" id="filters"></div>
+        </div>
+    </div>
+
+    <div class="shop-grid-wrap">
+        <div class="container">
+            <div class="grid-4" id="shop-grid"></div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module">
+        import { categories, getProductsByCategory } from '/src/js/data.js';
+        import { renderHeader, renderFooter, renderProductCard } from '/src/js/components.js';
+
+        // Layout
+        document.getElementById('header-placeholder').innerHTML = renderHeader('Shop');
+        document.getElementById('footer-placeholder').innerHTML = renderFooter();
+
+        // Mobile nav wiring
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        const closeBtn = document.getElementById('menu-close');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => mobileNav.classList.add('open'));
+            closeBtn.addEventListener('click', () => mobileNav.classList.remove('open'));
+            mobileNav.addEventListener('click', e => { if (e.target === mobileNav) mobileNav.classList.remove('open'); });
+        }
+
+        const filtersEl = document.getElementById('filters');
+        const gridEl = document.getElementById('shop-grid');
+
+        // Current category from URL
+        const url = new URL(window.location.href);
+        let current = url.searchParams.get('category') || 'all';
+
+        // Build filter chips
+        const allChips = [
+            { id: 'all', title: 'All' },
+            ...categories
+        ];
+
+        function renderFilters() {
+            filtersEl.innerHTML = allChips.map(c =>
+                `<button class="filter-chip${current === c.id ? ' active' : ''}" data-id="${c.id}">${c.title}</button>`
+            ).join('');
+        }
+
+        function renderProducts() {
+            const products = getProductsByCategory(current);
+            if (!products.length) {
+                gridEl.innerHTML = `<div class="empty-msg"><h3>No products found</h3><p>Try a different category.</p></div>`;
+            } else {
+                gridEl.innerHTML = products.map(renderProductCard).join('');
+            }
+        }
+
+        renderFilters();
+        renderProducts();
+
+        filtersEl.addEventListener('click', e => {
+            const btn = e.target.closest('.filter-chip');
+            if (!btn) return;
+            current = btn.dataset.id;
+
+            // Update URL
+            const u = new URL(window.location.href);
+            current === 'all' ? u.searchParams.delete('category') : u.searchParams.set('category', current);
+            history.pushState({}, '', u);
+
+            renderFilters();
+            renderProducts();
+        });
+
+        // Scroll reveal
+        const io = new IntersectionObserver(
+            (entries, obs) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+            { threshold: 0.08 }
+        );
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+
+</html>

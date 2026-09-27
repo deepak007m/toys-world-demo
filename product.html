@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product — Toys World & Gift Gallery</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/global.css" />
+    <link rel="stylesheet" href="/src/css/components.css" />
+
+    <style>
+        .pd-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            padding-top: 3rem;
+            padding-bottom: 5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .pd-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .pd-img-wrap {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pd-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .pd-badge {
+            position: absolute;
+            top: 1.25rem;
+            left: 1.25rem;
+            background: var(--bg-primary);
+            font-family: var(--font-heading);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.9rem;
+            border-radius: 9999px;
+        }
+
+        .pd-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pd-breadcrumb a {
+            color: var(--text-secondary);
+            transition: color var(--t-fast);
+        }
+
+        .pd-breadcrumb a:hover {
+            color: var(--text-primary);
+        }
+
+        .pd-cat {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .pd-title {
+            font-size: clamp(1.75rem, 4vw, 2.75rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.25rem;
+        }
+
+        .pd-price {
+            font-family: var(--font-heading);
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+        }
+
+        .pd-avail {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .pd-avail.in {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .pd-avail.limited {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .pd-avail.out {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .pd-wa-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            background: #25D366;
+            color: #fff;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 1.1rem;
+            border-radius: var(--radius-md);
+            transition: background var(--t-fast), box-shadow var(--t-fast);
+            margin-bottom: 1.5rem;
+        }
+
+        .pd-wa-btn:hover {
+            background: #1db954;
+            box-shadow: var(--shadow-md);
+        }
+
+        .pd-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            transition: color var(--t-fast);
+        }
+
+        .pd-back:hover {
+            color: var(--text-primary);
+        }
+
+        .pd-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.06);
+            margin: 1.75rem 0;
+        }
+
+        .pd-desc-heading {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .pd-desc {
+            font-size: 0.95rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+        }
+
+        .pd-demo-note {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        /* Error state */
+        .pd-error {
+            text-align: center;
+            padding: 8rem 0;
+        }
+
+        .pd-error h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <div id="pd-error" style="display:none" class="pd-error">
+            <h2>Product Not Found</h2>
+            <p class="section-sub">We couldn't find that product.</p>
+            <a href="/shop.html" class="btn btn-dark" style="margin-top:2rem;">← Back to Shop</a>
+        </div>
+
+        <div id="pd-content" style="display:none">
+            <a href="/shop.html" class="pd-back">← Back to Shop</a>
+
+            <div class="pd-layout">
+                <!-- Image -->
+                <div class="pd-img-wrap reveal">
+                    <div id="pd-badge-el" class="pd-badge" style="display:none"></div>
+                    <img id="pd-img" src="" alt="" class="pd-img" />
+                </div>
+
+                <!-- Info -->
+                <div class="reveal reveal-delay-2">
+                    <p class="pd-cat" id="pd-cat"></p>
+                    <h1 class="pd-title" id="pd-title"></h1>
+                    <div class="pd-price" id="pd-price"></div>
+
+                    <div id="pd-avail" class="pd-avail in">
+                        <span
+                            style="width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;"></span>
+                        <span id="pd-avail-text"></span>
+                    </div>
+
+                    <a href="#" class="pd-wa-btn" id="pd-wa-link" target="_blank" rel="noopener">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                            <path
+                                d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z" />
+                        </svg>
+                        Ask on WhatsApp
+                    </a>
+
+                    <div class="pd-divider"></div>
+
+                    <h3 class="pd-desc-heading">About this Product</h3>
+                    <p class="pd-desc" id="pd-desc"></p>
+
+                    <div class="pd-demo-note">
+                        ⚠️ Price and availability shown is demo data. Contact the store on WhatsApp to confirm current
+                        pricing and stock.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module">
+        import { getProductById, buildWhatsAppLink } from '/src/js/data.js';
+        import { renderHeader, renderFooter } from '/src/js/components.js';
+
+        document.getElementById('header-placeholder').innerHTML = renderHeader('Shop');
+        document.getElementById('footer-placeholder').innerHTML = renderFooter();
+
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        const closeBtn = document.getElementById('menu-close');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => mobileNav.classList.add('open'));
+            closeBtn.addEventListener('click', () => mobileNav.classList.remove('open'));
+            mobileNav.addEventListener('click', e => { if (e.target === mobileNav) mobileNav.classList.remove('open'); });
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const product = getProductById(params.get('id'));
+
+        if (!product) {
+            document.getElementById('pd-error').style.display = 'block';
+            document.title = 'Not Found — Toys World';
+        } else {
+            const el = document.getElementById('pd-content');
+            el.style.display = 'block';
+            document.title = `${product.name} — Toys World`;
+
+            document.getElementById('pd-img').src = product.image;
+            document.getElementById('pd-img').alt = product.name;
+            document.getElementById('pd-cat').textContent = product.categoryName;
+            document.getElementById('pd-title').textContent = product.name;
+            document.getElementById('pd-price').textContent = typeof product.price === 'number' ? `₹${product.price.toLocaleString('en-IN')}` : product.price;
+            document.getElementById('pd-desc').textContent = product.description;
+            document.getElementById('pd-wa-link').href = buildWhatsAppLink(product.name);
+            document.getElementById('pd-avail-text').textContent = product.availability;
+
+            const avEl = document.getElementById('pd-avail');
+            avEl.classList.remove('in', 'limited', 'out');
+            if (product.availability.toLowerCase().includes('limited')) avEl.classList.add('limited');
+            else if (product.availability.toLowerCase().includes('out')) avEl.classList.add('out');
+            else avEl.classList.add('in');
+
+            if (product.badge) {
+                const b = document.getElementById('pd-badge-el');
+                b.style.display = 'block';
+                b.textContent = product.badge;
+            }
+        }
+
+        // Scroll reveal
+        const io = new IntersectionObserver(
+            (entries, obs) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+            { threshold: 0.08 }
+        );
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+
+</html>
