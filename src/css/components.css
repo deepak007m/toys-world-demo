@@ -91,11 +91,15 @@
     background: rgba(17, 17, 17, 0.5);
     z-index: 200;
     opacity: 0;
-    transition: opacity var(--t-base);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--t-base), visibility var(--t-base);
 }
 
 .mobile-nav.open {
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .mobile-nav-panel {
@@ -148,6 +152,7 @@
     cursor: pointer;
     transition: transform var(--t-base), box-shadow var(--t-base);
     position: relative;
+    min-width: 0;
 }
 
 .product-card:hover {
@@ -227,6 +232,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .product-price {
@@ -537,7 +543,9 @@
 }
 
 @media (max-width: 480px) {
-    .grid-3 {
+
+    .grid-3,
+    .grid-4 {
         grid-template-columns: 1fr;
     }
 }
