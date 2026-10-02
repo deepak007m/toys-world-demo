@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — Toys World & Gift Gallery</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/css/global.css">
+    <link rel="stylesheet" href="/src/css/components.css">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--header-h);
+        }
+
+        .auth-box {
+            max-width: 420px;
+            margin: 4rem auto;
+            padding: 3rem 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            width: 100%;
+        }
+
+        .auth-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            padding: 0.8rem;
+            color: var(--text-primary);
+            transition: all var(--t-fast);
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 2px rgba(232, 184, 75, 0.2);
+        }
+
+        .auth-error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #FCA5A5;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .auth-links {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .auth-links a {
+            color: var(--text-primary);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            transition: color var(--t-fast);
+        }
+
+        .auth-links a:hover {
+            color: var(--accent-gold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Reusable Header via components.js -->
+    <div id="header-root"></div>
+
+    <main class="auth-container">
+        <div class="auth-box reveal-up">
+            <h1 class="auth-title">Sign In</h1>
+
+            <div id="auth-error-box" class="auth-error"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn btn-primary"
+                    style="width: 100%; display: flex; justify-content: center; height: 50px;">Sign In</button>
+            </form>
+
+            <div class="auth-links">
+                <a href="/forgot-password.html">Forgot your password?</a>
+                <div style="margin-top: 1rem;">
+                    Don't have an account? <a href="/signup.html" id="signup-link">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/pages/login.js"></script>
+</body>
+
+</html>

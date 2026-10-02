@@ -1,5 +1,6 @@
-import { renderHeader, renderFooter, renderProductCard } from './components.js';
+import { renderHeader, renderFooter, renderProductCard, wireNavDrawer, wireScrollReveal, mountAuthListener } from './components.js';
 import { getFeaturedProducts } from './data.js';
+import { supabase } from './supabase.js';
 
 // Setup basic layout
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,4 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     animatedElements.forEach(el => observer.observe(el));
+
+    // Wire up global nav & animations & auth
+    wireNavDrawer();
+    wireScrollReveal();
+    mountAuthListener(supabase);
 });

@@ -1,52 +1,139 @@
 /**
- * Toys World & Gift Gallery — Core Data
- * ======================================
- * IMPORTANT: Replace placeholder image paths and demo data with real store assets before going live.
- * All prices, names, and availability below are DEMO DATA and must be confirmed by the store owner.
- * Image paths reference /public/images/ — swap with real high-resolution photos when available.
- * WhatsApp number is a PLACEHOLDER — update STORE_WHATSAPP_NUMBER before launch.
+ * Toys World & Gift Gallery — Data Layer
+ * ========================================
+ * All product/category/config data now comes from Supabase.
+ * Reviews remain static (no reviews table in Phase 2).
+ *
+ * Public API (all async unless marked static):
+ *   getConfig()                          → store branding, contact, images
+ *   getCategories()                      → all categories ordered by sort_order
+ *   getSubcategories(categoryId)         → subcategories for one category
+ *   getProducts({ categoryId, subcategoryId, featured, limit })
+ *   getProductById(id)                   → single product by UUID
+ *   getFeaturedProducts(limit)           → shorthand for featured products
+ *   buildWhatsAppLink(productName)       → static helper, needs config.whatsapp_number
+ *   reviews                              → static array (Phase 2)
  */
 
-// ─── Store Configuration ─────────────────────────────────────────────────────
-export const config = {
-  storeName: "TOYS WORLD & GIFT GALLERY",
+import { supabase } from './supabase.js';
 
-  // TODO: Replace with the real WhatsApp number (with country code, no + or spaces)
-  // Example: "919876543210" for +91 98765 43210
-  STORE_WHATSAPP_NUMBER: "910000000000",   // ← REPLACE THIS
-
-  address: "Manor Highway Road, opposite Holy Spirit High School, near Royal Enfield showroom, Tembhode/Mahim, Palghar, Maharashtra 401404",
-  mapLink: "https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar+Manor+Highway+Road",
-
-  // TODO: Replace with real phone number
-  phone: null,   // ← REPLACE WITH ACTUAL NUMBER e.g. "+919876543210"
-
-  instagram: "@toys_world48",
-  instagramUrl: "https://instagram.com/toys_world48",
-
-  // Hero / store images — ACTUAL Toys World store photography
-  heroImage: "/images/real_store_exterior.png",          // Real store facade
-  storeInteriorImage: "/images/real_store_interior.png", // Real store interior
-};
-
-// ─── WhatsApp Helper ─────────────────────────────────────────────────────────
-export function buildWhatsAppLink(productName) {
+// ─── WhatsApp Helper ──────────────────────────────────────────────────────────
+// Pure function — callers must pass the whatsapp number from getConfig().
+export function buildWhatsAppLink(whatsappNumber, productName) {
   const msg = productName
     ? `Hi! I'm interested in *${productName}* from Toys World & Gift Gallery, Palghar. Is it currently available?`
     : `Hi Toys World & Gift Gallery! I'd like to know more about your products.`;
-  return `https://wa.me/${config.STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
 }
 
-// ─── Reviews (real-sentiment, no fabricated names/dates) ─────────────────────
+// ─── Store Config ─────────────────────────────────────────────────────────────
+export async function getConfig() {
+  const { data, error } = await supabase
+    .from('store_settings')
+    .select('*')
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.error('[data] getConfig error:', error.message);
+    return null;
+  }
+  return data;
+}
+
+// ─── Categories ───────────────────────────────────────────────────────────────
+export async function getCategories() {
+  const { data, error } = await supabase
+    .from('categories')
+    .select('*')
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('[data] getCategories error:', error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+// ─── Subcategories ────────────────────────────────────────────────────────────
+export async function getSubcategories(categoryId) {
+  if (!categoryId) return [];
+
+  const { data, error } = await supabase
+    .from('subcategories')
+    .select('*')
+    .eq('category_id', categoryId)
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('[data] getSubcategories error:', error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+// ─── Products ─────────────────────────────────────────────────────────────────
+/**
+ * @param {{ categoryId?: string, subcategoryId?: string, featured?: boolean, limit?: number }} opts
+ */
+export async function getProducts({ categoryId, subcategoryId, featured, limit } = {}) {
+  let query = supabase
+    .from('products')
+    .select(`
+      *,
+      categories ( slug, title ),
+      subcategories ( slug, title )
+    `)
+    .order('created_at', { ascending: false });
+
+  if (categoryId) query = query.eq('category_id', categoryId);
+  if (subcategoryId) query = query.eq('subcategory_id', subcategoryId);
+  if (featured) query = query.eq('is_featured', true);
+  if (limit) query = query.limit(limit);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('[data] getProducts error:', error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getFeaturedProducts(limit = 4) {
+  return getProducts({ featured: true, limit });
+}
+
+export async function getProductById(id) {
+  if (!id) return null;
+
+  const { data, error } = await supabase
+    .from('products')
+    .select(`
+      *,
+      categories ( slug, title ),
+      subcategories ( slug, title )
+    `)
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('[data] getProductById error:', error.message);
+    return null;
+  }
+  return data;
+}
+
+// ─── Reviews (static — no database table in Phase 2) ─────────────────────────
 export const reviews = [
   {
     id: 1,
-    text: "Amazing variety of toys at genuine prices. Best shop in Palghar for collectibles — Hot Wheels, anime figures, everything!",
+    text: 'Amazing variety of toys at genuine prices. Best shop in Palghar for collectibles — Hot Wheels, anime figures, everything!',
     rating: 5,
   },
   {
     id: 2,
-    text: "Love this place! Found an incredible soft toy collection and the staff was super helpful. Will come back again.",
+    text: 'Love this place! Found an incredible soft toy collection and the staff was super helpful. Will come back again.',
     rating: 5,
   },
   {
@@ -56,174 +143,27 @@ export const reviews = [
   },
 ];
 
-// ─── Categories ───────────────────────────────────────────────────────────────
-// Replace `image` paths with actual category showcase photos from the store
-export const categories = [
-  {
-    id: "anime",
-    title: "ANIME",
-    desc: "Figures · Collectibles",
-    image: "/images/cat_anime.png",  // Replace with real store anime shelf photo
-    accent: "#2d9cdb",
-  },
-  {
-    id: "die-cast",
-    title: "DIE-CAST",
-    desc: "Hot Wheels · Mini Cars",
-    image: "/images/real_store_shelf.png",  // REAL: store shelf with Hot Wheels
-    accent: "#eb5757",
-  },
-  {
-    id: "rc-racing",
-    title: "RC & RACING",
-    desc: "RC Cars · Racing Toys",
-    image: "/images/cat_rc.png",  // Replace with real RC product photo
-    accent: "#FFD600",
-  },
-  {
-    id: "plush",
-    title: "PLUSH",
-    desc: "Soft · Cute · Giftable",
-    image: "/images/cat_plush.png",  // Replace with real plush shelf photo
-    accent: "#9b51e0",
-  },
-  {
-    id: "figures",
-    title: "FIGURES",
-    desc: "Heroes · Characters · Collectibles",
-    image: "/images/real_spiderman.png",  // REAL: Spider-Man figure from store
-    accent: "#111111",
-  },
-  {
-    id: "gifts",
-    title: "GIFTS & MORE",
-    desc: "Something for everyone",
-    image: "/images/real_store_shelf.png",  // REAL: store shelf with mixed gifts
-    accent: "#f87316",
-  },
+// ─── STATIC FALLBACK (safe rollback — do not delete until Supabase is verified) ──
+/*
+export const _STATIC_CONFIG = {
+  storeName: 'TOYS WORLD & GIFT GALLERY',
+  STORE_WHATSAPP_NUMBER: '910000000000',
+  address: 'Manor Highway Road, opposite Holy Spirit High School, near Royal Enfield showroom, Tembhode/Mahim, Palghar, Maharashtra 401404',
+  mapLink: 'https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar+Manor+Highway+Road',
+  phone: null,
+  instagram: '@toys_world48',
+  instagramUrl: 'https://instagram.com/toys_world48',
+  heroImage: '/images/real_store_exterior.png',
+  storeInteriorImage: '/images/real_store_interior.png',
+};
+
+export const _STATIC_CATEGORIES = [
+  { id: 'anime',     title: 'ANIME',       desc: 'Figures · Collectibles',             image: '/images/cat_anime.png',         accent: '#2d9cdb' },
+  { id: 'die-cast',  title: 'DIE-CAST',    desc: 'Hot Wheels · Mini Cars',             image: '/images/real_store_shelf.png',  accent: '#eb5757' },
+  { id: 'rc-racing', title: 'RC & RACING', desc: 'RC Cars · Racing Toys',              image: '/images/cat_rc.png',            accent: '#FFD600' },
+  { id: 'plush',     title: 'PLUSH',       desc: 'Soft · Cute · Giftable',             image: '/images/cat_plush.png',         accent: '#9b51e0' },
+  { id: 'figures',   title: 'FIGURES',     desc: 'Heroes · Characters · Collectibles', image: '/images/real_spiderman.png',    accent: '#111111' },
+  { id: 'gifts',     title: 'GIFTS & MORE',desc: 'Something for everyone',             image: '/images/real_store_shelf.png',  accent: '#f87316' },
 ];
-
-// ─── Products ─────────────────────────────────────────────────────────────────
-// ALL prices, names, and availability below are DEMO DATA.
-// Replace with confirmed real products from the store owner.
-// `image` paths should swap with actual high-res product photos.
-export const products = [
-  {
-    id: "p1",
-    name: "Mini Alloy 1:64 Scale Die-Cast",    // DEMO NAME — confirm with owner
-    categoryId: "die-cast",
-    categoryName: "Die-Cast",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "POPULAR",
-    shortDesc: "Premium 1:64 scale collectible",
-    description:
-      "A highly detailed 1:64 scale die-cast model — perfect for collectors. Features precise detailing, realistic wheels and an authentic paint finish. Available now at Toys World, Palghar.",
-    image: "/images/real_mini_gt.png",        // REAL: actual Mini Alloy die-cast from store
-  },
-  {
-    id: "p2",
-    name: "Anime Battle Figure",              // DEMO NAME
-    categoryId: "anime",
-    categoryName: "Anime",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "TRENDING",
-    shortDesc: "High-quality anime collectible",
-    description:
-      "Premium anime-style collectible figure with dynamic pose and rich painted details. Great for display or gifting.",
-    image: "/images/prod_anime.png",          // SWAP with real product photo
-  },
-  {
-    id: "p3",
-    name: "Off-Road RC Buggy",                // DEMO NAME
-    categoryId: "rc-racing",
-    categoryName: "RC & Racing",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "NEW",
-    shortDesc: "Fast all-terrain remote control",
-    description:
-      "Powerful RC buggy built for indoor and outdoor terrain. Rechargeable battery, sturdy build, hours of fun.",
-    image: "/images/prod_rc.png",             // SWAP with real product photo
-  },
-  {
-    id: "p4",
-    name: "Spider-Man Action Figure",         // DEMO NAME — confirm with owner
-    categoryId: "figures",
-    categoryName: "Figures",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "",
-    shortDesc: "Articulated superhero collectible",
-    description:
-      "Highly detailed Spider-Man action figure with articulated joints. Suitable for play or premium shelf display. A great Marvel collectible available at Toys World, Palghar.",
-    image: "/images/real_spiderman.png",      // REAL: actual Spider-Man figure from store
-  },
-  {
-    id: "p5",
-    name: "Giant Teddy Bear",                 // DEMO NAME
-    categoryId: "plush",
-    categoryName: "Plush",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "BEST GIFT",
-    shortDesc: "Super soft cuddly bear",
-    description:
-      "A large, super-soft plush teddy bear made with premium materials. Perfect as a birthday gift or for young children.",
-    image: "/images/prod_plush.png",          // SWAP with real product photo
-  },
-  {
-    id: "p6",
-    name: "Hot Wheels Blind Bag",             // DEMO NAME — confirm with owner
-    categoryId: "die-cast",
-    categoryName: "Die-Cast",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "POPULAR",
-    shortDesc: "Surprise die-cast car pack",
-    description:
-      "A curated selection of exclusive Hot Wheels models from our store shelves. Highly sought after by die-cast collectors.",
-    image: "/images/real_store_shelf.png",    // REAL: store shelf with Hot Wheels blind bags
-  },
-  {
-    id: "p7",
-    name: "Keychains & Gift Items",           // DEMO NAME — confirm with owner
-    categoryId: "gifts",
-    categoryName: "Gifts & More",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "",
-    shortDesc: "Cute keychains & novelty gifts",
-    description:
-      "A curated selection of keychains, novelty items, and unique gifts available in our store. Great for birthdays and special occasions.",
-    image: "/images/real_store_shelf.png",    // REAL: actual store shelf with keychains/gifts
-  },
-  {
-    id: "p8",
-    name: "Demon Slayer Collectible",         // DEMO NAME
-    categoryId: "anime",
-    categoryName: "Anime",
-    price: 'Price on request',
-    availability: 'Confirm on WhatsApp',
-    badge: "NEW",
-    shortDesc: "Detailed character figure",
-    description:
-      "Premium Demon Slayer-style anime collectible with incredible sculpt detailing. Perfect for display or gifting to anime fans.",
-    image: "/images/cat_anime.png",           // SWAP with real product photo (reusing cat img as fallback)
-  },
-];
-
-// ─── Data Helpers ─────────────────────────────────────────────────────────────
-export function getProductById(id) {
-  return products.find((p) => p.id === id);
-}
-
-export function getFeaturedProducts(count = 4) {
-  return products.slice(0, count);
-}
-
-export function getProductsByCategory(catId) {
-  if (!catId || catId === "all") return products;
-  return products.filter((p) => p.categoryId === catId);
-}
+// To rollback: swap all Supabase calls with _STATIC_CONFIG and _STATIC_CATEGORIES above.
+*/

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — Toys World</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/css/global.css">
+    <link rel="stylesheet" href="/src/css/components.css">
+    <style>
+        .account-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 5%;
+            min-height: 60vh;
+            align-items: start;
+        }
+
+        .account-sidebar {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            position: sticky;
+            top: calc(var(--header-h) + 2rem);
+        }
+
+        .account-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .account-menu li {
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .account-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .account-menu a,
+        .account-menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 1.2rem 1.5rem;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--t-fast);
+        }
+
+        .account-menu a:hover,
+        .account-menu button:hover,
+        .account-menu .active {
+            color: var(--accent-gold);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .account-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle);
+            padding: 3rem;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn var(--t-normal) ease forwards;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        .profile-form .form-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-form label {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .profile-form input {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            padding: 0.8rem;
+            color: var(--text-primary);
+            transition: all var(--t-fast);
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+
+        .profile-form input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .profile-form input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .placeholder-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .status-msg {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status-msg.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6EE7B7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-msg.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #FCA5A5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .account-layout {
+                grid-template-columns: 1fr;
+                margin-top: calc(var(--header-h) + 2rem);
+            }
+
+            .account-sidebar {
+                position: static;
+            }
+
+            .account-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body style="opacity: 0; transition: opacity 0.3s; --header-h: 70px;">
+    <!-- Added opacity 0 on body so we can wait for auth check before revealing to prevent flash of login content if unauthenticated -->
+    <div id="header-root"></div>
+
+    <main class="account-layout">
+        <aside class="account-sidebar reveal-left">
+            <ul class="account-menu">
+                <li><button data-target="profile" class="active">Profile Details</button></li>
+                <li><button data-target="password">Change Password</button></li>
+                <li><button data-target="orders">My Orders</button></li>
+                <li><button data-target="wishlist">Wishlist</button></li>
+                <li><button data-target="addresses">Saved Addresses</button></li>
+                <li><button id="signout-btn" style="color: #F87171;">Sign Out</button></li>
+            </ul>
+        </aside>
+
+        <div class="account-content reveal-right">
+            <!-- Profile Section -->
+            <section id="section-profile" class="content-section active">
+                <h2 class="section-title">Profile Details</h2>
+                <div id="profile-msg" class="status-msg"></div>
+                <form id="profile-form" class="profile-form">
+                    <div class="form-group">
+                        <label>Email (Verified)</label>
+                        <input type="email" id="profile-email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="profile-phone" placeholder="+91">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="profile-submit" style="margin-top: 1rem;">Save
+                        Changes</button>
+                </form>
+            </section>
+
+            <!-- Password Section -->
+            <section id="section-password" class="content-section">
+                <h2 class="section-title">Change Password</h2>
+                <div id="pwd-msg" class="status-msg"></div>
+                <form id="password-form" class="profile-form">
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="new-password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirm-new-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="pwd-submit" style="margin-top: 1rem;">Update
+                        Password</button>
+                </form>
+            </section>
+
+            <!-- Placeholders -->
+            <section id="section-orders" class="content-section">
+                <h2 class="section-title">My Orders</h2>
+                <div class="placeholder-state">
+                    <div class="placeholder-icon">📦</div>
+                    <h3>No orders yet</h3>
+                    <p>When you place orders, they will appear here.</p>
+                </div>
+            </section>
+
+            <section id="section-wishlist" class="content-section">
+                <h2 class="section-title">My Wishlist</h2>
+                <div class="placeholder-state">
+                    <div class="placeholder-icon">❤️</div>
+                    <h3>Your wishlist is empty</h3>
+                    <p>Save items you like and they will show up here.</p>
+                </div>
+            </section>
+
+            <section id="section-addresses" class="content-section">
+                <h2 class="section-title">Saved Addresses</h2>
+                <div class="placeholder-state">
+                    <div class="placeholder-icon">📍</div>
+                    <h3>No saved addresses</h3>
+                    <p>Add shipping locations for faster checkout.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/pages/account.js"></script>
+</body>
+
+</html>

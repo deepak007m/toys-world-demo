@@ -1,13 +1,20 @@
 {
   "name": "toys-world-demo",
   "version": "1.0.0",
+  "type": "module",
   "description": "Toys World & Gift Gallery Demo",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "@vitejs/plugin-react": "^4.7.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  },
   "devDependencies": {
     "vite": "^5.0.0"
   }

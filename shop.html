@@ -11,39 +11,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="/src/css/global.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
 
     <style>
+        /* ── Shop Hero ────────────────────────────────────── */
         .shop-hero {
-            background: var(--text-primary);
-            color: #fff;
-            padding: 4rem 0 3rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: calc(var(--header-h) + 3.5rem) 0 3rem;
         }
 
         .shop-title {
-            font-size: clamp(2.25rem, 5vw, 3.5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
             text-transform: uppercase;
+            line-height: 1.0;
         }
 
         .shop-sub {
-            font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.875rem;
+            color: var(--text-muted);
             margin-top: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: var(--font-heading);
+            font-weight: 600;
         }
 
-        /* Filters */
+        /* ── Filter Bar ───────────────────────────────────── */
         .filter-bar {
-            padding: 1.5rem 0;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: sticky;
-            top: 4rem;
+            top: var(--header-h);
             z-index: 40;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .filter-scroll {
@@ -61,46 +69,125 @@
 
         .filter-chip {
             flex-shrink: 0;
-            padding: 0.55rem 1.25rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 9999px;
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 0.04em;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
             white-space: nowrap;
-            background: var(--bg-primary);
+            background: var(--bg-elevated);
             color: var(--text-secondary);
-            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             cursor: pointer;
             transition: all var(--t-fast);
         }
 
         .filter-chip:hover {
-            border-color: var(--text-primary);
             color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .filter-chip.active {
-            background: var(--text-primary);
-            color: #fff;
-            border-color: var(--text-primary);
+            background: var(--accent-gold);
+            color: #0D0D0F;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 16px var(--accent-gold-glow);
         }
 
+        /* ── Subcategory pill row ─────────────────────────── */
+        .subfilter-bar {
+            padding: 0.65rem 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            position: sticky;
+            top: calc(var(--header-h) + 54px);
+            z-index: 39;
+            display: none;
+        }
+
+        .subfilter-bar.visible {
+            display: block;
+        }
+
+        .subfilter-scroll {
+            display: flex;
+            gap: 0.4rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 2px;
+        }
+
+        .subfilter-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subfilter-chip {
+            flex-shrink: 0;
+            padding: 0.35rem 0.9rem;
+            border-radius: 9999px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: all var(--t-fast);
+        }
+
+        .subfilter-chip:hover {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .subfilter-chip.active {
+            background: rgba(232, 184, 75, 0.15);
+            color: var(--accent-gold);
+            border-color: rgba(232, 184, 75, 0.35);
+        }
+
+        /* ── Grid area ────────────────────────────────────── */
         .shop-grid-wrap {
             padding: 3rem 0 5rem;
         }
 
+        /* ── Empty / Error states ─────────────────────────── */
         .empty-msg {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 5rem 0;
+            padding: 5rem 1rem;
             color: var(--text-secondary);
         }
 
         .empty-msg h3 {
-            font-size: 1.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-transform: uppercase;
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .empty-msg p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .error-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius-md);
+            font-size: 0.92rem;
         }
     </style>
 </head>
@@ -108,17 +195,25 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <div class="shop-hero reveal">
+    <div class="shop-hero">
         <div class="container">
-            <p class="label" style="color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;">Browse Everything</p>
-            <h1 class="shop-title">Shop Collection</h1>
-            <p class="shop-sub">Toys · Collectibles · Gifts · Anime · Die-Cast · RC · Plush</p>
+            <p class="label" style="margin-bottom:0.75rem;">Browse Everything</p>
+            <h1 class="shop-title">Shop<br /><span style="color:var(--accent-gold);">Collection</span></h1>
+            <p class="shop-sub">Anime · Die-Cast · Figures · RC · Plush · Gifts</p>
         </div>
     </div>
 
+    <!-- Category filter chips -->
     <div class="filter-bar">
         <div class="container">
             <div class="filter-scroll" id="filters"></div>
+        </div>
+    </div>
+
+    <!-- Subcategory pill row (shown dynamically) -->
+    <div class="subfilter-bar" id="subfilter-bar">
+        <div class="container">
+            <div class="subfilter-scroll" id="subfilters"></div>
         </div>
     </div>
 
@@ -131,74 +226,144 @@
     <div id="footer-placeholder"></div>
 
     <script type="module">
-        import { categories, getProductsByCategory } from '/src/js/data.js';
-        import { renderHeader, renderFooter, renderProductCard } from '/src/js/components.js';
+        import {
+            getConfig, getCategories, getSubcategories, getProducts, buildWhatsAppLink
+        } from '/src/js/data.js';
+        import {
+            renderHeader, renderFooter, renderProductCard,
+            wireNavDrawer, wireScrollReveal, skeletonProductCards
+        } from '/src/js/components.js';
 
-        // Layout
-        document.getElementById('header-placeholder').innerHTML = renderHeader('Shop');
-        document.getElementById('footer-placeholder').innerHTML = renderFooter();
+        // ── State ────────────────────────────────────────────
+        let currentCategoryId = null;
+        let currentCategorySlug = 'all';
+        let currentSubcatId = null;
+        let waNumber = '';
+        let allCategories = [];
 
-        // Mobile nav wiring
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileNav = document.getElementById('mobile-nav');
-        const closeBtn = document.getElementById('menu-close');
-        if (menuBtn) {
-            menuBtn.addEventListener('click', () => mobileNav.classList.add('open'));
-            closeBtn.addEventListener('click', () => mobileNav.classList.remove('open'));
-            mobileNav.addEventListener('click', e => { if (e.target === mobileNav) mobileNav.classList.remove('open'); });
+        // ── Skeleton ──────────────────────────────────────────
+        document.getElementById('shop-grid').innerHTML = skeletonProductCards(8);
+
+        // ── Transparent → solid header on scroll ─────────────
+        window.addEventListener('scroll', () => {
+            document.querySelector('.header')?.classList.toggle('scrolled', window.scrollY > 20);
+        }, { passive: true });
+
+        // ── Initial fetch ─────────────────────────────────────
+        const [config, categories] = await Promise.all([getConfig(), getCategories()]);
+
+        waNumber = config?.whatsapp_number || '';
+        allCategories = categories;
+
+        document.getElementById('header-placeholder').innerHTML = renderHeader('Shop', config);
+        document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
+        wireNavDrawer();
+
+        // Re-attach scroll on new header
+        window.addEventListener('scroll', () => {
+            document.querySelector('.header')?.classList.toggle('scrolled', window.scrollY > 20);
+        }, { passive: true });
+        document.querySelector('.header')?.classList.add('scrolled');
+
+        // ── Read category from URL ────────────────────────────
+        const urlParams = new URLSearchParams(window.location.search);
+        const slugFromUrl = urlParams.get('category') || 'all';
+        const matchedCat = categories.find(c => c.slug === slugFromUrl);
+
+        if (matchedCat) {
+            currentCategoryId = matchedCat.id;
+            currentCategorySlug = matchedCat.slug;
         }
 
-        const filtersEl = document.getElementById('filters');
-        const gridEl = document.getElementById('shop-grid');
-
-        // Current category from URL
-        const url = new URL(window.location.href);
-        let current = url.searchParams.get('category') || 'all';
-
-        // Build filter chips
-        const allChips = [
-            { id: 'all', title: 'All' },
-            ...categories
-        ];
-
-        function renderFilters() {
-            filtersEl.innerHTML = allChips.map(c =>
-                `<button class="filter-chip${current === c.id ? ' active' : ''}" data-id="${c.id}">${c.title}</button>`
-            ).join('');
+        // ── Render category chips ─────────────────────────────
+        function renderFilterChips() {
+            const filtersEl = document.getElementById('filters');
+            const chips = [{ id: null, slug: 'all', title: 'All' }, ...allCategories];
+            filtersEl.innerHTML = chips.map(c => `
+                <button class="filter-chip${currentCategorySlug === c.slug ? ' active' : ''}"
+                        data-id="${c.id || ''}" data-slug="${c.slug}">
+                    ${c.title}
+                </button>
+            `).join('');
         }
 
-        function renderProducts() {
-            const products = getProductsByCategory(current);
+        // ── Render subcategory pills ──────────────────────────
+        async function renderSubfilterBar(categoryId) {
+            const bar = document.getElementById('subfilter-bar');
+            const el = document.getElementById('subfilters');
+            if (!categoryId) { bar.classList.remove('visible'); el.innerHTML = ''; return; }
+
+            const subcats = await getSubcategories(categoryId);
+            if (!subcats.length) { bar.classList.remove('visible'); el.innerHTML = ''; return; }
+
+            bar.classList.add('visible');
+            el.innerHTML = [
+                `<button class="subfilter-chip${!currentSubcatId ? ' active' : ''}" data-id="">All</button>`,
+                ...subcats.map(s =>
+                    `<button class="subfilter-chip${currentSubcatId === s.id ? ' active' : ''}" data-id="${s.id}">${s.title}</button>`
+                )
+            ].join('');
+        }
+
+        // ── Render product grid ───────────────────────────────
+        async function renderProducts() {
+            const gridEl = document.getElementById('shop-grid');
+            gridEl.innerHTML = skeletonProductCards(8);
+
+            const products = await getProducts({
+                categoryId: currentCategoryId || undefined,
+                subcategoryId: currentSubcatId || undefined,
+            });
+
             if (!products.length) {
-                gridEl.innerHTML = `<div class="empty-msg"><h3>No products found</h3><p>Try a different category.</p></div>`;
-            } else {
-                gridEl.innerHTML = products.map(renderProductCard).join('');
+                const waBaseLink = waNumber ? buildWhatsAppLink(waNumber) : '#';
+                gridEl.innerHTML = `
+                    <div class="empty-msg">
+                        <h3>No Products Yet</h3>
+                        <p>We're stocking up — visit us in store or ask on WhatsApp!</p>
+                        <a href="${waBaseLink}" target="_blank" rel="noopener" class="btn btn-whatsapp">
+                            💬 Ask on WhatsApp
+                        </a>
+                    </div>`;
+                return;
             }
+
+            gridEl.innerHTML = products.map(p => renderProductCard(p, waNumber)).join('');
         }
 
-        renderFilters();
-        renderProducts();
-
-        filtersEl.addEventListener('click', e => {
+        // ── Category chip click ───────────────────────────────
+        document.getElementById('filters').addEventListener('click', async e => {
             const btn = e.target.closest('.filter-chip');
             if (!btn) return;
-            current = btn.dataset.id;
+            currentCategoryId = btn.dataset.id || null;
+            currentCategorySlug = btn.dataset.slug;
+            currentSubcatId = null;
 
-            // Update URL
             const u = new URL(window.location.href);
-            current === 'all' ? u.searchParams.delete('category') : u.searchParams.set('category', current);
+            currentCategorySlug === 'all' ? u.searchParams.delete('category') : u.searchParams.set('category', currentCategorySlug);
             history.pushState({}, '', u);
 
-            renderFilters();
-            renderProducts();
+            renderFilterChips();
+            await renderSubfilterBar(currentCategoryId);
+            await renderProducts();
         });
 
-        // Scroll reveal
-        const io = new IntersectionObserver(
-            (entries, obs) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
-            { threshold: 0.08 }
-        );
-        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        // ── Subcategory pill click ────────────────────────────
+        document.getElementById('subfilter-bar').addEventListener('click', async e => {
+            const btn = e.target.closest('.subfilter-chip');
+            if (!btn) return;
+            currentSubcatId = btn.dataset.id || null;
+            document.querySelectorAll('.subfilter-chip').forEach(c => {
+                c.classList.toggle('active', c.dataset.id === (currentSubcatId || ''));
+            });
+            await renderProducts();
+        });
+
+        // ── Initial render ────────────────────────────────────
+        renderFilterChips();
+        await renderSubfilterBar(currentCategoryId);
+        await renderProducts();
+        wireScrollReveal();
     </script>
 </body>
 

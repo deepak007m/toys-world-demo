@@ -4,349 +4,421 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toys World & Gift Gallery | Palghar — Toys, Collectibles, Gifts</title>
+    <title>Toys World & Gift Gallery | Palghar — Collectibles, Anime, Die-Cast, RC</title>
     <meta name="description"
-        content="Toys World & Gift Gallery in Palghar — your destination for anime figures, Hot Wheels die-cast cars, RC toys, plush, action figures, and collectibles." />
+        content="Toys World & Gift Gallery in Palghar — your destination for anime figures, Hot Wheels die-cast cars, RC toys, plush, and collectibles." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
         rel="stylesheet" />
 
     <link rel="stylesheet" href="/src/css/global.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
 
     <style>
-        /* ── Hero ───────────────────────────────────────────────── */
+        /* ── Hero ─────────────────────────────────────────────── */
         .hero {
             position: relative;
-            min-height: 90vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            min-height: 100svh;
+            display: flex;
             align-items: center;
             overflow: hidden;
-            gap: 2rem;
+            padding-top: var(--header-h);
         }
 
+        /* Cinematic background image */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            animation: slowZoom 18s ease-in-out alternate infinite;
+            will-change: transform;
+        }
+
+        .hero-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(105deg,
+                    rgba(0,0,0,0.88) 0%,
+                    rgba(0,0,0,0.55) 50%,
+                    rgba(0,0,0,0.2) 100%),
+                linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+        }
+
+        /* Content */
         .hero-content {
             position: relative;
             z-index: 2;
-            padding: 6rem 0 6rem 0;
+            max-width: 680px;
+            padding: 5rem 0;
         }
 
-        .hero-eyebrow {
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 214, 0, 0.15);
-            border: 1px solid rgba(255, 214, 0, 0.4);
+            background: rgba(232,184,75,0.12);
+            border: 1px solid rgba(232,184,75,0.3);
             border-radius: 9999px;
-            padding: 0.4rem 1rem;
+            padding: 0.4rem 1.1rem;
             font-family: var(--font-heading);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: #a08000;
-            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.75rem;
+
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.7s var(--t-spring) 0.2s forwards;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-gold);
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
         .hero-title {
-            font-size: clamp(2.8rem, 5.5vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.05;
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 7.5vw, 7rem);
+            font-weight: 900;
+            letter-spacing: -0.035em;
+            line-height: 0.96;
+            text-transform: uppercase;
+            color: #fff;
             margin-bottom: 1.5rem;
+
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fadeUp 0.8s var(--t-spring) 0.4s forwards;
         }
 
         .hero-title em {
             font-style: normal;
-            color: var(--accent-yellow);
-            -webkit-text-stroke: 0px;
+            color: var(--accent-gold);
+            display: block;
         }
 
-        .hero-sub {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 420px;
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
+        .hero-sub-line {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+
+            opacity: 0;
+            animation: fadeIn 0.7s ease 0.75s forwards;
+        }
+
+        .hero-sub-divider {
+            height: 1px;
+            width: 32px;
+            background: rgba(255,255,255,0.25);
+            flex-shrink: 0;
+        }
+
+        .hero-sub-text {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-family: var(--font-heading);
+            font-weight: 600;
         }
 
         .hero-ctas {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.7s var(--t-spring) 0.9s forwards;
         }
 
-        .hero-img-col {
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 1s ease 1.4s forwards;
+        }
+
+        .hero-scroll-label {
+            font-size: 0.62rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(232,184,75,0.6), transparent);
+            animation: float 2s ease-in-out 1.5s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: clamp(2.75rem, 12vw, 5rem); }
+            .hero-content { padding: 3rem 0; }
+            .hero-scroll-hint { display: none; }
+        }
+
+        /* ── Marquee Strip ────────────────────────────────────── */
+        .marquee-strip {
+            background: var(--accent-gold);
+            padding: 0.85rem 0;
+            overflow: hidden;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 0;
+            width: max-content;
+            animation: marqueeScroll 22s linear infinite;
+        }
+
+        @keyframes marqueeScroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0 2.5rem;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #0D0D0F;
+            white-space: nowrap;
+        }
+
+        .marquee-dot {
+            width: 5px;
+            height: 5px;
+            background: rgba(0,0,0,0.35);
+            border-radius: 50%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; }
+        }
+
+        /* ── Categories Section ───────────────────────────────── */
+        .categories-section {
+            background: var(--bg-primary);
+        }
+
+        /* ── Featured Drops ───────────────────────────────────── */
+        .drops-section {
+            background: var(--bg-secondary);
             position: relative;
-            height: 100%;
-            min-height: 90vh;
         }
 
-        .hero-main-img {
+        .drops-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(232,184,75,0.05), transparent);
+            pointer-events: none;
+        }
+
+        /* ── Brand Statement ──────────────────────────────────── */
+        .brand-statement {
+            background: var(--bg-primary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .brand-statement-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 560px;
+            align-items: stretch;
+        }
+
+        .brand-text-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5rem 4rem 5rem 0;
+        }
+
+        .brand-statement-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4.75rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 0.98;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-statement-title em {
+            font-style: normal;
+            color: var(--accent-gold);
+        }
+
+        .brand-statement-sub {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 380px;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand-img-col {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+            background: var(--bg-elevated);
+        }
+
+        .brand-img {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0 0 0 60px;
+            transition: transform 0.8s ease;
         }
 
-        .hero-img-badge {
+        .brand-img-col:hover .brand-img {
+            transform: scale(1.04);
+        }
+
+        .brand-img-overlay {
             position: absolute;
-            bottom: 2.5rem;
-            left: -2rem;
-            background: white;
-            border-radius: 16px;
-            padding: 1rem 1.25rem;
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            z-index: 5;
+            inset: 0;
+            background: linear-gradient(to right, rgba(13,13,15,0.6), transparent 60%);
         }
 
-        .hero-badge-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--accent-yellow);
-            border-radius: 12px;
+        @media (max-width: 900px) {
+            .brand-statement-grid {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            .brand-text-col {
+                padding: 3rem 0;
+                order: 2;
+            }
+            .brand-img-col {
+                height: 300px;
+                order: 1;
+                border-radius: var(--radius-lg);
+            }
+        }
+
+        /* ── Why Toys World ───────────────────────────────────── */
+        .why-section {
+            background: var(--bg-secondary);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .why-card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            transition: border-color var(--t-base), transform var(--t-base);
+        }
+
+        .why-card:hover {
+            border-color: rgba(232,184,75,0.25);
+            transform: translateY(-4px);
+        }
+
+        .why-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--accent-gold-dim);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
+            margin-bottom: 1.25rem;
         }
 
-        .hero-badge-text strong {
-            display: block;
-            font-weight: 800;
-            font-size: 0.95rem;
-        }
-
-        .hero-badge-text span {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-        }
-
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-                min-height: auto;
-            }
-
-            .hero-img-col {
-                min-height: 60vw;
-                border-radius: var(--radius-lg);
-                overflow: hidden;
-            }
-
-            .hero-main-img {
-                border-radius: 0;
-                position: relative;
-                height: 60vw;
-                inset: auto;
-            }
-
-            .hero-content {
-                padding: 3rem 0 2rem;
-            }
-
-            .hero-img-badge {
-                left: 1rem;
-            }
-        }
-
-        /* ── Trust Strip ──────────────────────────────────────── */
-        .trust-strip {
-            background: var(--text-primary);
-            color: #fff;
-            padding: 1.25rem 0;
-        }
-
-        .trust-items {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            flex-wrap: wrap;
-        }
-
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.5rem 2rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .trust-item+.trust-item {
-            border-left: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .trust-icon {
-            color: var(--accent-yellow);
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 640px) {
-            .trust-item {
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
-            }
-
-            .trust-item+.trust-item {
-                border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* ── Section Titles ───────────────────────────────────── */
-        .section-header {
-            margin-bottom: 3rem;
-        }
-
-        .section-header.centered {
-            text-align: center;
-        }
-
-        .section-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        /* ── Gift Section ─────────────────────────────────────── */
-        .gift-section {
-            background: var(--accent-yellow);
-            border-radius: var(--radius-xl);
-            padding: 4rem;
-        }
-
-        .gift-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            justify-content: center;
-            margin-top: 2.5rem;
-        }
-
-        .gift-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.65rem 1.5rem;
-            background: #fff;
-            color: var(--text-primary);
-            border-radius: 9999px;
+        .why-title {
             font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.04em;
-            transition: all var(--t-fast);
-            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
 
-        .gift-pill:hover {
-            background: var(--text-primary);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+        .why-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
         }
 
         @media (max-width: 768px) {
-            .gift-section {
-                padding: 2.5rem 1.5rem;
-            }
+            .why-grid { grid-template-columns: 1fr; }
         }
 
-        /* ── Store Story ──────────────────────────────────────── */
-        .story-section {
-            background: #111;
-            color: #fff;
-        }
-
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .story-img-wrap {
-            position: relative;
-            border-radius: var(--radius-lg);
+        /* ── Instagram ───────────────────────────────────────── */
+        .ig-section {
+            background: var(--bg-primary);
             overflow: hidden;
-            aspect-ratio: 4/3;
         }
 
-        .story-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .story-img-tag {
-            position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            background: var(--accent-yellow);
-            color: #111;
-            border-radius: var(--radius-sm);
-            padding: 0.75rem 1.25rem;
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-        }
-
-        .story-title {
-            font-size: clamp(2rem, 4vw, 3.25rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-        }
-
-        .story-sub {
-            font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.55);
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-            max-width: 400px;
-        }
-
-        @media (max-width: 900px) {
-            .story-grid {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-            }
-        }
-
-        /* ── Instagram ────────────────────────────────────────── */
         .ig-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 0.75rem;
+            height: 480px;
         }
 
         .ig-item {
             position: relative;
-            aspect-ratio: 1;
             overflow: hidden;
             border-radius: var(--radius-md);
-            background: #e5e5e5;
+            background: var(--bg-elevated);
             cursor: pointer;
+        }
+
+        .ig-item:first-child {
+            grid-row: 1 / -1;
         }
 
         .ig-item img {
@@ -357,13 +429,13 @@
         }
 
         .ig-item:hover img {
-            transform: scale(1.08);
+            transform: scale(1.07);
         }
 
         .ig-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0);
+            background: rgba(0,0,0,0);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -371,64 +443,180 @@
         }
 
         .ig-item:hover .ig-overlay {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0,0,0,0.35);
         }
 
         .ig-overlay svg {
             opacity: 0;
-            transition: opacity var(--t-fast);
+            transform: scale(0.8);
+            transition: opacity var(--t-fast), transform var(--t-fast);
             color: #fff;
         }
 
         .ig-item:hover .ig-overlay svg {
             opacity: 1;
+            transform: scale(1);
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .ig-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: repeat(3, 160px);
+                height: auto;
             }
+            .ig-item:first-child { grid-row: auto; }
+            /* hide 4th & 5th on mobile if they overflow */
         }
 
-        /* ── Location ─────────────────────────────────────────── */
-        .location-card {
-            background: #111;
+        @media (max-width: 480px) {
+            .ig-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        }
+
+        /* ── Reviews ─────────────────────────────────────────── */
+        .reviews-section {
+            background: var(--bg-primary);
+        }
+
+        .reviews-empty {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: var(--radius-xl);
-            padding: 4rem;
+            padding: 4rem 2rem;
             text-align: center;
-            color: #fff;
         }
 
-        .location-title {
-            font-size: clamp(2.25rem, 5vw, 4rem);
+        .reviews-empty-stars {
+            font-size: 2rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+            opacity: 0.4;
+        }
+
+        /* ── Visit Store ─────────────────────────────────────── */
+        .visit-section {
+            background: var(--bg-secondary);
+        }
+
+        .visit-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .visit-img-wrap {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .visit-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--t-slow);
+        }
+
+        .visit-img-wrap:hover img {
+            transform: scale(1.04);
+        }
+
+        .visit-img-tag {
+            position: absolute;
+            bottom: 1.25rem;
+            left: 1.25rem;
+            background: var(--accent-gold);
+            color: #0D0D0F;
+            font-family: var(--font-heading);
             font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
+            padding: 0.55rem 1.1rem;
+            border-radius: var(--radius-sm);
         }
 
-        .location-address {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.55);
+        .visit-store-name {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            font-weight: 900;
+            letter-spacing: -0.025em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .visit-address {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
             line-height: 1.75;
-            max-width: 460px;
-            margin: 1.5rem auto 3rem;
+            margin-bottom: 2rem;
         }
 
-        .location-btns {
+        .visit-btns {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 900px) {
+            .visit-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Final CTA ───────────────────────────────────────── */
+        .final-cta {
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .final-cta-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(232,184,75,0.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        .final-cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 7rem 1.5rem;
+        }
+
+        .final-cta-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-weight: 900;
+            letter-spacing: -0.035em;
+            line-height: 1.02;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-cta-title em {
+            font-style: normal;
+            color: var(--accent-gold);
+        }
+
+        .final-cta-sub {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.65;
+        }
+
+        .final-cta-btns {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
         }
 
-        @media (max-width: 768px) {
-            .location-card {
-                padding: 2.5rem 1.5rem;
-            }
-        }
-
-        /* ── Sticky Mobile WhatsApp ───────────────────────────── */
+        /* ── Sticky WhatsApp ──────────────────────────────────── */
         .sticky-wa {
             display: none;
             position: fixed;
@@ -446,19 +634,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
             transition: transform var(--t-fast), box-shadow var(--t-fast);
         }
 
         .sticky-wa-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 6px 28px rgba(37, 211, 102, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 6px 28px rgba(37, 211, 102, 0.55);
         }
 
         @media (max-width: 768px) {
-            .sticky-wa {
-                display: block;
-            }
+            .sticky-wa { display: block; }
         }
     </style>
 </head>
@@ -466,240 +652,278 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <!-- ══════════════════════════════════
-       HERO
-  ══════════════════════════════════ -->
-    <section class="hero container reveal">
-        <div class="hero-content">
-            <div class="hero-eyebrow">
-                <span>★</span> Palghar's Coolest Toy Store
+    <!-- ══════════════════════ HERO ══════════════════════ -->
+    <section class="hero" aria-label="Hero">
+        <div class="hero-bg">
+            <img src="/images/real_store_exterior.png"
+                 alt="Toys World & Gift Gallery Store"
+                 class="hero-bg-img"
+                 id="hero-img"
+                 fetchpriority="high" />
+            <div class="hero-bg-overlay"></div>
+        </div>
+
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Palghar's Coolest Toy Store
             </div>
+
             <h1 class="hero-title">
-                Welcome to the<br />
-                World of<br />
-                <em>Cool Stuff.</em>
+                TOYS<br />
+                WORLD<em>.</em>
             </h1>
-            <p class="hero-sub">
-                Toys, collectibles, gifts, anime figures, RC cars, die-cast cars and everything in between. All under
-                one roof in Palghar.
-            </p>
+
+            <div class="hero-sub-line">
+                <span class="hero-sub-divider"></span>
+                <span class="hero-sub-text">Anime · Die-Cast · Figures · RC · Gifts</span>
+            </div>
+
             <div class="hero-ctas">
-                <a href="/shop.html" class="btn btn-dark">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5">
-                        <rect x="3" y="3" width="18" height="18" rx="2" />
-                        <path d="m9 9 6 6M15 9l-6 6" />
+                <a href="/shop.html" class="btn btn-gold">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                     </svg>
                     Explore Collection
                 </a>
-                <a href="#visit" class="btn btn-outline">Visit Our Store →</a>
+                <a href="#visit" class="btn btn-outline">Visit Our Store</a>
             </div>
         </div>
 
-        <div class="hero-img-col reveal reveal-delay-2">
-            <img src="/images/real_store_exterior.png" alt="Toys World & Gift Gallery Store" class="hero-main-img"
-                id="hero-img" />
-            <div class="hero-img-badge">
-                <div class="hero-badge-icon">★</div>
-                <div class="hero-badge-text">
-                    <strong>5.0 Rating</strong>
-                    <span>47+ Google Reviews</span>
-                </div>
-            </div>
+        <div class="hero-scroll-hint" aria-hidden="true">
+            <span class="hero-scroll-label">Scroll</span>
+            <span class="hero-scroll-line"></span>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       TRUST STRIP
-  ══════════════════════════════════ -->
-    <div class="trust-strip reveal">
-        <div class="container trust-items">
-            <div class="trust-item"><span class="trust-icon">★★★★★</span> 5.0 Google Rating</div>
-            <div class="trust-item"><span class="trust-icon">👥</span> 47+ Reviews</div>
-            <div class="trust-item"><span class="trust-icon">📍</span> Local Store, Palghar</div>
-            <div class="trust-item"><span class="trust-icon" style="color:rgba(255,255,255,0.4)">Toys · Gifts ·
-                    Collectibles</span></div>
+    <!-- ═════════════════════ MARQUEE ═════════════════════ -->
+    <div class="marquee-strip" aria-hidden="true">
+        <div class="marquee-track">
+            <!-- Repeated twice for seamless loop -->
+            <span class="marquee-item">Anime Figures<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Hot Wheels<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Die-Cast Cars<span class="marquee-dot"></span></span>
+            <span class="marquee-item">RC Racing<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Plush Toys<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Action Figures<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Gifts<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Collectibles<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Gaming<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Anime Figures<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Hot Wheels<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Die-Cast Cars<span class="marquee-dot"></span></span>
+            <span class="marquee-item">RC Racing<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Plush Toys<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Action Figures<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Gifts<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Collectibles<span class="marquee-dot"></span></span>
+            <span class="marquee-item">Gaming<span class="marquee-dot"></span></span>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════
-       CATEGORIES
-  ══════════════════════════════════ -->
-    <section class="section" id="categories">
+    <!-- ═══════════════════ CATEGORIES ════════════════════ -->
+    <section class="section categories-section" id="categories">
         <div class="container">
             <div class="section-header centered reveal">
-                <p class="label">Explore</p>
-                <h2 class="section-heading" style="margin-top: 0.5rem;">What are you into?</h2>
-                <p class="section-sub">Pick your world.</p>
+                <p class="label">Enter the Collection</p>
+                <h2 class="section-heading" style="margin-top:0.5rem;">Pick Your World.</h2>
+                <p class="section-sub">Every shelf holds a different universe.</p>
             </div>
-
-            <div class="grid-3 reveal" id="category-grid"></div>
+            <div class="grid-3 stagger" id="category-grid"></div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       FEATURED FINDS
-  ══════════════════════════════════ -->
-    <section class="section" style="background: var(--bg-secondary);">
+    <!-- ════════════════ FEATURED DROPS ═══════════════════ -->
+    <section class="section drops-section">
         <div class="container">
             <div class="section-header-row reveal">
                 <div>
                     <p class="label">Handpicked</p>
-                    <h2 class="section-heading" style="margin-top: 0.5rem;">Featured Finds</h2>
-                    <p class="section-sub">Things worth taking a closer look at.</p>
+                    <h2 class="section-heading" style="margin-top:0.5rem;">Featured Drops</h2>
+                    <p class="section-sub">Some things are too good to leave on the shelf.</p>
                 </div>
-                <a href="/shop.html" class="btn btn-outline">View All Products →</a>
+                <a href="/shop.html" class="btn btn-outline">View All →</a>
             </div>
-
-            <div class="grid-4 reveal" id="featured-grid"></div>
+            <div class="grid-4 stagger" id="featured-grid"></div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       GIFT DISCOVERY
-  ══════════════════════════════════ -->
-    <section class="section">
+    <!-- ═══════════════ BRAND STATEMENT ════════════════════ -->
+    <section class="section brand-statement">
         <div class="container">
-            <div class="gift-section reveal">
-                <div style="text-align:center; max-width: 600px; margin: 0 auto;">
-                    <p class="label" style="color: rgba(0,0,0,0.5);">Find the Perfect Gift</p>
-                    <h2 class="section-heading" style="margin-top: 0.5rem;">Looking for a Gift?</h2>
-                    <p style="font-size: 1.05rem; color: rgba(0,0,0,0.6); margin-top: 0.75rem; line-height: 1.65;">
-                        Don't know exactly what to buy? Start with who you're shopping for.
+            <div class="brand-statement-grid">
+                <div class="brand-text-col">
+                    <p class="label reveal">Not Just Toys</p>
+                    <h2 class="brand-statement-title reveal reveal-delay-1">
+                        Things You'll<br />
+                        Want To <em>Keep.</em>
+                    </h2>
+                    <p class="brand-statement-sub reveal reveal-delay-2">
+                        This is a store for people who love collecting. Built for enthusiasts, gifted to fans,
+                        discovered in Palghar.
                     </p>
+                    <div class="reveal reveal-delay-3">
+                        <a href="/shop.html" class="btn btn-gold">Explore Collection</a>
+                    </div>
                 </div>
-                <div class="gift-pills">
-                    <a href="/shop.html" class="gift-pill">🎯 For Kids</a>
-                    <a href="/shop.html?category=die-cast" class="gift-pill">🏎️ For Collectors</a>
-                    <a href="/shop.html?category=anime" class="gift-pill">⚡ For Anime Fans</a>
-                    <a href="/shop.html?category=rc-racing" class="gift-pill">🕹️ For Car Lovers</a>
-                    <a href="/shop.html?category=figures" class="gift-pill">🦸 For Superhero Fans</a>
-                    <a href="/shop.html?category=gifts" class="gift-pill">✨ Just Something Cool</a>
+                <div class="brand-img-col scale-in">
+                    <img src="/images/real_store_interior.png" alt="Toys World store interior — shelves full of collectibles"
+                        class="brand-img" id="store-img" loading="lazy" />
+                    <div class="brand-img-overlay"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       STORE STORY
-  ══════════════════════════════════ -->
-    <section class="section story-section">
-        <div class="container story-grid">
-            <div class="story-img-wrap reveal">
-                <img src="/images/real_store_interior.png" alt="Toys World Store Interior" id="store-img" />
-                <div class="story-img-tag">📍 Palghar, Maharashtra</div>
+    <!-- ════════════════ WHY TOYS WORLD ════════════════════ -->
+    <section class="section why-section">
+        <div class="container">
+            <div class="section-header centered reveal">
+                <p class="label">Why Toys World</p>
+                <h2 class="section-heading" style="margin-top:0.5rem;">A Collector's Paradise.</h2>
+                <p class="section-sub">Everything you need to find your next favourite thing.</p>
             </div>
-            <div class="reveal reveal-delay-2">
-                <p class="label" style="color: rgba(255,255,255,0.35);">Our Story</p>
-                <h2 class="story-title" style="margin-top:0.5rem;">
-                    More than a store.<br />It's a treasure hunt.
-                </h2>
-                <p class="story-sub">
-                    Come in looking for one thing. Leave with something you didn't expect. Our shelves are packed with
-                    carefully chosen toys, collectibles, and gifts — from Palghar's most interesting toy destination.
-                </p>
-                <a href="/shop.html" class="btn btn-yellow">Explore the Collection</a>
+
+            <div class="why-grid stagger">
+                <div class="why-card reveal">
+                    <div class="why-icon">🎌</div>
+                    <div class="why-title">6+ Categories</div>
+                    <p class="why-desc">Anime, Die-Cast, RC, Figures, Plush, Gifts — all under one roof in Palghar.</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">📍</div>
+                    <div class="why-title">Real Store</div>
+                    <p class="why-desc">We're a physical store, not just a website. Come in, pick it up, and feel the quality.</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">💬</div>
+                    <div class="why-title">Easy Enquiry</div>
+                    <p class="why-desc">Find something you like and connect directly on WhatsApp. Fast, simple, no checkout drama.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       REVIEWS
-  ══════════════════════════════════ -->
-    <section class="section" style="background: var(--bg-secondary);">
+    <!-- ══════════════════ INSTAGRAM ════════════════════════ -->
+    <section class="section ig-section" id="instagram">
+        <div class="container">
+            <div class="section-header-row reveal">
+                <div>
+                    <p class="label">Follow The Drop</p>
+                    <h2 class="section-heading" style="margin-top:0.5rem;">@toys_world48</h2>
+                    <p class="section-sub">New arrivals. Real products. Posted regularly.</p>
+                </div>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="btn btn-dark">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                    </svg>
+                    Follow on Instagram
+                </a>
+            </div>
+
+            <div class="ig-grid stagger">
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal">
+                    <img src="/images/real_store_exterior.png" alt="Toys World store front" loading="lazy" />
+                    <div class="ig-overlay">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </div>
+                </a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1">
+                    <img src="/images/real_store_shelf.png" alt="Store shelf with collectibles" loading="lazy" />
+                    <div class="ig-overlay">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </div>
+                </a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2">
+                    <img src="/images/real_spiderman.png" alt="Spider-Man collectible figure" loading="lazy" />
+                    <div class="ig-overlay">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </div>
+                </a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1">
+                    <img src="/images/real_mini_gt.png" alt="Mini alloy die-cast car" loading="lazy" />
+                    <div class="ig-overlay">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </div>
+                </a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2">
+                    <img src="/images/store_interior.png" alt="Toys World store interior" loading="lazy" />
+                    <div class="ig-overlay">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════ REVIEWS ════════════════════════ -->
+    <section class="section reviews-section">
         <div class="container">
             <div class="section-header centered reveal">
                 <p class="label">Social Proof</p>
-                <h2 class="section-heading" style="margin-top: 0.5rem;">What People Say</h2>
-                <div
-                    style="margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
-                    <span style="font-size: 1.5rem; color: var(--accent-yellow);">★★★★★</span>
-                    <span style="font-weight: 700; font-size: 1.125rem;">5.0</span>
-                    <span style="color: var(--text-secondary);">· 47 Reviews on Google</span>
-                </div>
+                <h2 class="section-heading" style="margin-top:0.5rem;">What Collectors Say</h2>
             </div>
-            <div class="grid-3 reveal" id="reviews-grid"></div>
+            <div class="grid-3 stagger" id="reviews-grid"></div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       INSTAGRAM
-  ══════════════════════════════════ -->
-    <section class="section">
+    <!-- ════════════════ VISIT STORE ══════════════════════ -->
+    <section class="section visit-section" id="visit">
         <div class="container">
-            <div class="section-header centered reveal">
-                <p class="label">Follow Along</p>
-                <h2 class="section-heading" style="margin-top: 0.5rem;">Seen Something Cool on IG?</h2>
-                <p class="section-sub">Find it in our collection or ask us directly. New arrivals posted regularly.</p>
-                <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="btn btn-dark">
-                        Follow @toys_world48
-                    </a>
+            <div class="visit-grid">
+                <div class="visit-img-wrap reveal-left">
+                    <img src="/images/real_store_exterior.png" alt="Toys World & Gift Gallery exterior" loading="lazy" />
+                    <div class="visit-img-tag">📍 Palghar, Maharashtra</div>
                 </div>
-            </div>
-
-            <!-- Instagram grid: using real store photos. Replace with actual IG post screenshots when available. -->
-            <div class="ig-grid reveal">
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item">
-                    <img src="/images/real_store_exterior.png" alt="Toys World store front" loading="lazy" />
-                    <div class="ig-overlay"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-                        </svg></div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item">
-                    <img src="/images/real_store_shelf.png" alt="Store shelf with Hot Wheels and collectibles"
-                        loading="lazy" />
-                    <div class="ig-overlay"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-                        </svg></div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item">
-                    <img src="/images/real_spiderman.png" alt="Spider-Man figure" loading="lazy" />
-                    <div class="ig-overlay"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-                        </svg></div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item">
-                    <img src="/images/real_mini_gt.png" alt="Mini Alloy die-cast car" loading="lazy" />
-                    <div class="ig-overlay"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-                        </svg></div>
-                </a>
+                <div>
+                    <p class="label reveal">Find Us</p>
+                    <h2 class="visit-store-name reveal reveal-delay-1">
+                        Come See<br />It IRL.
+                    </h2>
+                    <p class="reveal reveal-delay-2" style="font-size:1rem;font-weight:700;color:var(--accent-gold);margin-bottom:0.5rem;">
+                        TOYS WORLD & GIFT GALLERY
+                    </p>
+                    <p class="visit-address reveal reveal-delay-2" id="store-address">
+                        Manor Highway Road, opposite Holy Spirit High School,<br />
+                        near Royal Enfield showroom, Tembhode/Mahim,<br />
+                        Palghar, Maharashtra 401404
+                    </p>
+                    <div class="visit-btns reveal reveal-delay-3">
+                        <a href="https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar+Manor+Highway+Road+Tembhode"
+                           target="_blank" rel="noopener"
+                           class="btn btn-gold" data-map>
+                            📍 Get Directions
+                        </a>
+                        <a href="#" class="btn btn-whatsapp" id="wa-location-btn" target="_blank">
+                            💬 WhatsApp
+                        </a>
+                        <a href="#" class="btn btn-outline" id="call-btn">
+                            📞 Call Store
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════
-       VISIT THE STORE
-  ══════════════════════════════════ -->
-    <section class="section" id="visit">
-        <div class="container">
-            <div class="location-card reveal">
-                <p class="label" style="color: rgba(255,255,255,0.35);">Find Us</p>
-                <h2 class="location-title" style="margin-top:0.5rem;">Come See It IRL.</h2>
-                <h3 style="font-size: 1.25rem; color: var(--accent-yellow); font-weight: 700; margin-bottom: 0.5rem;">
-                    TOYS WORLD & GIFT GALLERY</h3>
-                <p class="location-address">
-                    Manor Highway Road, opposite Holy Spirit High School,<br />
-                    near Royal Enfield showroom, Tembhode/Mahim,<br />
-                    Palghar, Maharashtra 401404
+    <!-- ══════════════════ FINAL CTA ══════════════════════ -->
+    <section class="final-cta">
+        <div class="final-cta-bg" aria-hidden="true"></div>
+        <div class="final-cta-content">
+            <div class="reveal">
+                <p class="label" style="margin-bottom:1.25rem;">Ready?</p>
+                <h2 class="final-cta-title">
+                    Your Next<br />
+                    Favourite<br />
+                    Might Be <em>Here.</em>
+                </h2>
+                <p class="final-cta-sub">
+                    Walk in or ask on WhatsApp. Either way, we're here.
                 </p>
-                <div class="location-btns">
-                    <a href="https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar+Manor+Highway+Road+Tembhode"
-                        target="_blank" rel="noopener" class="btn btn-white">
-                        📍 Get Directions
-                    </a>
-                    <a href="#" id="wa-location-btn" target="_blank" class="btn btn-whatsapp">
-                        💬 WhatsApp
-                    </a>
-                    <a href="#" class="btn btn-outline" style="border-color: rgba(255,255,255,0.2); color:#fff;"
-                        id="call-btn">
-                        📞 Call Store
-                    </a>
+                <div class="final-cta-btns">
+                    <a href="/shop.html" class="btn btn-gold">Explore Collection</a>
+                    <a href="#" class="btn btn-whatsapp" id="sticky-wa-btn" target="_blank">💬 Chat on WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -709,64 +933,111 @@
 
     <!-- Sticky WhatsApp (mobile) -->
     <div class="sticky-wa">
-        <a href="#" id="sticky-wa-btn" target="_blank" rel="noopener" class="sticky-wa-btn"
-            aria-label="Chat on WhatsApp">
+        <a href="#" id="mobile-wa-fab" target="_blank" rel="noopener" class="sticky-wa-btn" aria-label="Chat on WhatsApp">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                <path
-                    d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z" />
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z"/>
             </svg>
         </a>
     </div>
 
     <script type="module">
-        import { categories, reviews, config, buildWhatsAppLink } from '/src/js/data.js';
-        import { renderHeader, renderFooter, renderCategoryCard, renderProductCard, renderReviewCard } from '/src/js/components.js';
-        import { getFeaturedProducts } from '/src/js/data.js';
+        import { getConfig, getCategories, getFeaturedProducts, reviews, buildWhatsAppLink } from '/src/js/data.js';
+        import {
+            renderHeader, renderFooter, renderCategoryCard,
+            renderProductCard, renderReviewCard,
+            wireNavDrawer, wireScrollReveal,
+            skeletonProductCards, skeletonCategoryCards
+        } from '/src/js/components.js';
 
-        // ── Inject layout ────────────────────────────────────────────────────────
-        document.getElementById('header-placeholder').innerHTML = renderHeader('Home');
-        document.getElementById('footer-placeholder').innerHTML = renderFooter();
+        // ── Immediate skeletons ───────────────────────────────────
+        document.getElementById('category-grid').innerHTML  = skeletonCategoryCards(6);
+        document.getElementById('featured-grid').innerHTML  = skeletonProductCards(4);
+        document.getElementById('reviews-grid').innerHTML   = reviews.map(renderReviewCard).join('');
 
-        // Wire mobile nav
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileNav = document.getElementById('mobile-nav');
-        const closeBtn = document.getElementById('menu-close');
-        if (menuBtn && mobileNav) {
-            menuBtn.addEventListener('click', () => mobileNav.classList.add('open'));
-            closeBtn.addEventListener('click', () => mobileNav.classList.remove('open'));
-            mobileNav.addEventListener('click', e => { if (e.target === mobileNav) mobileNav.classList.remove('open'); });
+        // ── Transparent → solid header on scroll ─────────────────
+        const header = document.querySelector('.header');
+        const handleScroll = () => {
+            header?.classList.toggle('scrolled', window.scrollY > 60);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
+        // ── Fetch data ────────────────────────────────────────────
+        const [config, categories, featured] = await Promise.all([
+            getConfig(),
+            getCategories(),
+            getFeaturedProducts(4),
+        ]);
+
+        // ── Inject layout ─────────────────────────────────────────
+        document.getElementById('header-placeholder').innerHTML = renderHeader('Home', config);
+        document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
+        wireNavDrawer();
+
+        // Re-attach scroll listener after header injection
+        const newHeader = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            newHeader?.classList.toggle('scrolled', window.scrollY > 60);
+        }, { passive: true });
+        newHeader?.classList.toggle('scrolled', window.scrollY > 60);
+
+        // ── Wire config-driven elements ───────────────────────────
+        const waNumber = config?.whatsapp_number || '';
+        const waLink   = waNumber ? buildWhatsAppLink(waNumber) : '#';
+
+        document.querySelectorAll('[data-wa]').forEach(el => el.href = waLink);
+        document.getElementById('wa-location-btn').href = waLink;
+        document.getElementById('sticky-wa-btn').href   = waLink;
+        const mobileWa = document.getElementById('mobile-wa-fab');
+        if (mobileWa) mobileWa.href = waLink;
+
+        const callBtn = document.getElementById('call-btn');
+        if (callBtn) {
+            callBtn.href  = config?.phone ? `tel:${config.phone}` : '#';
+            if (!config?.phone) callBtn.title = 'Phone number coming soon';
         }
 
-        // ── WhatsApp links ───────────────────────────────────────────────────────
-        const waLink = buildWhatsAppLink();
-        document.getElementById('wa-location-btn').href = waLink;
-        document.getElementById('sticky-wa-btn').href = waLink;
+        const mapLink = config?.map_link || 'https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar';
+        document.querySelectorAll('[data-map]').forEach(el => el.href = mapLink);
 
-        // Phone (placeholder)
-        const callBtn = document.getElementById('call-btn');
-        if (config.phone) { callBtn.href = `tel:${config.phone}`; }
-        else { callBtn.href = '#'; callBtn.title = 'Phone number coming soon'; }
+        // Hero/story images from Supabase (override local fallback if set)
+        const heroImg = document.getElementById('hero-img');
+        if (heroImg && config?.hero_image_url) heroImg.src = config.hero_image_url;
+        const storeImg = document.getElementById('store-img');
+        if (storeImg && config?.story_image_url) storeImg.src = config.story_image_url;
 
-        // ── Render Sections ──────────────────────────────────────────────────────
-        document.getElementById('category-grid').innerHTML
-            = categories.map(renderCategoryCard).join('');
+        // Store address from config
+        if (config?.address) {
+            const addr = document.getElementById('store-address');
+            if (addr) addr.innerText = config.address;
+        }
 
-        document.getElementById('featured-grid').innerHTML
-            = getFeaturedProducts(4).map(renderProductCard).join('');
+        // ── Render categories ─────────────────────────────────────
+        const catGrid = document.getElementById('category-grid');
+        if (!categories.length) {
+            catGrid.innerHTML = `<p class="section-sub" style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-muted);">Categories coming soon.</p>`;
+        } else {
+            catGrid.innerHTML = categories.map(renderCategoryCard).join('');
+        }
 
-        document.getElementById('reviews-grid').innerHTML
-            = reviews.map(renderReviewCard).join('');
+        // ── Render featured products ──────────────────────────────
+        const featGrid = document.getElementById('featured-grid');
+        if (!featured.length) {
+            featGrid.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;">
+                    <p style="font-size:1.05rem;color:var(--text-secondary);margin-bottom:1.5rem;">
+                        We're stocking up — visit us in store for the latest arrivals!
+                    </p>
+                    <a href="${waLink}" target="_blank" rel="noopener" class="btn btn-whatsapp">
+                        💬 Ask on WhatsApp
+                    </a>
+                </div>`;
+        } else {
+            featGrid.innerHTML = featured.map(p => renderProductCard(p, waNumber)).join('');
+        }
 
-        // ── Scroll reveal ────────────────────────────────────────────────────────
-        const io = new IntersectionObserver(
-            (entries, obs) => entries.forEach(e => {
-                if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-            }),
-            { threshold: 0.08 }
-        );
-        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        wireScrollReveal();
     </script>
 </body>
 
