@@ -41,6 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) throw error;
 
+            console.log('DIAGNOSTIC_LOGIN_DATA_USER:', JSON.stringify(data.user));
+            console.log('DIAGNOSTIC_LOGIN_SESSION:', JSON.stringify(data.session));
+            console.log('DIAGNOSTIC_LOGIN_ERROR:', JSON.stringify(error));
+
             // Success - let auth listener header update, and redirect
             window.location.href = redirectPath;
 

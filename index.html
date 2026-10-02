@@ -652,96 +652,70 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <!-- ══════════════════════ HERO ══════════════════════ -->
+    <!-- 2. HERO -->
     <section class="hero" aria-label="Hero">
         <div class="hero-bg">
-            <img src="/images/real_store_exterior.png"
-                 alt="Toys World & Gift Gallery Store"
-                 class="hero-bg-img"
-                 id="hero-img"
-                 fetchpriority="high" />
+            <img src="/images/real_store_exterior.png" alt="Toys World Store Exterior" class="hero-bg-img" id="hero-img" fetchpriority="high" />
             <div class="hero-bg-overlay"></div>
         </div>
-
         <div class="container hero-content">
             <div class="hero-badge">
-                <span class="hero-badge-dot"></span>
-                Palghar's Coolest Toy Store
+                <span class="hero-badge-dot"></span> Palghar's Premium Collector Hub
             </div>
-
-            <h1 class="hero-title">
-                TOYS<br />
-                WORLD<em>.</em>
+            <h1 class="hero-title" style="font-size:clamp(3rem, 8vw, 6.5rem); margin-bottom:1rem;">
+                THE WORLD<br />OF TOYS<br /><em>STARTS HERE.</em>
             </h1>
-
             <div class="hero-sub-line">
                 <span class="hero-sub-divider"></span>
-                <span class="hero-sub-text">Anime · Die-Cast · Figures · RC · Gifts</span>
+                <span class="hero-sub-text">Anime • Collectibles • Die-Cast • RC • Gifts</span>
             </div>
-
             <div class="hero-ctas">
-                <a href="/shop.html" class="btn btn-gold">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                    </svg>
-                    Explore Collection
-                </a>
-                <a href="#visit" class="btn btn-outline">Visit Our Store</a>
+                <a href="/shop.html" class="btn btn-gold">SHOP NOW</a>
+                <a href="/shop.html#categories" class="btn btn-outline">EXPLORE COLLECTION</a>
             </div>
         </div>
-
         <div class="hero-scroll-hint" aria-hidden="true">
             <span class="hero-scroll-label">Scroll</span>
             <span class="hero-scroll-line"></span>
         </div>
     </section>
 
-    <!-- ═════════════════════ MARQUEE ═════════════════════ -->
+    <!-- 3. MARQUEE -->
     <div class="marquee-strip" aria-hidden="true">
         <div class="marquee-track">
-            <!-- Repeated twice for seamless loop -->
             <span class="marquee-item">Anime Figures<span class="marquee-dot"></span></span>
             <span class="marquee-item">Hot Wheels<span class="marquee-dot"></span></span>
             <span class="marquee-item">Die-Cast Cars<span class="marquee-dot"></span></span>
             <span class="marquee-item">RC Racing<span class="marquee-dot"></span></span>
             <span class="marquee-item">Plush Toys<span class="marquee-dot"></span></span>
             <span class="marquee-item">Action Figures<span class="marquee-dot"></span></span>
-            <span class="marquee-item">Gifts<span class="marquee-dot"></span></span>
-            <span class="marquee-item">Collectibles<span class="marquee-dot"></span></span>
-            <span class="marquee-item">Gaming<span class="marquee-dot"></span></span>
             <span class="marquee-item">Anime Figures<span class="marquee-dot"></span></span>
             <span class="marquee-item">Hot Wheels<span class="marquee-dot"></span></span>
             <span class="marquee-item">Die-Cast Cars<span class="marquee-dot"></span></span>
             <span class="marquee-item">RC Racing<span class="marquee-dot"></span></span>
             <span class="marquee-item">Plush Toys<span class="marquee-dot"></span></span>
             <span class="marquee-item">Action Figures<span class="marquee-dot"></span></span>
-            <span class="marquee-item">Gifts<span class="marquee-dot"></span></span>
-            <span class="marquee-item">Collectibles<span class="marquee-dot"></span></span>
-            <span class="marquee-item">Gaming<span class="marquee-dot"></span></span>
         </div>
     </div>
 
-    <!-- ═══════════════════ CATEGORIES ════════════════════ -->
+    <!-- 4. SHOP BY CATEGORY -->
     <section class="section categories-section" id="categories">
         <div class="container">
             <div class="section-header centered reveal">
-                <p class="label">Enter the Collection</p>
-                <h2 class="section-heading" style="margin-top:0.5rem;">Pick Your World.</h2>
-                <p class="section-sub">Every shelf holds a different universe.</p>
+                <h2 class="section-heading">Shop By Category</h2>
+                <p class="section-sub">Die-Cast • Anime • Figures • RC & Racing • Plush • Gifts</p>
             </div>
             <div class="grid-3 stagger" id="category-grid"></div>
         </div>
     </section>
 
-    <!-- ════════════════ FEATURED DROPS ═══════════════════ -->
+    <!-- 5. FEATURED COLLECTION (Dynamic) -->
     <section class="section drops-section">
         <div class="container">
             <div class="section-header-row reveal">
                 <div>
                     <p class="label">Handpicked</p>
-                    <h2 class="section-heading" style="margin-top:0.5rem;">Featured Drops</h2>
-                    <p class="section-sub">Some things are too good to leave on the shelf.</p>
+                    <h2 class="section-heading" style="margin-top:0.5rem;">Featured Collection</h2>
                 </div>
                 <a href="/shop.html" class="btn btn-outline">View All →</a>
             </div>
@@ -749,22 +723,136 @@
         </div>
     </section>
 
-    <!-- ═══════════════ BRAND STATEMENT ════════════════════ -->
+    <!-- 6. NEW ARRIVALS (Static Placeholder) -->
+    <section class="section" style="background:var(--bg-primary);">
+        <div class="container">
+            <div class="section-header-row reveal">
+                <div>
+                    <h2 class="section-heading">New Arrivals</h2>
+                    <p class="section-sub">Just landed in Palghar.</p>
+                </div>
+                <a href="/shop.html?category=new-arrivals" class="btn btn-gold outline">Shop New</a>
+            </div>
+            <div class="grid-4 stagger">
+                <!-- Static static product cards -->
+                <div class="product-card reveal">
+                    <div class="product-img-wrap" style="position:relative;"><div class="product-badge">NEW</div><img src="/images/prod_iron_man.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">FIGURES</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Iron Man Mk 50</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹4,500</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                </div>
+                <div class="product-card reveal reveal-delay-1">
+                    <div class="product-img-wrap" style="position:relative;"><div class="product-badge">HOT</div><img src="/images/prod_rc.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">RC RACING</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Speedster Buggy 4x4</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,200</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                </div>
+                <div class="product-card reveal reveal-delay-2">
+                    <div class="product-img-wrap" style="position:relative;"><img src="/images/product_mini_gt.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">DIE-CAST</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Nissan GT-R R35</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹1,850</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                </div>
+                <div class="product-card reveal reveal-delay-3">
+                    <div class="product-img-wrap" style="position:relative;"><img src="/images/prod_anime.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">ANIME</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Zoro Grandline Series</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,100</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. MAJOR DIE-CAST FEATURE -->
+    <section class="section" style="background:var(--bg-elevated);">
+        <div class="container">
+            <div class="section-header-row reveal">
+                <div>
+                    <h2 class="section-heading" style="color:var(--accent-gold);">The Die-Cast Garage</h2>
+                    <p class="section-sub">Hot Wheels • Mini Alloy • Premium • Original</p>
+                </div>
+                <a href="/shop.html?category=die-cast" class="btn btn-outline">Shop Die-Cast</a>
+            </div>
+            <div class="grid-2 gap-md stagger" style="margin-top:2rem;">
+                <div class="cat-card reveal">
+                    <div class="cat-card-bg" style="background-image:url('/images/category_diecast_1790454697082.png'); background-position:center;"></div>
+                    <div class="cat-overlay"></div>
+                    <div class="cat-body">
+                        <div>
+                            <h3 class="cat-title">Hot Wheels & Premium</h3>
+                            <p class="cat-desc">Expand your garage with 1:64 scale masterpieces.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="cat-card reveal reveal-delay-1">
+                    <div class="cat-card-bg" style="background-image:url('/images/real_mini_gt_1790456668128.png'); background-position:center;"></div>
+                    <div class="cat-overlay"></div>
+                    <div class="cat-body">
+                        <div>
+                            <h3 class="cat-title">Mini Alloy Exclusives</h3>
+                            <p class="cat-desc">High-detail models for serious collectors.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. ANIME FEATURE -->
+    <section class="section" style="background:var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header-row reveal">
+                <div>
+                    <h2 class="section-heading" style="color:#d946ef;">Anime Features</h2>
+                    <p class="section-sub">Naruto • Demon Slayer • Dragon Ball</p>
+                </div>
+                <a href="/shop.html?category=anime" class="btn btn-outline">Shop Anime</a>
+            </div>
+            <div class="grid-3 gap-md stagger" style="margin-top:2rem;">
+                <!-- We simulate static cards for Anime Series -->
+                <div class="cat-card reveal" style="height:350px;">
+                    <div class="cat-card-bg" style="background-image:url('/images/product_anime_figure_1790454804513.png'); background-position:top;"></div>
+                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)"></div>
+                    <div class="cat-body"><div><h3 class="cat-title">Shonen Jump Classics</h3></div></div>
+                </div>
+                <div class="cat-card reveal reveal-delay-1" style="height:350px;">
+                    <div class="cat-card-bg" style="background-image:url('/images/category_anime_1790454684224.png'); background-position:center;"></div>
+                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)"></div>
+                    <div class="cat-body"><div><h3 class="cat-title">Demon Slayer</h3></div></div>
+                </div>
+                <div class="cat-card reveal reveal-delay-2" style="height:350px;">
+                    <div class="cat-card-bg" style="background:#5b21b6;"></div>
+                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)"></div>
+                    <div class="cat-body"><div><h3 class="cat-title">Dragon Ball & More</h3></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. SHOP BY INTEREST -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header centered reveal">
+                <h2 class="section-heading">Shop By Interest</h2>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2rem;">
+                <a href="/shop.html?interest=collectors" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Collectors</a>
+                <a href="/shop.html?interest=kids" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Kids</a>
+                <a href="/shop.html?interest=gamers" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Gamers</a>
+                <a href="/shop.html?interest=anime" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Anime Fans</a>
+                <a href="/shop.html?interest=gifting" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Gifting</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. STORE STORY -->
     <section class="section brand-statement">
         <div class="container">
             <div class="brand-statement-grid">
                 <div class="brand-text-col">
-                    <p class="label reveal">Not Just Toys</p>
+                    <p class="label reveal">Toys World & Gift Gallery</p>
                     <h2 class="brand-statement-title reveal reveal-delay-1">
-                        Things You'll<br />
-                        Want To <em>Keep.</em>
+                        Rooted In<br />
+                        <em>Palghar.</em>
                     </h2>
                     <p class="brand-statement-sub reveal reveal-delay-2">
-                        This is a store for people who love collecting. Built for enthusiasts, gifted to fans,
-                        discovered in Palghar.
+                        We are a physical store, not just a website. Come in, pick it up, and feel the quality. 
+                        Built for enthusiasts, gifted to fans.
                     </p>
                     <div class="reveal reveal-delay-3">
-                        <a href="/shop.html" class="btn btn-gold">Explore Collection</a>
+                        <a href="/about.html" class="btn btn-outline">Read Our Story</a>
                     </div>
                 </div>
                 <div class="brand-img-col scale-in">
@@ -776,43 +864,13 @@
         </div>
     </section>
 
-    <!-- ════════════════ WHY TOYS WORLD ════════════════════ -->
-    <section class="section why-section">
-        <div class="container">
-            <div class="section-header centered reveal">
-                <p class="label">Why Toys World</p>
-                <h2 class="section-heading" style="margin-top:0.5rem;">A Collector's Paradise.</h2>
-                <p class="section-sub">Everything you need to find your next favourite thing.</p>
-            </div>
-
-            <div class="why-grid stagger">
-                <div class="why-card reveal">
-                    <div class="why-icon">🎌</div>
-                    <div class="why-title">6+ Categories</div>
-                    <p class="why-desc">Anime, Die-Cast, RC, Figures, Plush, Gifts — all under one roof in Palghar.</p>
-                </div>
-                <div class="why-card reveal">
-                    <div class="why-icon">📍</div>
-                    <div class="why-title">Real Store</div>
-                    <p class="why-desc">We're a physical store, not just a website. Come in, pick it up, and feel the quality.</p>
-                </div>
-                <div class="why-card reveal">
-                    <div class="why-icon">💬</div>
-                    <div class="why-title">Easy Enquiry</div>
-                    <p class="why-desc">Find something you like and connect directly on WhatsApp. Fast, simple, no checkout drama.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══════════════════ INSTAGRAM ════════════════════════ -->
+    <!-- 11. INSTAGRAM SECTION -->
     <section class="section ig-section" id="instagram">
         <div class="container">
             <div class="section-header-row reveal">
                 <div>
-                    <p class="label">Follow The Drop</p>
                     <h2 class="section-heading" style="margin-top:0.5rem;">@toys_world48</h2>
-                    <p class="section-sub">New arrivals. Real products. Posted regularly.</p>
+                    <p class="section-sub">Follow for the latest drops.</p>
                 </div>
                 <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="btn btn-dark">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -823,222 +881,113 @@
             </div>
 
             <div class="ig-grid stagger">
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal">
-                    <img src="/images/real_store_exterior.png" alt="Toys World store front" loading="lazy" />
-                    <div class="ig-overlay">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                    </div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1">
-                    <img src="/images/real_store_shelf.png" alt="Store shelf with collectibles" loading="lazy" />
-                    <div class="ig-overlay">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                    </div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2">
-                    <img src="/images/real_spiderman.png" alt="Spider-Man collectible figure" loading="lazy" />
-                    <div class="ig-overlay">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                    </div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1">
-                    <img src="/images/real_mini_gt.png" alt="Mini alloy die-cast car" loading="lazy" />
-                    <div class="ig-overlay">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                    </div>
-                </a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2">
-                    <img src="/images/store_interior.png" alt="Toys World store interior" loading="lazy" />
-                    <div class="ig-overlay">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                    </div>
-                </a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal"><img src="/images/real_store_exterior.png" alt="Insta 1" loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1"><img src="/images/real_store_shelf.png" alt="Insta 2" loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2"><img src="/images/real_spiderman.png" alt="Insta 3" loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1"><img src="/images/real_mini_gt.png" alt="Insta 4" loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2"><img src="/images/store_interior.png" alt="Insta 5" loading="lazy" /></a>
             </div>
         </div>
     </section>
 
-    <!-- ══════════════════ REVIEWS ════════════════════════ -->
-    <section class="section reviews-section">
+    <!-- 12. CUSTOMER REVIEWS (Placeholders) -->
+    <section class="section reviews-section bg-secondary">
         <div class="container">
             <div class="section-header centered reveal">
-                <p class="label">Social Proof</p>
-                <h2 class="section-heading" style="margin-top:0.5rem;">What Collectors Say</h2>
+                <h2 class="section-heading">Happy Collectors</h2>
             </div>
-            <div class="grid-3 stagger" id="reviews-grid"></div>
-        </div>
-    </section>
-
-    <!-- ════════════════ VISIT STORE ══════════════════════ -->
-    <section class="section visit-section" id="visit">
-        <div class="container">
-            <div class="visit-grid">
-                <div class="visit-img-wrap reveal-left">
-                    <img src="/images/real_store_exterior.png" alt="Toys World & Gift Gallery exterior" loading="lazy" />
-                    <div class="visit-img-tag">📍 Palghar, Maharashtra</div>
+            <div class="grid-3 stagger" style="margin-top:2rem;">
+                <div class="review-card reveal">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Customer review placeholder. Actual verified reviews will appear here once connected."</p>
+                    <div class="review-source">- Collector from Palghar</div>
                 </div>
-                <div>
-                    <p class="label reveal">Find Us</p>
-                    <h2 class="visit-store-name reveal reveal-delay-1">
-                        Come See<br />It IRL.
-                    </h2>
-                    <p class="reveal reveal-delay-2" style="font-size:1rem;font-weight:700;color:var(--accent-gold);margin-bottom:0.5rem;">
-                        TOYS WORLD & GIFT GALLERY
-                    </p>
-                    <p class="visit-address reveal reveal-delay-2" id="store-address">
-                        Manor Highway Road, opposite Holy Spirit High School,<br />
-                        near Royal Enfield showroom, Tembhode/Mahim,<br />
-                        Palghar, Maharashtra 401404
-                    </p>
-                    <div class="visit-btns reveal reveal-delay-3">
-                        <a href="https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar+Manor+Highway+Road+Tembhode"
-                           target="_blank" rel="noopener"
-                           class="btn btn-gold" data-map>
-                            📍 Get Directions
-                        </a>
-                        <a href="#" class="btn btn-whatsapp" id="wa-location-btn" target="_blank">
-                            💬 WhatsApp
-                        </a>
-                        <a href="#" class="btn btn-outline" id="call-btn">
-                            📞 Call Store
-                        </a>
-                    </div>
+                <div class="review-card reveal reveal-delay-1">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Customer review placeholder. Real feedback regarding service/delivery goes here."</p>
+                    <div class="review-source">- Anime Fan</div>
+                </div>
+                <div class="review-card reveal reveal-delay-2">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Customer review placeholder. Ensures we maintain a complete UI structure."</p>
+                    <div class="review-source">- Verified Buyer</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ══════════════════ FINAL CTA ══════════════════════ -->
+    <!-- 13. FINAL CTA -->
     <section class="final-cta">
         <div class="final-cta-bg" aria-hidden="true"></div>
         <div class="final-cta-content">
             <div class="reveal">
-                <p class="label" style="margin-bottom:1.25rem;">Ready?</p>
-                <h2 class="final-cta-title">
-                    Your Next<br />
-                    Favourite<br />
-                    Might Be <em>Here.</em>
+                <p class="label" style="margin-bottom:1.25rem;">READY TO FIND YOUR NEXT FAVORITE?</p>
+                <h2 class="final-cta-title" style="font-size:3rem; margin-bottom:2.5rem;">
+                    SHOP ALL TOYS
                 </h2>
-                <p class="final-cta-sub">
-                    Walk in or ask on WhatsApp. Either way, we're here.
-                </p>
                 <div class="final-cta-btns">
-                    <a href="/shop.html" class="btn btn-gold">Explore Collection</a>
-                    <a href="#" class="btn btn-whatsapp" id="sticky-wa-btn" target="_blank">💬 Chat on WhatsApp</a>
+                    <a href="/shop.html" class="btn btn-gold" style="padding:1rem 3rem; font-size:1.15rem;">EXPLORE COLLECTION</a>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- 14. FOOTER -->
     <div id="footer-placeholder"></div>
 
-    <!-- Sticky WhatsApp (mobile) -->
-    <div class="sticky-wa">
-        <a href="#" id="mobile-wa-fab" target="_blank" rel="noopener" class="sticky-wa-btn" aria-label="Chat on WhatsApp">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z"/>
-            </svg>
-        </a>
-    </div>
-
     <script type="module">
-        import { getConfig, getCategories, getFeaturedProducts, reviews, buildWhatsAppLink } from '/src/js/data.js';
+        import { getConfig, getCategories, getFeaturedProducts } from '/src/js/data.js';
         import {
             renderHeader, renderFooter, renderCategoryCard,
-            renderProductCard, renderReviewCard,
-            wireNavDrawer, wireScrollReveal,
+            renderProductCard, wireNavDrawer, wireScrollReveal,
             skeletonProductCards, skeletonCategoryCards
         } from '/src/js/components.js';
 
         // ── Immediate skeletons ───────────────────────────────────
         document.getElementById('category-grid').innerHTML  = skeletonCategoryCards(6);
         document.getElementById('featured-grid').innerHTML  = skeletonProductCards(4);
-        document.getElementById('reviews-grid').innerHTML   = reviews.map(renderReviewCard).join('');
 
-        // ── Transparent → solid header on scroll ─────────────────
         const header = document.querySelector('.header');
-        const handleScroll = () => {
-            header?.classList.toggle('scrolled', window.scrollY > 60);
-        };
+        const handleScroll = () => { header?.classList.toggle('scrolled', window.scrollY > 60); };
         window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
 
-        // ── Fetch data ────────────────────────────────────────────
+        // ── Fetch dynamic features (where data logic already exists/works) ────────────────
         const [config, categories, featured] = await Promise.all([
             getConfig(),
             getCategories(),
             getFeaturedProducts(4),
         ]);
 
-        // ── Inject layout ─────────────────────────────────────────
         document.getElementById('header-placeholder').innerHTML = renderHeader('Home', config);
         document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
         wireNavDrawer();
 
-        // Re-attach scroll listener after header injection
         const newHeader = document.querySelector('.header');
         window.addEventListener('scroll', () => {
             newHeader?.classList.toggle('scrolled', window.scrollY > 60);
         }, { passive: true });
         newHeader?.classList.toggle('scrolled', window.scrollY > 60);
 
-        // ── Wire config-driven elements ───────────────────────────
         const waNumber = config?.whatsapp_number || '';
-        const waLink   = waNumber ? buildWhatsAppLink(waNumber) : '#';
-
-        document.querySelectorAll('[data-wa]').forEach(el => el.href = waLink);
-        document.getElementById('wa-location-btn').href = waLink;
-        document.getElementById('sticky-wa-btn').href   = waLink;
-        const mobileWa = document.getElementById('mobile-wa-fab');
-        if (mobileWa) mobileWa.href = waLink;
-
-        const callBtn = document.getElementById('call-btn');
-        if (callBtn) {
-            callBtn.href  = config?.phone ? `tel:${config.phone}` : '#';
-            if (!config?.phone) callBtn.title = 'Phone number coming soon';
-        }
-
-        const mapLink = config?.map_link || 'https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar';
-        document.querySelectorAll('[data-map]').forEach(el => el.href = mapLink);
-
-        // Hero/story images from Supabase (override local fallback if set)
+        
+        // Dynamic overrides
         const heroImg = document.getElementById('hero-img');
         if (heroImg && config?.hero_image_url) heroImg.src = config.hero_image_url;
         const storeImg = document.getElementById('store-img');
         if (storeImg && config?.story_image_url) storeImg.src = config.story_image_url;
 
-        // Store address from config
-        if (config?.address) {
-            const addr = document.getElementById('store-address');
-            if (addr) addr.innerText = config.address;
-        }
-
-        // ── Render categories ─────────────────────────────────────
+        // Categories Map
         const catGrid = document.getElementById('category-grid');
-        if (!categories.length) {
-            catGrid.innerHTML = `<p class="section-sub" style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-muted);">Categories coming soon.</p>`;
-        } else {
-            catGrid.innerHTML = categories.map(renderCategoryCard).join('');
-        }
+        if (categories.length > 0) catGrid.innerHTML = categories.map(renderCategoryCard).join('');
+        else catGrid.innerHTML = '<p>Categories loading...</p>';
 
-        // ── Render featured products ──────────────────────────────
+        // Featured Map
         const featGrid = document.getElementById('featured-grid');
-        if (!featured.length) {
-            featGrid.innerHTML = `
-                <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;">
-                    <p style="font-size:1.05rem;color:var(--text-secondary);margin-bottom:1.5rem;">
-                        We're stocking up — visit us in store for the latest arrivals!
-                    </p>
-                    <a href="${waLink}" target="_blank" rel="noopener" class="btn btn-whatsapp">
-                        💬 Ask on WhatsApp
-                    </a>
-                </div>`;
-        } else {
-            featGrid.innerHTML = featured.map(p => renderProductCard(p, waNumber)).join('');
-        }
+        if (featured.length > 0) featGrid.innerHTML = featured.map(p => renderProductCard(p, waNumber)).join('');
+        else featGrid.innerHTML = '<p>No featured products found.</p>';
 
         wireScrollReveal();
     </script>
 </body>
-
 </html>

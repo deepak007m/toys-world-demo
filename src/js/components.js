@@ -1,107 +1,156 @@
 import { buildWhatsAppLink } from './data.js';
 
-// ── Header ──────────────────────────────────────────────────────────────────
-// config: object from getConfig() — pass null to use safe defaults
 export function renderHeader(activePage = '', config = null) {
-  const waNumber = config?.whatsapp_number || '';
-  const waLink = waNumber ? buildWhatsAppLink(waNumber) : '#';
-  const instagramUrl = config?.instagram_url || 'https://instagram.com/toys_world48';
-
-  const links = [
-    { href: '/', label: 'Home' },
-    { href: '/shop.html', label: 'Shop' },
-    { href: '/#categories', label: 'Categories' },
-    { href: '/#visit', label: 'Visit Store' },
-  ];
-
-  const navLinks = links
-    .map(l => `<a href="${l.href}" class="nav-link${activePage === l.label ? ' nav-link--active' : ''}">${l.label}</a>`)
-    .join('');
-
-  const mobileLinks = links
-    .map(l => `<a href="${l.href}">${l.label}</a>`)
-    .join('');
-
-  const desktopAuth = `<div id="desktop-auth-container" class="nav" style="margin-left: 2rem;"><a href="/login.html" class="nav-link">Account</a></div>`;
-  const mobileAuth = `<div id="mobile-auth-container" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; margin-bottom: 1rem;"><a href="/login.html">Account</a></div>`;
-
   return `
     <header class="header">
-      <div class="container header-inner">
+      <div class="container header-inner" style="display:flex; align-items:center; justify-content:space-between; height:var(--header-h);">
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="hamburger" id="menu-btn" aria-label="Open Menu" style="display:none;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+
         <a href="/" class="logo">TOYS WORLD<span class="logo-dot"></span></a>
+        
+        <nav class="nav" id="desktop-nav">
+          <a href="/shop.html" class="nav-link${activePage === 'Shop' ? ' nav-link--active' : ''}">Shop</a>
+          <a href="/shop.html#categories" class="nav-link">Categories</a>
+          <a href="/shop.html?category=new-arrivals" class="nav-link">New Arrivals</a>
+          <a href="/shop.html?category=die-cast" class="nav-link">Hot Wheels</a>
+          <a href="/shop.html?category=anime" class="nav-link">Anime</a>
+          <a href="/shop.html?category=gifts" class="nav-link">Gifts</a>
+        </nav>
 
-        <nav class="nav">${navLinks} ${desktopAuth}</nav>
-
-        <div class="header-actions">
-          <a href="${waLink}" target="_blank" rel="noopener" class="btn btn-dark" style="padding:0.55rem 1.25rem; font-size:0.8rem;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z"/></svg>
-            WhatsApp
+        <div class="header-actions" style="display:flex; align-items:center; gap:1.25rem;">
+          <a href="/shop.html" class="icon-link" aria-label="Search" id="desktop-search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </a>
-          <button class="hamburger" id="menu-btn" aria-label="Open Menu">
-            <span></span><span></span><span></span>
-          </button>
+          <a href="/wishlist.html" class="icon-link" aria-label="Wishlist" id="desktop-wishlist">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </a>
+          
+          <div id="desktop-auth-container">
+            <a href="/login.html" class="icon-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+          </div>
+
+          <a href="/cart.html" class="icon-link" aria-label="Cart" style="position:relative;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <span class="cart-badge" style="position:absolute; top:-6px; right:-6px; background:var(--accent-gold); color:#000; font-size:0.65rem; font-weight:bold; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
+          </a>
         </div>
       </div>
+      
+      <style>
+        .icon-link { color: var(--text-primary); transition: color 0.2s; display: flex; align-items: center; }
+        .icon-link:hover { color: var(--accent-gold); }
+        @media (max-width: 900px) {
+          #desktop-nav, #desktop-search, #desktop-wishlist, #desktop-auth-container { display: none; }
+          #menu-btn { display: block; border:none; background:transparent; color:#fff; padding:0.5rem; margin-left:-0.5rem; cursor:pointer;}
+          .header-inner { gap: 1rem; }
+          .logo { font-size: 1.25rem; margin-right: auto; }
+        }
+      </style>
     </header>
 
-    <!-- Mobile Nav -->
+    <!-- Mobile Nav Offcanvas -->
     <div class="mobile-nav" id="mobile-nav">
-      <div class="mobile-nav-panel">
-        <button class="mobile-nav-close" id="menu-close">✕</button>
-        <div class="mobile-nav-links">
-          ${mobileAuth}
-          ${mobileLinks}
+      <div class="mobile-nav-panel" style="background:var(--bg-elevated); width:85%; max-width:350px; height:100%; padding:2rem; display:flex; flex-direction:column; overflow-y:auto; box-shadow:4px 0 24px rgba(0,0,0,0.5);">
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5rem;">
+          <span class="logo" style="font-size:1.25rem;">MENU</span>
+          <button class="mobile-nav-close" id="menu-close" style="background:transparent; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">✕</button>
         </div>
-        <div style="margin-top:auto; padding-top:2rem;">
-          <a href="${waLink}" target="_blank" rel="noopener" class="btn btn-whatsapp" style="width:100%;">Chat on WhatsApp</a>
+        
+        <div class="mobile-search" style="margin-bottom:1.5rem; position:relative;">
+          <input type="text" placeholder="Search..." style="width:100%; background:var(--bg-surface); border:1px solid rgba(255,255,255,0.06); color:#fff; padding:1rem 1rem 1rem 3rem; border-radius:var(--radius-md); font-family:var(--font-sans);"/>
+          <svg style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--text-muted);" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        
+        <div id="mobile-auth-container" style="border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 2rem; margin-bottom: 2rem;">
+          <a href="/login.html" class="btn btn-outline" style="width:100%; text-align:center;">Sign In / Register</a>
+        </div>
+        
+        <div class="mobile-nav-links" style="display:flex; flex-direction:column; gap:1.25rem; font-size:1.15rem; font-family:var(--font-heading); text-transform:uppercase; font-weight:800; letter-spacing:0.04em;">
+          <a href="/" style="color:var(--text-primary); text-decoration:none;">Home</a>
+          <a href="/shop.html" style="color:var(--text-primary); text-decoration:none;">Shop All</a>
+          <a href="/shop.html#categories" style="color:var(--text-primary); text-decoration:none;">Categories</a>
+          <a href="/shop.html?category=new-arrivals" style="color:var(--text-primary); text-decoration:none;">New Arrivals</a>
+          <a href="/shop.html?category=die-cast" style="color:var(--text-primary); text-decoration:none;">Die-Cast</a>
+          <a href="/shop.html?category=anime" style="color:var(--text-primary); text-decoration:none;">Anime Figures</a>
+          <a href="/wishlist.html" style="color:var(--text-primary); text-decoration:none;">My Wishlist</a>
         </div>
       </div>
     </div>
   `;
 }
 
-// ── Footer ──────────────────────────────────────────────────────────────────
-// config: object from getConfig() — pass null to use safe defaults
 export function renderFooter(config = null) {
   const storeName = config?.store_name || 'TOYS WORLD & GIFT GALLERY';
-  const address = config?.address || '';
+  const address = config?.address || 'Palghar, Maharashtra, India';
   const instagramHandle = config?.instagram_handle || '@toys_world48';
   const instagramUrl = config?.instagram_url || 'https://instagram.com/toys_world48';
   const year = new Date().getFullYear();
 
   return `
-    <footer class="footer">
+    <footer class="footer" style="background:var(--bg-primary); border-top:1px solid rgba(255,255,255,0.06); padding:5rem 0 3rem;">
       <div class="container">
-        <div class="footer-grid">
-          <div>
-            <div class="footer-logo">TOYS WORLD<span class="footer-logo-dot"></span></div>
-            <p class="footer-tagline">Toys, collectibles, gifts, anime figures, RC cars, die-cast cars and everything in between. Palghar's coolest store.</p>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:3rem; margin-bottom:4rem;">
+          
+          <div style="grid-column: 1 / -1; max-width:400px;">
+            <div class="logo" style="margin-bottom:1rem; font-size:1.5rem;">TOYS WORLD<span class="logo-dot"></span></div>
+            <p style="color:var(--text-secondary); line-height:1.7; font-size:0.95rem;">
+              Premium anime figures, die-cast collectibles, RC cars, and exclusive gifts. Your collector's paradise built for enthusiasts.
+            </p>
           </div>
+
           <div>
-            <p class="footer-heading">Quick Links</p>
-            <ul class="footer-links">
-              <li><a href="/">Home</a></li>
-              <li><a href="/shop.html">Shop All</a></li>
-              <li><a href="/#categories">Categories</a></li>
-              <li><a href="${instagramUrl}" target="_blank" rel="noopener">${instagramHandle}</a></li>
+            <p style="font-family:var(--font-heading); font-weight:800; font-size:0.875rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-primary); margin-bottom:1.5rem;">Shop</p>
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem; font-size:0.95rem;">
+              <li><a href="/shop.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">All Products</a></li>
+              <li><a href="/shop.html#categories" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Categories</a></li>
+              <li><a href="/shop.html?category=new-arrivals" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">New Arrivals</a></li>
+              <li><a href="/shop.html?category=die-cast" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Die-Cast</a></li>
+              <li><a href="/shop.html?category=anime" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Anime</a></li>
             </ul>
           </div>
+          
           <div>
-            <p class="footer-heading">Visit Us</p>
-            <p class="footer-address">${address}</p>
+            <p style="font-family:var(--font-heading); font-weight:800; font-size:0.875rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-primary); margin-bottom:1.5rem;">Customer Care</p>
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem; font-size:0.95rem;">
+              <li><a href="/account.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">My Account</a></li>
+              <li><a href="/orders.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Track Order</a></li>
+              <li><a href="/faq.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">FAQ</a></li>
+              <li><a href="/shipping.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Shipping Info</a></li>
+              <li><a href="/returns.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Returns Policy</a></li>
+            </ul>
           </div>
+
+          <div>
+            <p style="font-family:var(--font-heading); font-weight:800; font-size:0.875rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-primary); margin-bottom:1.5rem;">About Us</p>
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem; font-size:0.95rem;">
+              <li><a href="/about.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Our Story</a></li>
+              <li><a href="/contact.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Contact Us</a></li>
+              <li><a href="/#visit" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Visit Store</a></li>
+              <li><a href="${instagramUrl}" target="_blank" rel="noopener" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">${instagramHandle}</a></li>
+            </ul>
+          </div>
+          
         </div>
-        <div class="footer-bottom">
-          <p class="footer-copy">&copy; ${year} ${storeName}.</p>
-          <a href="${instagramUrl}" target="_blank" class="footer-ig">${instagramHandle}</a>
+        
+        <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top:2.5rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:2rem;">
+          <p style="color:var(--text-muted); font-size:0.875rem; margin:0;">&copy; ${year} ${storeName}. All rights reserved.</p>
+          <div style="display:flex; gap:2rem; font-size:0.875rem;">
+            <a href="/privacy.html" style="color:var(--text-muted); text-decoration:none; transition:color 0.2s;">Privacy Policy</a>
+            <a href="/terms.html" style="color:var(--text-muted); text-decoration:none; transition:color 0.2s;">Terms of Service</a>
+          </div>
         </div>
       </div>
     </footer>
   `;
 }
 
-// ── Product Card ─────────────────────────────────────────────────────────────
-// Accepts a product row from Supabase. waNumber must be passed by the caller.
 export function renderProductCard(product, waNumber = '') {
   const badge = product.badge
     ? `<div class="product-badge">${product.badge}</div>` : '';
@@ -111,30 +160,29 @@ export function renderProductCard(product, waNumber = '') {
     : 'Price on request';
 
   const categoryName = product.categories?.title || product.category_name || '';
-  const waLink = waNumber
-    ? buildWhatsAppLink(waNumber, product.name)
-    : `https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in ${product.name} at Toys World Palghar.`)}`;
 
+  // Generating completely static wishlist and cart button structures in HTML
   return `
-    <div class="product-card" onclick="window.location.href='/product.html?id=${product.id}'">
-      <div class="product-img-wrap">
+    <div class="product-card" onclick="window.location.href='/product.html?id=${product.id}'" style="cursor:pointer;">
+      <div class="product-img-wrap" style="position:relative;">
         ${badge}
+        <button class="wishlist-btn-corner" aria-label="Add to wishlist" onclick="event.stopPropagation(); this.classList.toggle('active');" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
         ${product.image_url
       ? `<img src="${product.image_url}" alt="${product.name}" class="product-img" loading="lazy" />`
       : `<div class="product-img-placeholder"></div>`
     }
       </div>
-      <div class="product-body">
-        <p class="product-cat">${categoryName}</p>
-        <h3 class="product-name">${product.name}</h3>
-        <p class="product-desc">${product.short_description || ''}</p>
-        <div class="product-footer">
-          <span class="product-price">${priceDisplay}</span>
-          <a href="${waLink}" target="_blank" rel="noopener"
-             class="product-wa-btn" onclick="event.stopPropagation()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z"/></svg>
-            Ask on WhatsApp
-          </a>
+      <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+        <p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">${categoryName}</p>
+        <h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">${product.name}</h3>
+        
+        <div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
+          <span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">${priceDisplay}</span>
+          <button class="btn btn-outline product-add-btn" onclick="event.stopPropagation(); window.location.href='/cart.html'" style="width:100%; padding:0.75rem; font-size:0.875rem;">
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
@@ -222,14 +270,14 @@ export function mountAuthListener(supabase) {
         console.error(e);
       }
 
-      const loggedInHTML = `<a href="/account.html" class="nav-link" style="color:var(--accent-gold);">Hi, ${firstName}</a>`;
-      const loggedInMobileHTML = `<a href="/account.html" style="color:var(--accent-gold);">Hi, ${firstName}<br><span style="font-size:0.8rem; color:var(--text-secondary); font-weight:normal;">Manage Profile</span></a>`;
+      const loggedInHTML = `<a href="/account.html" class="nav-link" style="color:var(--accent-gold); font-size:0.875rem; text-transform:uppercase; font-weight:800; letter-spacing:0.04em;">${firstName}</a>`;
+      const loggedInMobileHTML = `<a href="/account.html" class="btn btn-gold" style="width:100%; text-align:center;">Hi, ${firstName} <span>→</span></a>`;
 
       desktopAuth.innerHTML = loggedInHTML;
       mobileAuth.innerHTML = loggedInMobileHTML;
     } else {
-      const loggedOutHTML = `<a href="/login.html" class="nav-link">Account</a>`;
-      const loggedOutMobileHTML = `<a href="/login.html">Account</a>`;
+      const loggedOutHTML = `<a href="/login.html" class="icon-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>`;
+      const loggedOutMobileHTML = `<a href="/login.html" class="btn btn-outline" style="width:100%; text-align:center;">Sign In / Register</a>`;
 
       desktopAuth.innerHTML = loggedOutHTML;
       mobileAuth.innerHTML = loggedOutMobileHTML;

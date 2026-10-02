@@ -250,6 +250,34 @@
                         <span id="pd-avail-text"></span>
                     </div>
 
+                    <!-- Static E-Commerce Actions (Phase A) -->
+                    <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
+                        <div style="display:flex; gap:1rem; align-items:center;">
+                            <div
+                                style="display:flex; align-items:center; border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); height:50px;">
+                                <button
+                                    style="background:transparent; border:none; color:var(--text-primary); padding:0 1rem; cursor:pointer; font-size:1.25rem;">-</button>
+                                <input type="text" value="1" readonly
+                                    style="background:transparent; border:none; color:var(--text-primary); width:40px; text-align:center; font-weight:700; font-size:1.1rem; padding:0;">
+                                <button
+                                    style="background:transparent; border:none; color:var(--text-primary); padding:0 1rem; cursor:pointer; font-size:1.25rem;">+</button>
+                            </div>
+                            <button class="btn btn-outline" style="flex:1; height:50px; font-size:1rem;"
+                                onclick="window.location.href='/cart.html'">Add to Cart</button>
+                            <button class="btn"
+                                style="height:50px; width:50px; display:flex; align-items:center; justify-content:center; background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); cursor:pointer;"
+                                onclick="window.location.href='/wishlist.html'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                        stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </button>
+                        </div>
+                        <button class="btn btn-gold" style="width:100%; height:50px; font-size:1.05rem;"
+                            onclick="window.location.href='/checkout.html'">Buy It Now</button>
+                    </div>
+
                     <a href="#" class="pd-wa-btn" id="pd-wa-link" target="_blank" rel="noopener">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                             <path
@@ -268,93 +296,109 @@
                     <div class="pd-demo-note">
                         ⚠️ Price and availability shown is demo data. Contact the store on WhatsApp to confirm current
                         pricing and stock.
+                        <div class="pd-divider"></div>
+
+                        <!-- Fake Ratings & Reviews Module -->
+                        <div style="margin-bottom:2.5rem;">
+                            <h3 class="pd-desc-heading">Collector Reviews</h3>
+                            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+                                <div style="color:var(--accent-gold); font-size:1.1rem;">★★★★★</div>
+                                <span style="font-size:0.9rem; font-weight:700;">4.9</span>
+                                <span style="font-size:0.8rem; color:var(--text-muted);">(12 reviews)</span>
+                            </div>
+                            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+                                "Incredible detail on this model. Very happy with the shipping protection." – A. Kumar
+                            </p>
+                            <a href="#"
+                                style="font-size:0.85rem; color:var(--accent-gold); text-decoration:underline;">Read all
+                                reviews →</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="footer-placeholder"></div>
+        <div id="footer-placeholder"></div>
 
-    <script type="module">
-        import { getProductById, getConfig, buildWhatsAppLink } from '/src/js/data.js';
-        import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+        <script type="module">
+            import { getProductById, getConfig, buildWhatsAppLink } from '/src/js/data.js';
+            import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
 
-        // ── Load config and product in parallel ──────────────────────────────
-        const params = new URLSearchParams(window.location.search);
-        const productId = params.get('id');
+            // ── Load config and product in parallel ──────────────────────────────
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
 
-        const [config, product] = await Promise.all([
-            getConfig(),
-            getProductById(productId),
-        ]);
+            const [config, product] = await Promise.all([
+                getConfig(),
+                getProductById(productId),
+            ]);
 
-        const waNumber = config?.whatsapp_number || '';
+            const waNumber = config?.whatsapp_number || '';
 
-        document.getElementById('header-placeholder').innerHTML = renderHeader('Shop', config);
-        document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
-        wireNavDrawer();
+            document.getElementById('header-placeholder').innerHTML = renderHeader('Shop', config);
+            document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
+            wireNavDrawer();
 
-        if (!product) {
-            document.getElementById('pd-error').style.display = 'block';
-            document.title = 'Not Found — Toys World';
-        } else {
-            const el = document.getElementById('pd-content');
-            el.style.display = 'block';
-            document.title = `${product.name} — Toys World`;
-
-            // Image
-            const imgEl = document.getElementById('pd-img');
-            if (product.image_url) {
-                imgEl.src = product.image_url;
-                imgEl.alt = product.name;
+            if (!product) {
+                document.getElementById('pd-error').style.display = 'block';
+                document.title = 'Not Found — Toys World';
             } else {
-                imgEl.closest('.pd-img-wrap').innerHTML = '<div class="product-img-placeholder" style="width:100%;height:100%;"></div>';
+                const el = document.getElementById('pd-content');
+                el.style.display = 'block';
+                document.title = `${product.name} — Toys World`;
+
+                // Image
+                const imgEl = document.getElementById('pd-img');
+                if (product.image_url) {
+                    imgEl.src = product.image_url;
+                    imgEl.alt = product.name;
+                } else {
+                    imgEl.closest('.pd-img-wrap').innerHTML = '<div class="product-img-placeholder" style="width:100%;height:100%;"></div>';
+                }
+
+                // Category name (nested join from Supabase)
+                const catName = product.categories?.title || '';
+                document.getElementById('pd-cat').textContent = catName;
+
+                // Title & description
+                document.getElementById('pd-title').textContent = product.name;
+                document.getElementById('pd-desc').textContent = product.long_description || product.short_description || '';
+
+                // Price
+                const priceEl = document.getElementById('pd-price');
+                priceEl.textContent = (typeof product.price === 'number' && product.price !== null)
+                    ? `₹${product.price.toLocaleString('en-IN')}`
+                    : 'Price on request';
+
+                // Availability — map DB enum to display text + CSS class
+                const availabilityMap = {
+                    'IN_STOCK': { label: 'In Stock', cls: 'in' },
+                    'LIMITED': { label: 'Limited Stock', cls: 'limited' },
+                    'OUT_OF_STOCK': { label: 'Out of Stock', cls: 'out' },
+                    'CONFIRM_ON_WA': { label: 'Confirm on WhatsApp', cls: 'limited' },
+                };
+                const avail = availabilityMap[product.availability] || { label: 'Confirm on WhatsApp', cls: 'limited' };
+                document.getElementById('pd-avail-text').textContent = avail.label;
+                const avEl = document.getElementById('pd-avail');
+                avEl.classList.remove('in', 'limited', 'out');
+                avEl.classList.add(avail.cls);
+
+                // WhatsApp link
+                const waLink = waNumber
+                    ? buildWhatsAppLink(waNumber, product.name)
+                    : `https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in ${product.name} at Toys World Palghar.`)}`;
+                document.getElementById('pd-wa-link').href = waLink;
+
+                // Badge
+                if (product.badge) {
+                    const b = document.getElementById('pd-badge-el');
+                    b.style.display = 'block';
+                    b.textContent = product.badge;
+                }
             }
 
-            // Category name (nested join from Supabase)
-            const catName = product.categories?.title || '';
-            document.getElementById('pd-cat').textContent = catName;
-
-            // Title & description
-            document.getElementById('pd-title').textContent = product.name;
-            document.getElementById('pd-desc').textContent = product.long_description || product.short_description || '';
-
-            // Price
-            const priceEl = document.getElementById('pd-price');
-            priceEl.textContent = (typeof product.price === 'number' && product.price !== null)
-                ? `₹${product.price.toLocaleString('en-IN')}`
-                : 'Price on request';
-
-            // Availability — map DB enum to display text + CSS class
-            const availabilityMap = {
-                'IN_STOCK': { label: 'In Stock', cls: 'in' },
-                'LIMITED': { label: 'Limited Stock', cls: 'limited' },
-                'OUT_OF_STOCK': { label: 'Out of Stock', cls: 'out' },
-                'CONFIRM_ON_WA': { label: 'Confirm on WhatsApp', cls: 'limited' },
-            };
-            const avail = availabilityMap[product.availability] || { label: 'Confirm on WhatsApp', cls: 'limited' };
-            document.getElementById('pd-avail-text').textContent = avail.label;
-            const avEl = document.getElementById('pd-avail');
-            avEl.classList.remove('in', 'limited', 'out');
-            avEl.classList.add(avail.cls);
-
-            // WhatsApp link
-            const waLink = waNumber
-                ? buildWhatsAppLink(waNumber, product.name)
-                : `https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in ${product.name} at Toys World Palghar.`)}`;
-            document.getElementById('pd-wa-link').href = waLink;
-
-            // Badge
-            if (product.badge) {
-                const b = document.getElementById('pd-badge-el');
-                b.style.display = 'block';
-                b.textContent = product.badge;
-            }
-        }
-
-        wireScrollReveal();
-    </script>
+            wireScrollReveal();
+        </script>
 
 </body>
 

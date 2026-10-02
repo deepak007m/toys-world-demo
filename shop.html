@@ -205,8 +205,20 @@
 
     <!-- Category filter chips -->
     <div class="filter-bar">
-        <div class="container">
-            <div class="filter-scroll" id="filters"></div>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+            <div style="display:flex; align-items:center; gap:1rem;">
+                <div style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"><a href="/" style="color:inherit; text-decoration:none;">Home</a> <span style="margin:0 0.25rem;">/</span> <span style="color:var(--text-primary);">Shop</span></div>
+                <div class="filter-scroll" id="filters" style="border-left:1px solid rgba(255,255,255,0.1); padding-left:1rem; margin-left:0.5rem;"></div>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <input type="text" placeholder="Search..." style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem 1rem; font-size:0.85rem; outline:none;">
+                <select style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem; font-size:0.85rem; outline:none; font-weight:600;">
+                    <option>Sort: Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest Arrivals</option>
+                </select>
+            </div>
         </div>
     </div>
 

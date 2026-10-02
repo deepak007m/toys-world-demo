@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorBox.style.display = 'none';
         errorBox.textContent = '';
 
-        const fullName = document.getElementById('full_name').value.trim();
+        const fullName = document.getElementById('name').value.trim();
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm_password').value;
@@ -63,16 +63,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) throw error;
 
+            console.log('DIAGNOSTIC_SIGNUP_DATA_USER:', JSON.stringify(data.user));
+            console.log('DIAGNOSTIC_SIGNUP_SESSION:', JSON.stringify(data.session));
+            console.log('DIAGNOSTIC_SIGNUP_ERROR:', JSON.stringify(error));
+
             // If email confirmation is enabled on this Supabase project, 
             // the user will receive session: null and user.identities
             if (data.user && data.user.identities && data.user.identities.length === 0) {
                 throw new Error("This email is already registered. Please sign in instead.");
             }
 
-            // Show success state
-            signupForm.style.display = 'none';
-            loginLinkContainer.style.display = 'none';
-            successBox.style.display = 'block';
+            if (data.session) {
+                window.location.href = redirectPath;
+            } else {
+                // Show success state
+                signupForm.style.display = 'none';
+                loginLinkContainer.style.display = 'none';
+                successBox.style.display = 'block';
+            }
 
         } catch (error) {
             errorBox.style.display = 'block';

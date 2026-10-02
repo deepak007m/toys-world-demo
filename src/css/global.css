@@ -123,7 +123,10 @@ button {
 }
 
 @media (max-width: 768px) {
-    .section { padding: 4rem 0; }
+    .section { padding: 3rem 0; }
+    .section-heading { font-size: clamp(1.8rem, 6vw, 2.5rem); letter-spacing: -0.01em; }
+    .section-sub { font-size: 0.95rem; margin-top: 0.5rem; }
+    .hero-title { font-size: clamp(2.5rem, 9vw, 3.5rem); }
 }
 
 /* ── Typography Classes ─────────────────────────────────────── */
@@ -371,10 +374,12 @@ button {
 @media (max-width: 768px) {
     .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    .grid-2 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 @media (max-width: 480px) {
-    .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; gap: 1rem; }
+    /* explicitly scale down product grid but keep 2 column if card allows, or 1 col with better size */
+    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
 }
 
 /* ── Section Header Layouts ─────────────────────────────────── */

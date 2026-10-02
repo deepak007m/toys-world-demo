@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | Toys World</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/global.css" />
+    <link rel="stylesheet" href="/src/css/components.css" />
+    <style>
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Left Panel */
+        .checkout-main {
+            padding: 4rem 10%;
+            background: var(--bg-primary);
+        }
+
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-section-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 0.875rem 1rem;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        /* Right Panel */
+        .checkout-sidebar {
+            background: var(--bg-secondary);
+            padding: 4rem 3rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .checkout-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .checkout-item-img {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .checkout-item-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--text-secondary);
+            color: var(--bg-primary);
+            font-size: 0.7rem;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkout-item-details {
+            flex: 1;
+        }
+
+        .checkout-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .checkout-item-price {
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .checkout-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .checkout-total-row.final {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* Breadcrumbs */
+        .checkout-steps {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            justify-content: center;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .checkout-steps span.active {
+            color: var(--accent-gold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="checkout-layout">
+        <!-- Main Form Area -->
+        <main class="checkout-main">
+            <header class="checkout-header reveal">
+                <a href="/" class="logo" style="font-size: 2rem;">TOYS WORLD<span class="logo-dot"></span></a>
+                <div class="checkout-steps">
+                    <span class="active">Information</span> &gt;
+                    <span>Shipping</span> &gt;
+                    <span>Payment</span>
+                </div>
+            </header>
+
+            <div class="reveal reveal-delay-1">
+                <form
+                    onsubmit="event.preventDefault(); alert('Static placeholder: Order would process here.'); window.location.href='/';">
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Contact</h2>
+                        <div class="form-row">
+                            <div class="form-col"><input type="email" class="form-input"
+                                    placeholder="Email or mobile phone number" required></div>
+                        </div>
+                        <label
+                            style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; color:var(--text-secondary); margin-top:0.5rem;">
+                            <input type="checkbox" checked> Email me with news and offers
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Delivery</h2>
+                        <div class="form-row">
+                            <div class="form-col"><input type="text" class="form-input" placeholder="First name"
+                                    required></div>
+                            <div class="form-col"><input type="text" class="form-input" placeholder="Last name"
+                                    required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col"><input type="text" class="form-input" placeholder="Address" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col"><input type="text" class="form-input"
+                                    placeholder="Apartment, suite, etc. (optional)"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col"><input type="text" class="form-input" placeholder="City" required>
+                            </div>
+                            <div class="form-col">
+                                <select class="form-input" required>
+                                    <option value="MH">Maharashtra</option>
+                                    <option value="GJ">Gujarat</option>
+                                    <option value="KA">Karnataka</option>
+                                    <option value="DL">Delhi</option>
+                                </select>
+                            </div>
+                            <div class="form-col"><input type="text" class="form-input" placeholder="PIN code" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:3rem;">
+                        <a href="/cart.html"
+                            style="color:var(--accent-gold); text-decoration:none; font-size:0.9rem;">&lt; Return to
+                            cart</a>
+                        <button type="submit" class="btn btn-gold"
+                            style="padding:1rem 2rem; font-size:1.05rem;">Continue to Shipping</button>
+                    </div>
+
+                </form>
+            </div>
+        </main>
+
+        <!-- Sidebar Order Summary -->
+        <aside class="checkout-sidebar reveal">
+            <div style="position:sticky; top:2rem;">
+
+                <div class="checkout-items-list"
+                    style="margin-bottom:2rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1rem;">
+
+                    <div class="checkout-item">
+                        <div style="position:relative;">
+                            <img src="/images/prod_iron_man.png" class="checkout-item-img">
+                            <span class="checkout-item-badge">1</span>
+                        </div>
+                        <div class="checkout-item-details">
+                            <div class="checkout-item-name">Iron Man Mk 50 Collector Edition</div>
+                        </div>
+                        <div class="checkout-item-price">₹4,500</div>
+                    </div>
+
+                    <div class="checkout-item">
+                        <div style="position:relative;">
+                            <img src="/images/prod_rc.png" class="checkout-item-img">
+                            <span class="checkout-item-badge">1</span>
+                        </div>
+                        <div class="checkout-item-details">
+                            <div class="checkout-item-name">Speedster Buggy 4x4 (Pro Series)</div>
+                        </div>
+                        <div class="checkout-item-price">₹2,200</div>
+                    </div>
+                </div>
+
+                <div class="checkout-totals">
+                    <div class="checkout-total-row">
+                        <span>Subtotal</span>
+                        <span>₹6,700</span>
+                    </div>
+                    <div class="checkout-total-row">
+                        <span>Shipping</span>
+                        <span style="color:var(--text-muted); font-size:0.8rem;">Calculated at next step</span>
+                    </div>
+                    <div class="checkout-total-row final">
+                        <span>Total</span>
+                        <span>₹6,700</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script type="module">
+        import { wireScrollReveal } from '/src/js/components.js';
+        wireScrollReveal();
+    </script>
+</body>
+
+</html>

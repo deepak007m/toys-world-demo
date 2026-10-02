@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart | Toys World</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/global.css" />
+    <link rel="stylesheet" href="/src/css/components.css" />
+    <style>
+        .page-header {
+            background: var(--bg-secondary);
+            padding: 6rem 0 3rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+            margin-top: 3rem;
+            margin-bottom: 6rem;
+        }
+
+        @media (max-width: 900px) {
+            .cart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .cart-item-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            background: var(--bg-elevated);
+        }
+
+        .cart-item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item-brand {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            width: fit-content;
+            margin-top: 1rem;
+        }
+
+        .qty-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .qty-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .qty-input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .cart-item-remove {
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: underline;
+            cursor: pointer;
+            align-self: flex-start;
+            margin-top: 1rem;
+            border: none;
+            background: transparent;
+        }
+
+        .summary-card {
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .summary-row.total {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main>
+        <div class="page-header">
+            <div class="container reveal">
+                <h1 class="page-title">Your Cart</h1>
+                <p style="color:var(--text-secondary);">3 items pending. Ready to roll.</p>
+            </div>
+        </div>
+
+        <div class="container reveal reveal-delay-1">
+            <div class="cart-grid">
+                <!-- Cart Items (Static) -->
+                <div class="cart-items-list">
+                    <div class="cart-item">
+                        <img src="/images/prod_iron_man.png" alt="Iron Man" class="cart-item-img" />
+                        <div class="cart-item-details">
+                            <span class="cart-item-brand">ACTION FIGURES</span>
+                            <a href="/product.html" class="cart-item-name"
+                                style="color:var(--text-primary); text-decoration:none;">Iron Man Mk 50 Collector
+                                Edition</a>
+                            <span class="cart-item-price">₹4,500</span>
+                            <div class="qty-control">
+                                <button class="qty-btn">-</button>
+                                <input type="text" class="qty-input" value="1" readonly>
+                                <button class="qty-btn">+</button>
+                            </div>
+                            <button class="cart-item-remove">Remove</button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <img src="/images/prod_rc.png" alt="RC Buggy" class="cart-item-img" />
+                        <div class="cart-item-details">
+                            <span class="cart-item-brand">RC RACING</span>
+                            <a href="/product.html" class="cart-item-name"
+                                style="color:var(--text-primary); text-decoration:none;">Speedster Buggy 4x4 (Pro
+                                Series)</a>
+                            <span class="cart-item-price">₹2,200</span>
+                            <div class="qty-control">
+                                <button class="qty-btn">-</button>
+                                <input type="text" class="qty-input" value="1" readonly>
+                                <button class="qty-btn">+</button>
+                            </div>
+                            <button class="cart-item-remove">Remove</button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <img src="/images/prod_mini_gt.png" alt="Nissan GT-R" class="cart-item-img" />
+                        <div class="cart-item-details">
+                            <span class="cart-item-brand">DIE-CAST</span>
+                            <a href="/product.html" class="cart-item-name"
+                                style="color:var(--text-primary); text-decoration:none;">Mini GT Nissan GT-R R35
+                                1:64</a>
+                            <span class="cart-item-price">₹1,850</span>
+                            <div class="qty-control">
+                                <button class="qty-btn">-</button>
+                                <input type="text" class="qty-input" value="2" readonly>
+                                <button class="qty-btn">+</button>
+                            </div>
+                            <button class="cart-item-remove">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div>
+                    <div class="summary-card">
+                        <h2 class="summary-title">Order Summary</h2>
+                        <div class="summary-row">
+                            <span>Subtotal (3 items)</span>
+                            <span>₹10,400</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Standard Shipping</span>
+                            <span>Calculated at checkout</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Estimated Total</span>
+                            <span>₹10,400</span>
+                        </div>
+                        <a href="/checkout.html" class="btn btn-gold"
+                            style="width:100%; padding:1rem; font-size:1.1rem; justify-content:center;">Proceed to
+                            Checkout</a>
+                        <p style="text-align:center; margin-top:1.5rem; font-size:0.8rem; color:var(--text-muted);">
+                            By checking out, you agree to our <a href="/terms.html"
+                                style="color:var(--text-muted);">Terms of Service</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module">
+        import { getConfig } from '/src/js/data.js';
+        import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+
+        async function init() {
+            const config = await getConfig();
+            document.getElementById('header-placeholder').innerHTML = renderHeader('Cart', config);
+            document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
+            wireNavDrawer();
+            wireScrollReveal();
+        }
+        init();
+    </script>
+</body>
+
+</html>

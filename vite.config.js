@@ -36,7 +36,19 @@ export default defineConfig({
                 signup: resolve(__dirname, 'signup.html'),
                 'forgot-password': resolve(__dirname, 'forgot-password.html'),
                 'reset-password': resolve(__dirname, 'reset-password.html'),
-                account: resolve(__dirname, 'account.html')
+                account: resolve(__dirname, 'account.html'),
+                cart: resolve(__dirname, 'cart.html'),
+                wishlist: resolve(__dirname, 'wishlist.html'),
+                checkout: resolve(__dirname, 'checkout.html'),
+                orders: resolve(__dirname, 'orders.html'),
+                about: resolve(__dirname, 'about.html'),
+                contact: resolve(__dirname, 'contact.html'),
+                faq: resolve(__dirname, 'faq.html'),
+                '404': resolve(__dirname, '404.html'),
+                shipping: resolve(__dirname, 'shipping.html'),
+                returns: resolve(__dirname, 'returns.html'),
+                privacy: resolve(__dirname, 'privacy.html'),
+                terms: resolve(__dirname, 'terms.html')
             }
         }
     }

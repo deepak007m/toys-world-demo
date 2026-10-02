@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Policy — Toys World</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/css/global.css">
+    <link rel="stylesheet" href="/src/css/components.css">
+    <style>
+        .page-header { background: var(--bg-secondary); padding: 5rem 0 3rem; text-align: center; border-bottom:1px solid rgba(255,255,255,0.06); }
+        .page-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 1rem; color:#fff; }
+        .page-content { max-width: 800px; margin: 0 auto; padding: 4rem 1.5rem 8rem; color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; }
+        .page-content h2 { font-family: var(--font-heading); color: #fff; font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .page-content p { margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    
+    <main>
+        <div class="page-header">
+            <div class="container reveal">
+                <h1 class="page-title">Shipping Policy</h1>
+                <p style="color:var(--text-muted); font-size:1.1rem;">Last updated: Oct 2026</p>
+            </div>
+        </div>
+
+        <div class="page-content reveal reveal-delay-1">
+            <p><strong>[PLACEHOLDER]</strong> Details about shipping times, zones, and tracking limits.</p>
+            
+            <h2>Section 1</h2>
+            <p>This is a structurally static informational page designed during Phase A. Real content will be injected here during content population. The layout uses standard typography constraints defined in global.css and inherits the dark theme context naturally.</p>
+            
+            <h2>Section 2</h2>
+            <p>We ensure that this page strictly complies with the aesthetic principles of Toys World. It includes the dynamic global header and global footer correctly mapped onto the DOM.</p>
+            
+            <div style="margin-top:3rem;">
+                <a href="/shop.html" class="btn btn-outline">Return to Shop</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    
+    <script type="module">
+        import { getConfig } from '/src/js/data.js';
+        import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+
+        async function init() {
+            const config = await getConfig();
+            document.getElementById('header-placeholder').innerHTML = renderHeader('', config);
+            document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
+            wireNavDrawer();
+            wireScrollReveal();
+        }
+        init();
+    </script>
+</body>
+</html>
