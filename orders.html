@@ -10,168 +10,8 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="/src/css/global.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
+    <link rel="stylesheet" href="/src/css/account.css">
     <style>
-        .dashboard-layout {
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 3rem;
-            margin: 4rem auto 8rem;
-            padding: 0 5%;
-            max-width: 1200px;
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .dashboard-layout {
-                grid-template-columns: 1fr;
-                margin-top: 2rem;
-            }
-        }
-
-        .dash-sidebar {
-            background: var(--bg-elevated);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            position: sticky;
-            top: 100px;
-        }
-
-        .dash-user {
-            padding: 2rem 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            text-align: center;
-        }
-
-        .dash-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--accent-gold);
-            color: #000;
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .dash-menu {
-            list-style: none;
-            padding: 1rem 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .dash-menu a {
-            display: block;
-            padding: 0.85rem 1.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-        }
-
-        .dash-menu a:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .dash-menu a.active {
-            color: var(--accent-gold);
-            border-left-color: var(--accent-gold);
-            background: rgba(232, 184, 75, 0.05);
-        }
-
-        .dash-content {
-            padding: 1rem 0;
-        }
-
-        .dash-title {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-            color: #fff;
-        }
-
-        /* Order Cards */
-        .order-card {
-            background: var(--bg-elevated);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .order-header {
-            padding: 1.25rem 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .order-details {
-            flex: 1;
-            display: flex;
-            gap: 3rem;
-        }
-
-        .order-meta-col {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .order-meta-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-
-        .order-meta-value {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .order-receipt {
-            font-size: 0.85rem;
-            color: var(--accent-gold);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .order-body {
-            padding: 2rem;
-        }
-
-        .order-status-bar {
-            margin-bottom: 2.5rem;
-        }
-
-        .order-status-title {
-            font-family: var(--font-heading);
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
         .status-dot {
             width: 10px;
             height: 10px;
@@ -188,11 +28,10 @@
             box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
 
-        /* Progress Bar UI */
         .progress-track {
             width: 100%;
             height: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #E5E7EB;
             border-radius: 2px;
             position: relative;
             margin-top: 1rem;
@@ -212,7 +51,7 @@
             width: 100%;
         }
 
-        .order-items {
+        .order-items-light {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -227,137 +66,139 @@
             width: 80px;
             height: 80px;
             object-fit: cover;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .order-item-info h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
         }
 
         .order-item-info p {
             font-size: 0.85rem;
-            color: var(--text-secondary);
+            color: #6B7280;
             margin-bottom: 0.5rem;
         }
     </style>
 </head>
 
-<body>
+<body class="account-mode">
     <div id="header-placeholder"></div>
 
-    <main class="dashboard-layout">
-        <aside class="dash-sidebar reveal-left">
-            <div class="dash-user">
-                <div class="dash-avatar">JD</div>
-                <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.25rem;">Collector</h3>
-                <p style="font-size:0.8rem; color:var(--text-muted);">collector@toysworld.com</p>
-            </div>
-            <ul class="dash-menu">
-                <li><a href="/account.html">Profile Details</a></li>
-                <li><a href="/orders.html" class="active">My Orders</a></li>
-                <li><a href="/wishlist.html">Wishlist</a></li>
-                <li><a href="/account.html#addresses">Saved Addresses</a></li>
-                <li><a href="/login.html" style="color:#ef4444;">Sign Out</a></li>
-            </ul>
-        </aside>
-
-        <section class="dash-content reveal">
-            <h1 class="dash-title">Track Orders</h1>
-
-            <!-- Active Order -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="order-details">
-                        <div class="order-meta-col">
-                            <span class="order-meta-label">Order Placed</span>
-                            <span class="order-meta-value">22 Sep 2026</span>
-                        </div>
-                        <div class="order-meta-col">
-                            <span class="order-meta-label">Total</span>
-                            <span class="order-meta-value">₹4,500</span>
-                        </div>
-                        <div class="order-meta-col">
-                            <span class="order-meta-label">Order #</span>
-                            <span class="order-meta-value">TW-889021</span>
-                        </div>
-                    </div>
-                    <a href="#" class="order-receipt">View Receipt</a>
+    <main class="dashboard-page">
+        <div class="dashboard-container">
+            <aside class="dash-sidebar reveal-left">
+                <div class="dash-user">
+                    <div class="dash-avatar">M</div>
+                    <h3>My Account</h3>
+                    <p>Manage your profile</p>
                 </div>
-                <div class="order-body">
-                    <div class="order-status-bar">
-                        <h3 class="order-status-title"><span class="status-dot transit"></span> Arriving by Thursday,
-                            Sep 28</h3>
-                        <p style="font-size:0.85rem; color:var(--text-secondary);">Your order is currently in transit to
-                            Palghar facility.</p>
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 60%;"></div>
+                <ul class="dash-menu account-menu">
+                    <li><a href="/account.html">My Account / Profile</a></li>
+                    <li><a href="/orders.html" class="active">My Orders</a></li>
+                    <li><a href="/orders.html" class="active">Order Status</a></li>
+                    <li><a href="/wishlist.html">Wishlist</a></li>
+                    <li><a href="/account.html#addresses">Saved Addresses</a></li>
+                    <li><a href="/account.html#password">Change Password</a></li>
+                    <li><button id="signout-btn" style="color: #ef4444;">Sign Out</button></li>
+                </ul>
+            </aside>
+
+            <section class="dash-content reveal">
+                <div class="dash-heading-wrap">
+                    <h1 class="dash-title">Track Orders</h1>
+                    <p class="dash-subtitle">View and manage your recent purchases and shipments.</p>
+                </div>
+
+                <!-- Active Order -->
+                <div class="order-card-light">
+                    <div class="order-header-light">
+                        <div class="order-details" style="display:flex; gap:3rem; flex-wrap:wrap;">
+                            <div class="order-meta-col">
+                                <span class="order-meta-label">Order Placed</span>
+                                <span class="order-meta-value">22 Sep 2026</span>
+                            </div>
+                            <div class="order-meta-col">
+                                <span class="order-meta-label">Total</span>
+                                <span class="order-meta-value">₹4,500</span>
+                            </div>
+                            <div class="order-meta-col">
+                                <span class="order-meta-label">Order #</span>
+                                <span class="order-meta-value">TW-889021</span>
+                            </div>
                         </div>
+                        <a href="#" class="order-receipt">View Receipt</a>
                     </div>
-                    <div class="order-items">
-                        <div class="order-item">
-                            <img src="/images/product_iron_man.png" class="order-item-img" />
-                            <div class="order-item-info">
-                                <h4>Iron Man Mk 50 Collector Edition</h4>
-                                <p>Qty: 1 • Sold by Toys World Official</p>
-                                <button class="btn btn-outline" style="padding:0.4rem 1rem; font-size:0.75rem;">Track
-                                    Package</button>
+                    <div class="order-body-light">
+                        <div style="margin-bottom:2.5rem;">
+                            <h3 class="order-status-title"><span class="status-dot transit"></span> Arriving by
+                                Thursday, Sep 28</h3>
+                            <p style="font-size:0.85rem; color:#6B7280;">Your order is currently in transit to Palghar
+                                facility.</p>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                        <div class="order-items-light">
+                            <div class="order-item">
+                                <img src="/images/product_iron_man.png" class="order-item-img"
+                                    onerror="this.src='https://placehold.co/100'" />
+                                <div class="order-item-info">
+                                    <h4>Iron Man Mk 50 Collector Edition</h4>
+                                    <p>Qty: 1 • Sold by Toys World Official</p>
+                                    <button class="btn btn-outline"
+                                        style="padding:0.4rem 1rem; font-size:0.75rem;">Track Package</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Delivered Order -->
-            <div class="order-card reveal reveal-delay-1">
-                <div class="order-header">
-                    <div class="order-details">
-                        <div class="order-meta-col">
-                            <span class="order-meta-label">Order Placed</span>
-                            <span class="order-meta-value">05 Aug 2026</span>
+                <!-- Delivered Order -->
+                <div class="order-card-light reveal reveal-delay-1">
+                    <div class="order-header-light">
+                        <div class="order-details" style="display:flex; gap:3rem; flex-wrap:wrap;">
+                            <div class="order-meta-col">
+                                <span class="order-meta-label">Order Placed</span>
+                                <span class="order-meta-value">05 Aug 2026</span>
+                            </div>
+                            <div class="order-meta-col">
+                                <span class="order-meta-label">Total</span>
+                                <span class="order-meta-value">₹2,200</span>
+                            </div>
+                            <div class="order-meta-col">
+                                <span class="order-meta-label">Order #</span>
+                                <span class="order-meta-value">TW-667104</span>
+                            </div>
                         </div>
-                        <div class="order-meta-col">
-                            <span class="order-meta-label">Total</span>
-                            <span class="order-meta-value">₹2,200</span>
-                        </div>
-                        <div class="order-meta-col">
-                            <span class="order-meta-label">Order #</span>
-                            <span class="order-meta-value">TW-667104</span>
-                        </div>
+                        <a href="#" class="order-receipt">View Receipt</a>
                     </div>
-                    <a href="#" class="order-receipt">View Receipt</a>
-                </div>
-                <div class="order-body">
-                    <div class="order-status-bar">
-                        <h3 class="order-status-title"><span class="status-dot delivered"></span> Delivered on 08 Aug
-                            2026</h3>
-                        <p style="font-size:0.85rem; color:var(--text-secondary);">Your package was handed directly to
-                            resident.</p>
-                        <div class="progress-track">
-                            <div class="progress-fill delivered"></div>
+                    <div class="order-body-light">
+                        <div style="margin-bottom:2.5rem;">
+                            <h3 class="order-status-title"><span class="status-dot delivered"></span> Delivered on 08
+                                Aug 2026</h3>
+                            <p style="font-size:0.85rem; color:#6B7280;">Your package was handed directly to resident.
+                            </p>
+                            <div class="progress-track">
+                                <div class="progress-fill delivered"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="order-items">
-                        <div class="order-item">
-                            <img src="/images/product_rc_buggy.png" class="order-item-img" />
-                            <div class="order-item-info">
-                                <h4>Speedster Buggy 4x4</h4>
-                                <p>Qty: 1 • Sold by Toys World Official</p>
-                                <button class="btn btn-outline"
-                                    style="padding:0.4rem 1rem; font-size:0.75rem; margin-right:0.5rem;"
-                                    onclick="window.location.href='/product.html'">Buy It Again</button>
-                                <button class="btn btn-outline"
-                                    style="padding:0.4rem 1rem; font-size:0.75rem; border-color:var(--border-subtle);">Leave
-                                    a Review</button>
+                        <div class="order-items-light">
+                            <div class="order-item">
+                                <img src="/images/product_rc_buggy.png" class="order-item-img"
+                                    onerror="this.src='https://placehold.co/100'" />
+                                <div class="order-item-info">
+                                    <h4>Speedster Buggy 4x4</h4>
+                                    <p>Qty: 1 • Sold by Toys World Official</p>
+                                    <button class="btn btn-black"
+                                        style="padding:0.4rem 1rem; font-size:0.75rem; margin-right:0.5rem;"
+                                        onclick="window.location.href='/product.html'">Buy It Again</button>
+                                    <button class="btn btn-outline"
+                                        style="padding:0.4rem 1rem; font-size:0.75rem;">Leave a Review</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </section>
+            </section>
+        </div>
     </main>
 
     <div id="footer-placeholder"></div>
@@ -365,11 +206,18 @@
     <script type="module">
         import { getConfig } from '/src/js/data.js';
         import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+        import { supabase } from '/src/js/supabase.js';
+
         async function init() {
             const config = await getConfig();
             document.getElementById('header-placeholder').innerHTML = renderHeader('Account', config);
             document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
             wireNavDrawer(); wireScrollReveal();
+
+            document.getElementById('signout-btn')?.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = '/login.html';
+            });
         }
         init();
     </script>

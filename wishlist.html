@@ -10,103 +10,105 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="/src/css/global.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
-    <style>
-        .page-header {
-            background: var(--bg-secondary);
-            padding: 6rem 0 3rem;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .page-title {
-            font-family: var(--font-heading);
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="/src/css/account.css">
 </head>
 
-<body>
+<body class="account-mode">
     <div id="header-placeholder"></div>
 
-    <main style="min-height:70vh;">
-        <div class="page-header">
-            <div class="container reveal">
-                <h1 class="page-title">Your Wishlist</h1>
-                <p style="color:var(--text-secondary);">Items you're keeping an eye on.</p>
-            </div>
-        </div>
+    <main class="dashboard-page">
+        <div class="dashboard-container">
+            <aside class="dash-sidebar reveal-left">
+                <div class="dash-user">
+                    <div class="dash-avatar">M</div>
+                    <h3>My Account</h3>
+                    <p>Manage your profile</p>
+                </div>
+                <ul class="dash-menu account-menu">
+                    <li><a href="/account.html">My Account / Profile</a></li>
+                    <li><a href="/orders.html">My Orders</a></li>
+                    <li><a href="/orders.html">Order Status</a></li>
+                    <li><a href="/wishlist.html" class="active">Wishlist</a></li>
+                    <li><a href="/account.html#addresses">Saved Addresses</a></li>
+                    <li><a href="/account.html#password">Change Password</a></li>
+                    <li><button id="signout-btn" style="color: #ef4444;">Sign Out</button></li>
+                </ul>
+            </aside>
 
-        <div class="container reveal reveal-delay-1" style="padding: 4rem 0;">
-            <div class="grid-4 stagger">
-                <!-- Static Wishlist Layout using components design logic -->
-                <div class="product-card reveal">
-                    <div class="product-img-wrap" style="position:relative;">
-                        <img src="/images/prod_iron_man.png" class="product-img" alt="Wishlist Item" />
-                        <button class="wishlist-btn-corner active"
-                            style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"
-                            onclick="this.closest('.product-card').style.display='none'">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent-gold)"
-                                class="heart-icon">
-                                <path
-                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
-                                    stroke="var(--accent-gold)" stroke-width="2" />
-                            </svg>
-                        </button>
+            <section class="dash-content reveal">
+                <div class="dash-heading-wrap">
+                    <h1 class="dash-title">Your Wishlist</h1>
+                    <p class="dash-subtitle">Items you're keeping an eye on.</p>
+                </div>
+
+                <div class="grid-3 stagger" id="wishlist-grid">
+                    <!-- Wishlist Product Card 1 -->
+                    <div class="product-card reveal">
+                        <div class="product-img-wrap" style="position:relative;">
+                            <img src="/images/prod_iron_man.png" class="product-img" alt="Wishlist Item"
+                                onerror="this.style.display='none'" />
+                            <button class="wishlist-btn-corner active"
+                                style="position:absolute; top:12px; right:12px; z-index:10; background:#FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border:1px solid #E5E7EB; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"
+                                onclick="this.closest('.product-card').style.display='none'">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#B48512" class="heart-icon">
+                                    <path
+                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                        stroke="#B48512" stroke-width="2" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+                            <p class="product-cat">FIGURES</p>
+                            <h3 class="product-name" style="margin-bottom:1rem; line-height:1.4;">Iron Man Mk 50</h3>
+                            <div class="product-footer"
+                                style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
+                                <span class="product-price" style="font-size:1.25rem; font-weight:800;">₹4,500</span>
+                                <button class="btn btn-outline"
+                                    style="width:100%; padding:0.75rem; font-size:0.875rem; border-color:#D1D5DB; color:#111827;"
+                                    onclick="window.location.href='/cart.html'">Move to Cart</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
-                        <p class="product-cat"
-                            style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">
-                            FIGURES</p>
-                        <h3 class="product-name"
-                            style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Iron Man Mk
-                            50</h3>
-                        <div class="product-footer"
-                            style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
-                            <span class="product-price"
-                                style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹4,500</span>
-                            <button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;"
-                                onclick="window.location.href='/cart.html'">Move to Cart</button>
+
+                    <!-- Wishlist Product Card 2 -->
+                    <div class="product-card reveal reveal-delay-1">
+                        <div class="product-img-wrap" style="position:relative;">
+                            <div class="product-badge">LOW STOCK</div>
+                            <img src="/images/prod_anime.png" class="product-img" alt="Wishlist Item"
+                                onerror="this.style.display='none'" />
+                            <button class="wishlist-btn-corner active"
+                                style="position:absolute; top:12px; right:12px; z-index:10; background:#FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border:1px solid #E5E7EB; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"
+                                onclick="this.closest('.product-card').style.display='none'">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#B48512" class="heart-icon">
+                                    <path
+                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                        stroke="#B48512" stroke-width="2" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+                            <p class="product-cat">ANIME</p>
+                            <h3 class="product-name" style="margin-bottom:1rem; line-height:1.4;">Zoro Grandline Series
+                            </h3>
+                            <div class="product-footer"
+                                style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
+                                <span class="product-price" style="font-size:1.25rem; font-weight:800;">₹2,100</span>
+                                <button class="btn btn-outline"
+                                    style="width:100%; padding:0.75rem; font-size:0.875rem; border-color:#D1D5DB; color:#111827;"
+                                    onclick="window.location.href='/cart.html'">Move to Cart</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="product-card reveal reveal-delay-1">
-                    <div class="product-img-wrap" style="position:relative;">
-                        <div class="product-badge">LOW STOCK</div>
-                        <img src="/images/prod_anime.png" class="product-img" alt="Wishlist Item" />
-                        <button class="wishlist-btn-corner active"
-                            style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"
-                            onclick="this.closest('.product-card').style.display='none'">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent-gold)"
-                                class="heart-icon">
-                                <path
-                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
-                                    stroke="var(--accent-gold)" stroke-width="2" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
-                        <p class="product-cat"
-                            style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">
-                            ANIME</p>
-                        <h3 class="product-name"
-                            style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Zoro
-                            Grandline Series</h3>
-                        <div class="product-footer"
-                            style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
-                            <span class="product-price"
-                                style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,100</span>
-                            <button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;"
-                                onclick="window.location.href='/cart.html'">Move to Cart</button>
-                        </div>
-                    </div>
+                <div class="empty-state" id="empty-wishlist" style="display: none;">
+                    <div class="empty-state-icon">❤️</div>
+                    <h3>Wishlist is empty</h3>
+                    <p>You haven't saved any items yet. Start exploring!</p>
+                    <button class="btn btn-outline" style="border-color: #D1D5DB; color: #111827;"
+                        onclick="window.location.href='/shop.html'">Discover Toys</button>
                 </div>
-
-            </div>
+            </section>
         </div>
     </main>
 
@@ -115,13 +117,32 @@
     <script type="module">
         import { getConfig } from '/src/js/data.js';
         import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+        import { supabase } from '/src/js/supabase.js';
 
         async function init() {
             const config = await getConfig();
             document.getElementById('header-placeholder').innerHTML = renderHeader('Wishlist', config);
             document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
-            wireNavDrawer();
-            wireScrollReveal();
+            wireNavDrawer(); wireScrollReveal();
+
+            document.getElementById('signout-btn')?.addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                window.location.href = '/login.html';
+            });
+
+            // Basic demo of empty state 
+            const buttons = document.querySelectorAll('.wishlist-btn-corner');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setTimeout(() => {
+                        const visibleCards = document.querySelectorAll('.product-card[style=""]');
+                        if (visibleCards.length === 0 || Array.from(visibleCards).every(c => c.style.display === 'none')) {
+                            document.getElementById('wishlist-grid').style.display = 'none';
+                            document.getElementById('empty-wishlist').style.display = 'block';
+                        }
+                    }, 100);
+                });
+            });
         }
         init();
     </script>

@@ -12,282 +12,105 @@
         rel="stylesheet">
     <link rel="stylesheet" href="/src/css/global.css">
     <link rel="stylesheet" href="/src/css/components.css">
-    <style>
-        .dashboard-layout {
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 3rem;
-            margin: 4rem auto 8rem;
-            padding: 0 5%;
-            max-width: 1200px;
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .dashboard-layout {
-                grid-template-columns: 1fr;
-                margin-top: 2rem;
-            }
-        }
-
-        .dash-sidebar {
-            background: var(--bg-elevated);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            position: sticky;
-            top: 100px;
-        }
-
-        .dash-user {
-            padding: 2rem 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            text-align: center;
-        }
-
-        .dash-avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--accent-gold);
-            color: #000;
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .dash-menu {
-            list-style: none;
-            padding: 1rem 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .dash-menu button,
-        .dash-menu a {
-            display: block;
-            width: 100%;
-            text-align: left;
-            padding: 0.85rem 1.5rem;
-            color: var(--text-secondary);
-            background: transparent;
-            border: none;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .dash-menu button:hover,
-        .dash-menu a:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .dash-menu button.active,
-        .dash-menu a.active {
-            color: var(--accent-gold);
-            border-left-color: var(--accent-gold);
-            background: rgba(232, 184, 75, 0.05);
-        }
-
-        .dash-content {
-            padding: 1rem 0;
-        }
-
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-            animation: fadeIn var(--t-normal) ease forwards;
-        }
-
-        .dash-title {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 2.5rem;
-            color: #fff;
-        }
-
-        .profile-form {
-            background: var(--bg-elevated);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 2.5rem;
-            border-radius: var(--radius-lg);
-            margin-bottom: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .profile-form label {
-            font-family: var(--font-heading);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            font-weight: 700;
-        }
-
-        .profile-form input {
-            background: var(--bg-surface);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-md);
-            padding: 0.875rem 1rem;
-            color: var(--text-primary);
-            transition: all 0.2s;
-            font-family: var(--font-sans);
-            font-size: 1rem;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .profile-form input:focus {
-            outline: none;
-            border-color: var(--accent-gold);
-        }
-
-        .profile-form input:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            border-color: transparent;
-        }
-
-        .placeholder-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--bg-elevated);
-            border: 1px dashed rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-lg);
-        }
-
-        .placeholder-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.7;
-        }
-
-        .status-msg {
-            margin-bottom: 2rem;
-            padding: 1.25rem;
-            border-radius: var(--radius-md);
-            font-size: 0.95rem;
-            display: none;
-            font-weight: 500;
-        }
-
-        .status-msg.success {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .status-msg.error {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/src/css/account.css">
 </head>
 
-<body style="opacity: 0; transition: opacity 0.3s; --header-h: 70px;">
+<body class="account-mode" style="opacity: 0; transition: opacity 0.3s; --header-h: 70px;">
     <div id="header-root"></div>
 
-    <main class="dashboard-layout">
-        <aside class="dash-sidebar reveal-left">
-            <div class="dash-user">
-                <div class="dash-avatar">M</div>
-                <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.25rem;">My Account</h3>
-                <p style="font-size:0.8rem; color:var(--text-muted);">Manage your profile</p>
-            </div>
-            <ul class="dash-menu account-menu">
-                <li><button data-target="profile" class="active">Profile Details</button></li>
-                <li><button data-target="password">Change Password</button></li>
-                <li><a href="/orders.html">My Orders</a></li>
-                <li><button data-target="addresses">Saved Addresses</button></li>
-                <li><button id="signout-btn" style="color: #ef4444;">Sign Out</button></li>
-            </ul>
-        </aside>
-
-        <div class="dash-content reveal">
-            <!-- Profile Section -->
-            <section id="section-profile" class="content-section active">
-                <h2 class="dash-title">Profile Details</h2>
-                <div id="profile-msg" class="status-msg"></div>
-                <form id="profile-form" class="profile-form">
-                    <div class="form-group">
-                        <label>Email (Verified)</label>
-                        <input type="email" id="profile-email" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="profile-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" id="profile-phone" placeholder="+91">
-                    </div>
-                    <button type="submit" class="btn btn-gold" id="profile-submit"
-                        style="margin-top: 1rem; padding:0.85rem 2rem;">Save Changes</button>
-                </form>
-            </section>
-
-            <!-- Password Section -->
-            <section id="section-password" class="content-section">
-                <h2 class="dash-title">Change Password</h2>
-                <div id="pwd-msg" class="status-msg"></div>
-                <form id="password-form" class="profile-form">
-                    <div class="form-group">
-                        <label>New Password</label>
-                        <input type="password" id="new-password" required minlength="6">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input type="password" id="confirm-new-password" required>
-                    </div>
-                    <button type="submit" class="btn btn-outline" id="pwd-submit"
-                        style="margin-top: 1rem; padding:0.85rem 2rem;">Update Password</button>
-                </form>
-            </section>
-
-            <section id="section-addresses" class="content-section">
-                <h2 class="dash-title">Saved Addresses</h2>
-                <div class="placeholder-state">
-                    <div class="placeholder-icon">📍</div>
-                    <h3 style="font-size:1.5rem; margin-bottom:0.5rem; color:#fff;">No addresses saved</h3>
-                    <p style="color:var(--text-secondary);">You can add shipping locations during checkout.</p>
+    <main class="dashboard-page">
+        <div class="dashboard-container">
+            <aside class="dash-sidebar reveal-left">
+                <div class="dash-user">
+                    <div class="dash-avatar">M</div>
+                    <h3>My Account</h3>
+                    <p>Manage your profile</p>
                 </div>
-            </section>
+                <!-- Navigation adheres exactly exactly to 5. -->
+                <ul class="dash-menu account-menu">
+                    <li><button data-target="profile" class="active">My Account / Profile</button></li>
+                    <li><a href="/orders.html">My Orders</a></li>
+                    <li><a href="/orders.html">Order Status</a></li>
+                    <li><a href="/wishlist.html">Wishlist</a></li>
+                    <li><button data-target="addresses">Saved Addresses</button></li>
+                    <li><button data-target="password">Change Password</button></li>
+                    <li><button id="signout-btn" style="color: #ef4444;">Sign Out</button></li>
+                </ul>
+            </aside>
 
+            <div class="dash-content reveal">
+                <!-- Profile Section -->
+                <section id="section-profile" class="content-section active">
+                    <div class="dash-heading-wrap">
+                        <h2 class="dash-title">Profile Details</h2>
+                        <p class="dash-subtitle">Manage your personal information and preferences.</p>
+                    </div>
+
+                    <div id="profile-msg" class="status-msg"></div>
+
+                    <div class="dash-card">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label>Email (Verified)</label>
+                                <input type="email" id="profile-email" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="profile-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="profile-phone" placeholder="+91">
+                            </div>
+                            <button type="submit" class="btn btn-gold" id="profile-submit"
+                                style="margin-top: 1rem; padding:0.85rem 2rem;">Save Changes</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Password Section -->
+                <section id="section-password" class="content-section">
+                    <div class="dash-heading-wrap">
+                        <h2 class="dash-title">Change Password</h2>
+                        <p class="dash-subtitle">Update your password to keep your account secure.</p>
+                    </div>
+
+                    <div id="pwd-msg" class="status-msg"></div>
+
+                    <div class="dash-card">
+                        <form id="password-form">
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="new-password" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" id="confirm-new-password" required>
+                            </div>
+                            <button type="submit" class="btn btn-outline" id="pwd-submit"
+                                style="margin-top: 1rem; padding:0.85rem 2rem; border-color: #D1D5DB;">Update
+                                Password</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Addresses Section -->
+                <section id="section-addresses" class="content-section">
+                    <div class="dash-heading-wrap">
+                        <h2 class="dash-title">Saved Addresses</h2>
+                        <p class="dash-subtitle">Manage your shipping and billing addresses.</p>
+                    </div>
+
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📍</div>
+                        <h3>No addresses saved</h3>
+                        <p>You can add shipping locations during your next checkout.</p>
+                        <button class="btn btn-outline" style="border-color: #D1D5DB;"
+                            onclick="window.location.href='/shop.html'">Continue Shopping</button>
+                    </div>
+                </section>
+
+            </div>
         </div>
     </main>
     <div id="footer-root"></div>

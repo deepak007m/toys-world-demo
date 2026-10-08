@@ -1,0 +1,438 @@
+/* Account Dashboard Redesign - Premium Light Theme */
+:root {
+    --bg-account: #FDFBF7;
+    /* warm cream/off-white */
+    --card-bg: #FFFFFF;
+    --text-account-dark: #1F2937;
+    /* charcoal */
+    --text-account-muted: #6B7280;
+    --border-light: #E5E7EB;
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+body.account-mode {
+    background: var(--bg-account);
+    color: var(--text-account-dark);
+}
+
+/* Override Global Header for Account Pages */
+body.account-mode .header {
+    background: #0D0D0F;
+    /* solid dark */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Dashboard Base Layout */
+.dashboard-page {
+    padding-top: calc(var(--header-h) + 2rem);
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 3.5rem;
+    max-width: 1240px;
+    margin: 0 auto 6rem;
+    padding: 0 5%;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-top: 1rem;
+    }
+}
+
+/* Sidebar Navigation */
+.dash-sidebar {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+    border: 1px solid var(--border-light);
+}
+
+.dash-user {
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.dash-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    color: #111827;
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 16px rgba(232, 184, 75, 0.3);
+}
+
+.dash-user h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.25rem;
+}
+
+.dash-user p {
+    font-size: 0.85rem;
+    color: var(--text-account-muted);
+}
+
+.dash-menu {
+    list-style: none;
+    padding: 1.5rem 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.dash-menu button,
+.dash-menu a {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.85rem 2rem;
+    color: #4B5563;
+    background: transparent;
+    border: none;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all var(--t-fast);
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.dash-menu button:hover,
+.dash-menu a:hover {
+    color: #111827;
+    background: #F9FAFB;
+}
+
+.dash-menu button.active,
+.dash-menu a.active {
+    color: #B48512;
+    border-left-color: var(--accent-gold);
+    background: rgba(232, 184, 75, 0.08);
+    /* slight Toys World yellow tint */
+}
+
+/* Mobile Sidebar (Horizontal Scroll) */
+@media (max-width: 900px) {
+    .dash-sidebar {
+        position: relative;
+        top: 0;
+        box-shadow: none;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding-bottom: 0.5rem;
+    }
+
+    .dash-user {
+        display: none;
+    }
+
+    .dash-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 0 0 1rem 0;
+        gap: 0.75rem;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .dash-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dash-menu button,
+    .dash-menu a {
+        display: inline-block;
+        width: auto;
+        border: 1px solid var(--border-light);
+        border-radius: 9999px;
+        padding: 0.65rem 1.25rem;
+        background: var(--card-bg);
+        border-left: 1px solid var(--border-light);
+        /* reset border */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .dash-menu button.active,
+    .dash-menu a.active {
+        background: var(--accent-gold);
+        color: #111827;
+        border-color: var(--accent-gold);
+    }
+}
+
+/* Main Content */
+.dash-content {
+    min-width: 0;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+    animation: fadeIn var(--t-normal) ease forwards;
+}
+
+.dash-heading-wrap {
+    margin-bottom: 2.5rem;
+}
+
+.dash-title {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #111827;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+}
+
+.dash-subtitle {
+    font-size: 1rem;
+    color: var(--text-account-muted);
+}
+
+/* Forms & Cards */
+.dash-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-light);
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4B5563;
+    font-weight: 700;
+}
+
+.form-group input {
+    background: #F9FAFB;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 0.875rem 1rem;
+    color: #111827;
+    transition: all 0.2s;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    width: 100%;
+    max-width: 480px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(232, 184, 75, 0.2);
+    background: #FFF;
+}
+
+.form-group input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #F3F4F6;
+}
+
+/* Overrides for Buttons in Light Mode */
+body.account-mode .btn-outline {
+    color: #111827;
+    border-color: #D1D5DB;
+}
+
+body.account-mode .btn-outline:hover {
+    border-color: var(--accent-gold);
+    color: #111827;
+    background: rgba(232, 184, 75, 0.1);
+}
+
+/* Messages */
+.status-msg {
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    display: none;
+    font-weight: 500;
+}
+
+.status-msg.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #065F46;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-msg.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #991B1B;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: var(--card-bg);
+    border: 1px dashed #D1D5DB;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.empty-state-icon {
+    width: 64px;
+    height: 64px;
+    background: #F3F4F6;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    color: #9CA3AF;
+}
+
+.empty-state h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+/* Light Theme Order Cards */
+.order-card-light {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-card);
+}
+
+.order-header-light {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F9FAFB;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.order-meta-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.order-meta-label {
+    font-size: 0.75rem;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+.order-meta-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.order-receipt {
+    font-size: 0.85rem;
+    color: #B48512;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.order-body-light {
+    padding: 2rem;
+}
+
+.order-status-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.order-items-light .order-item-info h4 {
+    color: #111827;
+}
+
+/* Light Theme overrides for existing generic components like .product-card */
+body.account-mode .product-card {
+    background: var(--card-bg);
+    border-color: var(--border-light);
+    box-shadow: var(--shadow-card);
+}
+
+body.account-mode .product-img-wrap {
+    background: #F9FAFB;
+}
+
+body.account-mode .product-name {
+    color: #111827;
+}
+
+body.account-mode .product-price {
+    color: #111827;
+}
+
+body.account-mode .product-desc {
+    color: #4B5563;
+}
+
+body.account-mode .product-footer {
+    border-color: var(--border-light);
+}
+
+body.account-mode .product-cat {
+    color: #B48512;
+}
