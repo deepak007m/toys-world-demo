@@ -166,7 +166,7 @@ export function renderProductCard(product, waNumber = '') {
     <div class="product-card" onclick="window.location.href='/product.html?id=${product.id}'" style="cursor:pointer;">
       <div class="product-img-wrap" style="position:relative;">
         ${badge}
-        <button class="wishlist-btn-corner" aria-label="Add to wishlist" onclick="event.stopPropagation(); this.classList.toggle('active');" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s;">
+        <button class="wishlist-btn-corner" aria-label="Add to wishlist" onclick="event.stopPropagation(); this.classList.toggle('active');" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg>
         </button>
         ${product.image_url
@@ -196,8 +196,16 @@ export function renderCategoryCard(cat) {
   const slug = cat.slug || cat.id;
   const title = cat.title;
   const desc = cat.description || cat.desc || '';
-  const image = cat.image_url || cat.image || '';
+  let image = cat.image_url || cat.image || '';
   const accent = cat.color_accent || cat.accent || '#FFD600';
+
+  // Fix image path if it's broken from Supabase (Phase 1.5 visual fix)
+  if (slug === 'anime') image = '/images/cat_anime.png';
+  if (slug === 'die-cast') image = '/images/cat_diecast.png';
+  if (slug === 'figures') image = '/images/cat_figures.png';
+  if (slug === 'gifts') image = '/images/cat_gifts.png';
+  if (slug === 'plush') image = '/images/cat_plush.png';
+  if (slug === 'rc-racing') image = '/images/cat_rc.png';
 
   const bgStyle = image
     ? `background-image:url('${image}')`
@@ -284,7 +292,7 @@ export function mountAuthListener(supabase) {
     }
   };
 
-  supabase.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+  supabase.auth.getSession().then((res) => updateAuthUI(res?.data?.session)).catch(() => { });
   supabase.auth.onAuthStateChange((_event, session) => updateAuthUI(session));
 }
 

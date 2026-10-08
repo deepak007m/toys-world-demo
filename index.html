@@ -10,7 +10,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap"
         rel="stylesheet" />
 
     <link rel="stylesheet" href="/src/css/global.css" />
@@ -50,10 +51,10 @@
             inset: 0;
             background:
                 linear-gradient(105deg,
-                    rgba(0,0,0,0.88) 0%,
-                    rgba(0,0,0,0.55) 50%,
-                    rgba(0,0,0,0.2) 100%),
-                linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+                    rgba(0, 0, 0, 0.88) 0%,
+                    rgba(0, 0, 0, 0.55) 50%,
+                    rgba(0, 0, 0, 0.2) 100%),
+                linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
         }
 
         /* Content */
@@ -68,8 +69,8 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(232,184,75,0.12);
-            border: 1px solid rgba(232,184,75,0.3);
+            background: rgba(232, 184, 75, 0.12);
+            border: 1px solid rgba(232, 184, 75, 0.3);
             border-radius: 9999px;
             padding: 0.4rem 1.1rem;
             font-family: var(--font-heading);
@@ -128,13 +129,13 @@
         .hero-sub-divider {
             height: 1px;
             width: 32px;
-            background: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.25);
             flex-shrink: 0;
         }
 
         .hero-sub-text {
             font-size: 0.82rem;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             letter-spacing: 0.12em;
             text-transform: uppercase;
             font-family: var(--font-heading);
@@ -169,7 +170,7 @@
             font-size: 0.62rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255, 255, 255, 0.3);
             font-family: var(--font-heading);
             font-weight: 600;
         }
@@ -177,14 +178,22 @@
         .hero-scroll-line {
             width: 1px;
             height: 40px;
-            background: linear-gradient(to bottom, rgba(232,184,75,0.6), transparent);
+            background: linear-gradient(to bottom, rgba(232, 184, 75, 0.6), transparent);
             animation: float 2s ease-in-out 1.5s infinite;
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: clamp(2.75rem, 12vw, 5rem); }
-            .hero-content { padding: 3rem 0; }
-            .hero-scroll-hint { display: none; }
+            .hero-title {
+                font-size: clamp(2.75rem, 12vw, 5rem);
+            }
+
+            .hero-content {
+                padding: 3rem 0;
+            }
+
+            .hero-scroll-hint {
+                display: none;
+            }
         }
 
         /* ── Marquee Strip ────────────────────────────────────── */
@@ -202,8 +211,13 @@
         }
 
         @keyframes marqueeScroll {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
         }
 
         .marquee-item {
@@ -223,12 +237,14 @@
         .marquee-dot {
             width: 5px;
             height: 5px;
-            background: rgba(0,0,0,0.35);
+            background: rgba(0, 0, 0, 0.35);
             border-radius: 50%;
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .marquee-track { animation: none; }
+            .marquee-track {
+                animation: none;
+            }
         }
 
         /* ── Categories Section ───────────────────────────────── */
@@ -246,7 +262,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(232,184,75,0.05), transparent);
+            background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(232, 184, 75, 0.05), transparent);
             pointer-events: none;
         }
 
@@ -319,7 +335,7 @@
         .brand-img-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(13,13,15,0.6), transparent 60%);
+            background: linear-gradient(to right, rgba(13, 13, 15, 0.6), transparent 60%);
         }
 
         @media (max-width: 900px) {
@@ -327,10 +343,12 @@
                 grid-template-columns: 1fr;
                 min-height: auto;
             }
+
             .brand-text-col {
                 padding: 3rem 0;
                 order: 2;
             }
+
             .brand-img-col {
                 height: 300px;
                 order: 1;
@@ -352,14 +370,14 @@
 
         .why-card {
             background: var(--bg-surface);
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: var(--radius-lg);
             padding: 2rem;
             transition: border-color var(--t-base), transform var(--t-base);
         }
 
         .why-card:hover {
-            border-color: rgba(232,184,75,0.25);
+            border-color: rgba(232, 184, 75, 0.25);
             transform: translateY(-4px);
         }
 
@@ -392,7 +410,9 @@
         }
 
         @media (max-width: 768px) {
-            .why-grid { grid-template-columns: 1fr; }
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ── Instagram ───────────────────────────────────────── */
@@ -435,7 +455,7 @@
         .ig-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0);
+            background: rgba(0, 0, 0, 0);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -443,7 +463,7 @@
         }
 
         .ig-item:hover .ig-overlay {
-            background: rgba(0,0,0,0.35);
+            background: rgba(0, 0, 0, 0.35);
         }
 
         .ig-overlay svg {
@@ -464,12 +484,19 @@
                 grid-template-rows: repeat(3, 160px);
                 height: auto;
             }
-            .ig-item:first-child { grid-row: auto; }
+
+            .ig-item:first-child {
+                grid-row: auto;
+            }
+
             /* hide 4th & 5th on mobile if they overflow */
         }
 
         @media (max-width: 480px) {
-            .ig-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .ig-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
         }
 
         /* ── Reviews ─────────────────────────────────────────── */
@@ -479,7 +506,7 @@
 
         .reviews-empty {
             background: var(--bg-surface);
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: var(--radius-xl);
             padding: 4rem 2rem;
             text-align: center;
@@ -561,7 +588,9 @@
         }
 
         @media (max-width: 900px) {
-            .visit-grid { grid-template-columns: 1fr; }
+            .visit-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ── Final CTA ───────────────────────────────────────── */
@@ -575,7 +604,7 @@
         .final-cta-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(232,184,75,0.08), transparent 70%);
+            background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(232, 184, 75, 0.08), transparent 70%);
             pointer-events: none;
         }
 
@@ -644,7 +673,9 @@
         }
 
         @media (max-width: 768px) {
-            .sticky-wa { display: block; }
+            .sticky-wa {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -655,7 +686,8 @@
     <!-- 2. HERO -->
     <section class="hero" aria-label="Hero">
         <div class="hero-bg">
-            <img src="/images/real_store_exterior.png" alt="Toys World Store Exterior" class="hero-bg-img" id="hero-img" fetchpriority="high" />
+            <img src="/images/real_store_exterior.png" alt="Toys World Store Exterior" class="hero-bg-img" id="hero-img"
+                fetchpriority="high" />
             <div class="hero-bg-overlay"></div>
         </div>
         <div class="container hero-content">
@@ -736,20 +768,104 @@
             <div class="grid-4 stagger">
                 <!-- Static static product cards -->
                 <div class="product-card reveal">
-                    <div class="product-img-wrap" style="position:relative;"><div class="product-badge">NEW</div><img src="/images/prod_iron_man.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
-                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">FIGURES</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Iron Man Mk 50</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹4,500</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                    <div class="product-img-wrap" style="position:relative;">
+                        <div class="product-badge">NEW</div><img src="/images/prod_iron_man.png" class="product-img"
+                            alt="New Arrival" /><button class="wishlist-btn-corner"
+                            style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg></button>
+                    </div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+                        <p class="product-cat"
+                            style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">
+                            FIGURES</p>
+                        <h3 class="product-name"
+                            style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Iron Man Mk
+                            50</h3>
+                        <div class="product-footer"
+                            style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span
+                                class="product-price"
+                                style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹4,500</span><button
+                                class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to
+                                Cart</button></div>
+                    </div>
                 </div>
                 <div class="product-card reveal reveal-delay-1">
-                    <div class="product-img-wrap" style="position:relative;"><div class="product-badge">HOT</div><img src="/images/prod_rc.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
-                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">RC RACING</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Speedster Buggy 4x4</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,200</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                    <div class="product-img-wrap" style="position:relative;">
+                        <div class="product-badge">HOT</div><img src="/images/prod_rc.png" class="product-img"
+                            alt="New Arrival" /><button class="wishlist-btn-corner"
+                            style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg></button>
+                    </div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+                        <p class="product-cat"
+                            style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">
+                            RC RACING</p>
+                        <h3 class="product-name"
+                            style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Speedster
+                            Buggy 4x4</h3>
+                        <div class="product-footer"
+                            style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span
+                                class="product-price"
+                                style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,200</span><button
+                                class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to
+                                Cart</button></div>
+                    </div>
                 </div>
                 <div class="product-card reveal reveal-delay-2">
-                    <div class="product-img-wrap" style="position:relative;"><img src="/images/product_mini_gt.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
-                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">DIE-CAST</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Nissan GT-R R35</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹1,850</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                    <div class="product-img-wrap" style="position:relative;"><img src="/images/product_mini_gt.png"
+                            class="product-img" alt="New Arrival" /><button class="wishlist-btn-corner"
+                            style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg></button></div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+                        <p class="product-cat"
+                            style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">
+                            DIE-CAST</p>
+                        <h3 class="product-name"
+                            style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Nissan GT-R
+                            R35</h3>
+                        <div class="product-footer"
+                            style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span
+                                class="product-price"
+                                style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹1,850</span><button
+                                class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to
+                                Cart</button></div>
+                    </div>
                 </div>
                 <div class="product-card reveal reveal-delay-3">
-                    <div class="product-img-wrap" style="position:relative;"><img src="/images/prod_anime.png" class="product-img" alt="New Arrival"/><button class="wishlist-btn-corner" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg></button></div>
-                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;"><p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">ANIME</p><h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Zoro Grandline Series</h3><div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,100</span><button class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to Cart</button></div></div>
+                    <div class="product-img-wrap" style="position:relative;"><img src="/images/prod_anime.png"
+                            class="product-img" alt="New Arrival" /><button class="wishlist-btn-corner"
+                            style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer;"><svg
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                                    stroke="currentColor" stroke-width="2" />
+                            </svg></button></div>
+                    <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
+                        <p class="product-cat"
+                            style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">
+                            ANIME</p>
+                        <h3 class="product-name"
+                            style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">Zoro
+                            Grandline Series</h3>
+                        <div class="product-footer"
+                            style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;"><span
+                                class="product-price"
+                                style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">₹2,100</span><button
+                                class="btn btn-outline" style="width:100%; padding:0.75rem; font-size:0.875rem;">Add to
+                                Cart</button></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -767,7 +883,8 @@
             </div>
             <div class="grid-2 gap-md stagger" style="margin-top:2rem;">
                 <div class="cat-card reveal">
-                    <div class="cat-card-bg" style="background-image:url('/images/category_diecast_1790454697082.png'); background-position:center;"></div>
+                    <div class="cat-card-bg"
+                        style="background-image:url('/images/cat_diecast.png'); background-position:center;"></div>
                     <div class="cat-overlay"></div>
                     <div class="cat-body">
                         <div>
@@ -777,7 +894,8 @@
                     </div>
                 </div>
                 <div class="cat-card reveal reveal-delay-1">
-                    <div class="cat-card-bg" style="background-image:url('/images/real_mini_gt_1790456668128.png'); background-position:center;"></div>
+                    <div class="cat-card-bg"
+                        style="background-image:url('/images/real_mini_gt.png'); background-position:center;"></div>
                     <div class="cat-overlay"></div>
                     <div class="cat-body">
                         <div>
@@ -803,19 +921,36 @@
             <div class="grid-3 gap-md stagger" style="margin-top:2rem;">
                 <!-- We simulate static cards for Anime Series -->
                 <div class="cat-card reveal" style="height:350px;">
-                    <div class="cat-card-bg" style="background-image:url('/images/product_anime_figure_1790454804513.png'); background-position:top;"></div>
-                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)"></div>
-                    <div class="cat-body"><div><h3 class="cat-title">Shonen Jump Classics</h3></div></div>
+                    <div class="cat-card-bg"
+                        style="background-image:url('/images/prod_anime.png'); background-position:top;"></div>
+                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)">
+                    </div>
+                    <div class="cat-body">
+                        <div>
+                            <h3 class="cat-title">Shonen Jump Classics</h3>
+                        </div>
+                    </div>
                 </div>
                 <div class="cat-card reveal reveal-delay-1" style="height:350px;">
-                    <div class="cat-card-bg" style="background-image:url('/images/category_anime_1790454684224.png'); background-position:center;"></div>
-                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)"></div>
-                    <div class="cat-body"><div><h3 class="cat-title">Demon Slayer</h3></div></div>
+                    <div class="cat-card-bg"
+                        style="background-image:url('/images/cat_anime.png'); background-position:center;"></div>
+                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)">
+                    </div>
+                    <div class="cat-body">
+                        <div>
+                            <h3 class="cat-title">Demon Slayer</h3>
+                        </div>
+                    </div>
                 </div>
                 <div class="cat-card reveal reveal-delay-2" style="height:350px;">
                     <div class="cat-card-bg" style="background:#5b21b6;"></div>
-                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)"></div>
-                    <div class="cat-body"><div><h3 class="cat-title">Dragon Ball & More</h3></div></div>
+                    <div class="cat-overlay" style="background:linear-gradient(to top, rgba(0,0,0,0.9), transparent)">
+                    </div>
+                    <div class="cat-body">
+                        <div>
+                            <h3 class="cat-title">Dragon Ball & More</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -828,11 +963,16 @@
                 <h2 class="section-heading">Shop By Interest</h2>
             </div>
             <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2rem;">
-                <a href="/shop.html?interest=collectors" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Collectors</a>
-                <a href="/shop.html?interest=kids" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Kids</a>
-                <a href="/shop.html?interest=gamers" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Gamers</a>
-                <a href="/shop.html?interest=anime" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Anime Fans</a>
-                <a href="/shop.html?interest=gifting" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For Gifting</a>
+                <a href="/shop.html?interest=collectors" class="btn btn-dark"
+                    style="font-size:1.1rem; padding:1rem 2rem;">For Collectors</a>
+                <a href="/shop.html?interest=kids" class="btn btn-dark" style="font-size:1.1rem; padding:1rem 2rem;">For
+                    Kids</a>
+                <a href="/shop.html?interest=gamers" class="btn btn-dark"
+                    style="font-size:1.1rem; padding:1rem 2rem;">For Gamers</a>
+                <a href="/shop.html?interest=anime" class="btn btn-dark"
+                    style="font-size:1.1rem; padding:1rem 2rem;">For Anime Fans</a>
+                <a href="/shop.html?interest=gifting" class="btn btn-dark"
+                    style="font-size:1.1rem; padding:1rem 2rem;">For Gifting</a>
             </div>
         </div>
     </section>
@@ -848,7 +988,7 @@
                         <em>Palghar.</em>
                     </h2>
                     <p class="brand-statement-sub reveal reveal-delay-2">
-                        We are a physical store, not just a website. Come in, pick it up, and feel the quality. 
+                        We are a physical store, not just a website. Come in, pick it up, and feel the quality.
                         Built for enthusiasts, gifted to fans.
                     </p>
                     <div class="reveal reveal-delay-3">
@@ -856,8 +996,9 @@
                     </div>
                 </div>
                 <div class="brand-img-col scale-in">
-                    <img src="/images/real_store_interior.png" alt="Toys World store interior — shelves full of collectibles"
-                        class="brand-img" id="store-img" loading="lazy" />
+                    <img src="/images/real_store_interior.png"
+                        alt="Toys World store interior — shelves full of collectibles" class="brand-img" id="store-img"
+                        loading="lazy" />
                     <div class="brand-img-overlay"></div>
                 </div>
             </div>
@@ -874,18 +1015,28 @@
                 </div>
                 <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="btn btn-dark">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
                     </svg>
                     Follow on Instagram
                 </a>
             </div>
 
             <div class="ig-grid stagger">
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal"><img src="/images/real_store_exterior.png" alt="Insta 1" loading="lazy" /></a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1"><img src="/images/real_store_shelf.png" alt="Insta 2" loading="lazy" /></a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2"><img src="/images/real_spiderman.png" alt="Insta 3" loading="lazy" /></a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-1"><img src="/images/real_mini_gt.png" alt="Insta 4" loading="lazy" /></a>
-                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal reveal-delay-2"><img src="/images/store_interior.png" alt="Insta 5" loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" class="ig-item reveal"><img
+                        src="/images/real_store_exterior.png" alt="Insta 1" loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener"
+                    class="ig-item reveal reveal-delay-1"><img src="/images/real_store_shelf.png" alt="Insta 2"
+                        loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener"
+                    class="ig-item reveal reveal-delay-2"><img src="/images/real_spiderman.png" alt="Insta 3"
+                        loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener"
+                    class="ig-item reveal reveal-delay-1"><img src="/images/real_mini_gt.png" alt="Insta 4"
+                        loading="lazy" /></a>
+                <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener"
+                    class="ig-item reveal reveal-delay-2"><img src="/images/store_interior.png" alt="Insta 5"
+                        loading="lazy" /></a>
             </div>
         </div>
     </section>
@@ -899,17 +1050,20 @@
             <div class="grid-3 stagger" style="margin-top:2rem;">
                 <div class="review-card reveal">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Customer review placeholder. Actual verified reviews will appear here once connected."</p>
+                    <p class="review-text">"Customer review placeholder. Actual verified reviews will appear here once
+                        connected."</p>
                     <div class="review-source">- Collector from Palghar</div>
                 </div>
                 <div class="review-card reveal reveal-delay-1">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Customer review placeholder. Real feedback regarding service/delivery goes here."</p>
+                    <p class="review-text">"Customer review placeholder. Real feedback regarding service/delivery goes
+                        here."</p>
                     <div class="review-source">- Anime Fan</div>
                 </div>
                 <div class="review-card reveal reveal-delay-2">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Customer review placeholder. Ensures we maintain a complete UI structure."</p>
+                    <p class="review-text">"Customer review placeholder. Ensures we maintain a complete UI structure."
+                    </p>
                     <div class="review-source">- Verified Buyer</div>
                 </div>
             </div>
@@ -926,7 +1080,8 @@
                     SHOP ALL TOYS
                 </h2>
                 <div class="final-cta-btns">
-                    <a href="/shop.html" class="btn btn-gold" style="padding:1rem 3rem; font-size:1.15rem;">EXPLORE COLLECTION</a>
+                    <a href="/shop.html" class="btn btn-gold" style="padding:1rem 3rem; font-size:1.15rem;">EXPLORE
+                        COLLECTION</a>
                 </div>
             </div>
         </div>
@@ -944,8 +1099,8 @@
         } from '/src/js/components.js';
 
         // ── Immediate skeletons ───────────────────────────────────
-        document.getElementById('category-grid').innerHTML  = skeletonCategoryCards(6);
-        document.getElementById('featured-grid').innerHTML  = skeletonProductCards(4);
+        document.getElementById('category-grid').innerHTML = skeletonCategoryCards(6);
+        document.getElementById('featured-grid').innerHTML = skeletonProductCards(4);
 
         const header = document.querySelector('.header');
         const handleScroll = () => { header?.classList.toggle('scrolled', window.scrollY > 60); };
@@ -970,7 +1125,7 @@
         newHeader?.classList.toggle('scrolled', window.scrollY > 60);
 
         const waNumber = config?.whatsapp_number || '';
-        
+
         // Dynamic overrides
         const heroImg = document.getElementById('hero-img');
         if (heroImg && config?.hero_image_url) heroImg.src = config.hero_image_url;
@@ -990,4 +1145,5 @@
         wireScrollReveal();
     </script>
 </body>
+
 </html>

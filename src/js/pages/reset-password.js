@@ -6,38 +6,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const successBox = document.getElementById('auth-success-box');
     const submitBtn = document.getElementById('submit-btn');
 
-    // Supabase Auth naturally handles the hash fragment from the email link
-    // which contains the access_token. We just listen for it.
+    if (!form) return;
 
+    // Supabase Auth handles the hash fragment from the email link which contains the access_token.
     supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event == "PASSWORD_RECOVERY") {
-            // The user is ready to reset password.
+        if (event === "PASSWORD_RECOVERY") {
+            // User session is restored via recovery token
         }
     });
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        errorBox.style.display = 'none';
-        errorBox.textContent = '';
+        if (errorBox) {
+            errorBox.style.display = 'none';
+            errorBox.textContent = '';
+        }
 
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm_password').value;
 
         if (password !== confirmPassword) {
-            errorBox.style.display = 'block';
-            errorBox.textContent = 'Passwords do not match.';
+            if (errorBox) {
+                errorBox.style.display = 'block';
+                errorBox.textContent = 'Passwords do not match.';
+            }
             return;
         }
 
         if (password.length < 6) {
-            errorBox.style.display = 'block';
-            errorBox.textContent = 'Password must be at least 6 characters.';
+            if (errorBox) {
+                errorBox.style.display = 'block';
+                errorBox.textContent = 'Password must be at least 6 characters.';
+            }
             return;
         }
 
-        submitBtn.textContent = 'Saving...';
-        submitBtn.disabled = true;
+        if (submitBtn) {
+            submitBtn.textContent = 'Saving...';
+            submitBtn.disabled = true;
+        }
 
         try {
             const { error } = await supabase.auth.updateUser({
@@ -47,13 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
 
             form.style.display = 'none';
-            successBox.style.display = 'block';
+            if (successBox) {
+                successBox.style.display = 'block';
+            }
+
+            setTimeout(() => {
+                window.location.href = '/login.html';
+            }, 1500);
 
         } catch (error) {
-            errorBox.style.display = 'block';
-            errorBox.textContent = error.message;
-            submitBtn.textContent = 'Save Password';
-            submitBtn.disabled = false;
+            if (errorBox) {
+                errorBox.style.display = 'block';
+                errorBox.textContent = error.message;
+            }
+            if (submitBtn) {
+                submitBtn.textContent = 'Save Password';
+                submitBtn.disabled = false;
+            }
         }
     });
 });
+
