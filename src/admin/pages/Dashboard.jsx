@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getDashboardStats, getRecentProducts } from '../lib/adminData.js';
-import { getStockState } from '../../js/inventory.js';
+import { getAvailabilityFromStock, getStockState } from '../../js/inventory.js';
 
 const Dashboard = () => {
     const [stats, setStats] = useState({ totalProducts: 0, featuredProducts: 0, totalCategories: 0, lowStock: 0, outOfStock: 0 });
@@ -105,10 +105,8 @@ const Dashboard = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        {p.availability === 'IN_STOCK' && <span className="badge badge-success">In Stock</span>}
-                                        {p.availability === 'LIMITED' && <span className="badge badge-warning">Limited</span>}
-                                        {p.availability === 'OUT_OF_STOCK' && <span className="badge badge-danger">Out of Stock</span>}
-                                        {p.availability === 'CONFIRM_ON_WA' && <span className="badge" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--text-secondary)' }}>WA Confirm</span>}
+                                        {getAvailabilityFromStock(p.stock_quantity) === 'IN_STOCK' && <span className="badge badge-success">In Stock</span>}
+                                        {getAvailabilityFromStock(p.stock_quantity) === 'OUT_OF_STOCK' && <span className="badge badge-danger">Out of Stock</span>}
                                     </td>
                                 </tr>
                             ))}

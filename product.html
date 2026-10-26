@@ -374,17 +374,16 @@
                 // Availability — map DB enum to display text + CSS class
                 const availabilityMap = {
                     'IN_STOCK': { label: 'In Stock', cls: 'in' },
-                    'LIMITED': { label: 'Limited Stock', cls: 'limited' },
                     'OUT_OF_STOCK': { label: 'Out of Stock', cls: 'out' },
-                    'CONFIRM_ON_WA': { label: 'Confirm on WhatsApp', cls: 'limited' },
                 };
-                const avail = availabilityMap[product.availability] || { label: 'Confirm on WhatsApp', cls: 'limited' };
+                const stockState = getStockState(product.stock_quantity);
+                const availability = stockState.quantity > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK';
+                const avail = availabilityMap[availability];
                 document.getElementById('pd-avail-text').textContent = avail.label;
                 const avEl = document.getElementById('pd-avail');
                 avEl.classList.remove('in', 'limited', 'out');
                 avEl.classList.add(avail.cls);
 
-                const stockState = getStockState(product.stock_quantity);
                 const stockQuantity = stockState.quantity;
                 const stockStateEl = document.createElement('div');
                 stockStateEl.textContent = stockState.label;

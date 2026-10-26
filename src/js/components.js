@@ -355,7 +355,7 @@ function syncWishlistEmptyState() {
 
 // ── Store Actions Wiring ────────────────────────────────────────────────────────
 export function wireStoreActions(supabase) {
-  import('/src/js/data.js').then(({ addToCart, toggleWishlist }) => {
+  import('/src/js/data.js').then(({ addToCart, formatCartMutationError, toggleWishlist }) => {
     document.addEventListener('click', async (e) => {
       const addBtn = e.target.closest('.product-add-btn');
       const wishBtn = e.target.closest('.wishlist-btn-corner');
@@ -382,7 +382,7 @@ export function wireStoreActions(supabase) {
         }
 
         if (res.error) {
-          alert('Error adding to cart: ' + formatMutationError(res.error));
+          alert('Error adding to cart: ' + formatCartMutationError(res.error));
           addBtn.innerHTML = originalText;
           addBtn.disabled = false;
           return;

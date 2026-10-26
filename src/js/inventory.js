@@ -1,5 +1,13 @@
 export const LOW_STOCK_THRESHOLD = 3;
 
+export function getAvailabilityFromStock(stockQuantity) {
+    const quantity = Number.isInteger(stockQuantity)
+        ? stockQuantity
+        : Number.parseInt(stockQuantity, 10);
+
+    return Number.isFinite(quantity) && quantity > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK';
+}
+
 export function getStockState(stockQuantity) {
     const quantity = Number.isInteger(stockQuantity)
         ? stockQuantity

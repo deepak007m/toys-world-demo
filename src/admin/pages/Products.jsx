@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../js/supabase.js';
-import { getStockState } from '../../js/inventory.js';
+import { getAvailabilityFromStock, getStockState } from '../../js/inventory.js';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -125,10 +125,8 @@ const Products = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        {p.availability === 'IN_STOCK' && <span className="badge badge-success">In</span>}
-                                        {p.availability === 'LIMITED' && <span className="badge badge-warning">Ltd</span>}
-                                        {p.availability === 'OUT_OF_STOCK' && <span className="badge badge-danger">Out</span>}
-                                        {p.availability === 'CONFIRM_ON_WA' && <span className="badge" style={{ background: 'rgba(255,255,255,0.1)' }}>WA</span>}
+                                        {getAvailabilityFromStock(p.stock_quantity) === 'IN_STOCK' && <span className="badge badge-success">In</span>}
+                                        {getAvailabilityFromStock(p.stock_quantity) === 'OUT_OF_STOCK' && <span className="badge badge-danger">Out</span>}
                                     </td>
                                     <td>{p.is_featured ? <span style={{ color: 'var(--accent-gold)' }}>★</span> : '—'}</td>
                                     <td style={{ textAlign: 'right' }}>

@@ -224,7 +224,7 @@
     <div id="footer-placeholder"></div>
 
     <script type="module">
-        import { getConfig, getCartItems, updateCartQuantity, removeCartItem } from '/src/js/data.js';
+        import { formatCartMutationError, getConfig, getCartItems, updateCartQuantity, removeCartItem } from '/src/js/data.js';
         import { getStockState } from '/src/js/inventory.js';
         import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, refreshBadges } from '/src/js/components.js';
         import { supabase } from '/src/js/supabase.js';
@@ -280,9 +280,9 @@
                                 ${unavailable ? 'Currently unavailable for purchase.' : exceedsStock ? `Quantity exceeds current stock (${stockState.quantity}). Please adjust.` : stockState.label}
                             </span>
                             <div class="qty-control">
-                                <button type="button" class="qty-btn btn-minus" data-id="${product.id}" data-qty="${item.quantity}">-</button>
+                                <button type="button" class="qty-btn btn-minus" data-id="${product.id}" data-qty="${item.quantity}" data-stock="${stockState.quantity}">-</button>
                                 <input type="text" class="qty-input" value="${item.quantity}" readonly>
-                                <button type="button" class="qty-btn btn-plus" data-id="${product.id}" data-qty="${item.quantity}" ${unavailable || item.quantity >= stockState.quantity ? 'disabled' : ''}>+</button>
+                                <button type="button" class="qty-btn btn-plus" data-id="${product.id}" data-qty="${item.quantity}" data-stock="${stockState.quantity}" ${unavailable || item.quantity >= stockState.quantity ? 'disabled' : ''}>+</button>
                             </div>
                             <button type="button" class="cart-item-remove btn-remove" data-id="${product.id}">Remove</button>
                         </div>
@@ -312,6 +312,7 @@
             const btn = btnPlus || btnMinus || btnRemove;
             const productId = btn.dataset.id;
             const currentQty = parseInt(btn.dataset.qty, 10) || 1;
+            const currentStock = parseInt(btn.dataset.stock, 10) || 0;
 
             if (!productId || productId === 'undefined') {
                 alert('Error: Could not determine product ID. Please reload the page.');
@@ -334,17 +335,22 @@
             if (btnPlus) {
                 res = await updateCartQuantity(productId, currentQty + 1);
             } else if (btnMinus) {
+                if (currentStock === 0) {
+                    if (parentItem) { parentItem.style.opacity = '1'; parentItem.style.pointerEvents = ''; }
+                    return;
+                }
                 if (currentQty <= 1) {
                     if (parentItem) { parentItem.style.opacity = '1'; parentItem.style.pointerEvents = ''; }
                     return;
                 }
-                res = await updateCartQuantity(productId, currentQty - 1);
+                const nextQty = currentQty > currentStock ? currentStock : currentQty - 1;
+                res = await updateCartQuantity(productId, nextQty);
             } else {
                 res = await removeCartItem(productId);
             }
 
             if (res?.error) {
-                const errMsg = res.error?.message || (typeof res.error === 'string' ? res.error : JSON.stringify(res.error));
+                const errMsg = formatCartMutationError(res.error);
                 console.error('[Cart] Mutation ERROR:', res.error);
                 alert('Error: ' + errMsg);
                 if (parentItem) { parentItem.style.opacity = '1'; parentItem.style.pointerEvents = ''; }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../js/supabase.js';
-import { getStockState } from '../../js/inventory.js';
+import { getAvailabilityFromStock, getStockState } from '../../js/inventory.js';
 import { uploadImage } from '../lib/adminData.js';
 
 const ProductForm = () => {
@@ -45,6 +45,7 @@ const ProductForm = () => {
                         ...prodData,
                         price: prodData.price || '',
                         stock_quantity: prodData.stock_quantity ?? 0,
+                        availability: getAvailabilityFromStock(prodData.stock_quantity),
                         category_id: prodData.category_id || '',
                         subcategory_id: prodData.subcategory_id || '',
                         short_description: prodData.short_description || '',
@@ -109,7 +110,7 @@ const ProductForm = () => {
                 stock_quantity: stockQuantity,
                 category_id: formData.category_id || null,
                 subcategory_id: formData.subcategory_id || null,
-                availability: formData.availability,
+                availability: getAvailabilityFromStock(stockQuantity),
                 is_featured: formData.is_featured,
                 image_url: finalImageUrl
             };

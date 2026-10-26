@@ -183,6 +183,16 @@ function normalizeQty(qty) {
   return Number.isFinite(n) && n > 0 ? n : 1;
 }
 
+export function formatCartMutationError(error) {
+  if (!error) return 'Unknown error';
+  if (typeof error === 'string') return error;
+
+  const message = error.message || JSON.stringify(error);
+  return error.code === 'P0001' && message.includes('currently in stock')
+    ? `${message} Please adjust your cart quantity.`
+    : message;
+}
+
 /** Treat zero-row UPDATE/DELETE as failure (PostgREST often returns error: null). */
 function mutationResult(data, error, emptyMessage) {
   if (error) {
