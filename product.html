@@ -255,18 +255,17 @@
                         <div style="display:flex; gap:1rem; align-items:center;">
                             <div
                                 style="display:flex; align-items:center; border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); height:50px;">
-                                <button
+                                <button id="pd-qty-minus"
                                     style="background:transparent; border:none; color:var(--text-primary); padding:0 1rem; cursor:pointer; font-size:1.25rem;">-</button>
-                                <input type="text" value="1" readonly
+                                <input id="pd-qty-input" type="text" value="1" readonly
                                     style="background:transparent; border:none; color:var(--text-primary); width:40px; text-align:center; font-weight:700; font-size:1.1rem; padding:0;">
-                                <button
+                                <button id="pd-qty-plus"
                                     style="background:transparent; border:none; color:var(--text-primary); padding:0 1rem; cursor:pointer; font-size:1.25rem;">+</button>
                             </div>
-                            <button class="btn btn-outline" style="flex:1; height:50px; font-size:1rem;"
-                                onclick="window.location.href='/cart.html'">Add to Cart</button>
-                            <button class="btn"
-                                style="height:50px; width:50px; display:flex; align-items:center; justify-content:center; background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); cursor:pointer;"
-                                onclick="window.location.href='/wishlist.html'">
+                            <button class="btn btn-outline product-add-btn" id="pd-add-to-cart"
+                                style="flex:1; height:50px; font-size:1rem;">Add to Cart</button>
+                            <button class="btn wishlist-btn-corner" id="pd-add-to-wishlist"
+                                style="height:50px; width:50px; display:flex; align-items:center; justify-content:center; background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); cursor:pointer;">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                     <path
                                         d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
@@ -322,7 +321,8 @@
 
         <script type="module">
             import { getProductById, getConfig, buildWhatsAppLink } from '/src/js/data.js';
-            import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+            import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, wireStoreActions } from '/src/js/components.js';
+            import { supabase } from '/src/js/supabase.js';
 
             // ── Load config and product in parallel ──────────────────────────────
             const params = new URLSearchParams(window.location.search);
@@ -395,8 +395,33 @@
                     b.style.display = 'block';
                     b.textContent = product.badge;
                 }
+                // Assign buttons ID
+                document.getElementById('pd-add-to-cart').dataset.id = product.id;
+                document.getElementById('pd-add-to-wishlist').dataset.id = product.id;
+
+                // Set wishlist active state from global cache if available
+                if (window.CURRENT_WISHLIST_IDS && window.CURRENT_WISHLIST_IDS.has(product.id)) {
+                    document.getElementById('pd-add-to-wishlist').classList.add('active');
+                }
+
+                // Plus / minus quantity logic
+                const qtyMinus = document.getElementById('pd-qty-minus');
+                const qtyPlus = document.getElementById('pd-qty-plus');
+                const qtyInput = document.getElementById('pd-qty-input');
+                if (qtyMinus && qtyPlus && qtyInput) {
+                    qtyMinus.addEventListener('click', () => {
+                        let c = parseInt(qtyInput.value) || 1;
+                        if (c > 1) qtyInput.value = c - 1;
+                    });
+                    qtyPlus.addEventListener('click', () => {
+                        let c = parseInt(qtyInput.value) || 1;
+                        qtyInput.value = c + 1;
+                    });
+                }
             }
 
+            mountAuthListener(supabase);
+            wireStoreActions(supabase);
             wireScrollReveal();
         </script>
 

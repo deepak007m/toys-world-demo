@@ -205,14 +205,20 @@
 
     <!-- Category filter chips -->
     <div class="filter-bar">
-        <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div class="container"
+            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
             <div style="display:flex; align-items:center; gap:1rem;">
-                <div style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"><a href="/" style="color:inherit; text-decoration:none;">Home</a> <span style="margin:0 0.25rem;">/</span> <span style="color:var(--text-primary);">Shop</span></div>
-                <div class="filter-scroll" id="filters" style="border-left:1px solid rgba(255,255,255,0.1); padding-left:1rem; margin-left:0.5rem;"></div>
+                <div style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"><a href="/"
+                        style="color:inherit; text-decoration:none;">Home</a> <span style="margin:0 0.25rem;">/</span>
+                    <span style="color:var(--text-primary);">Shop</span></div>
+                <div class="filter-scroll" id="filters"
+                    style="border-left:1px solid rgba(255,255,255,0.1); padding-left:1rem; margin-left:0.5rem;"></div>
             </div>
             <div style="display:flex; align-items:center; gap:0.5rem;">
-                <input type="text" placeholder="Search..." style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem 1rem; font-size:0.85rem; outline:none;">
-                <select style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem; font-size:0.85rem; outline:none; font-weight:600;">
+                <input type="text" placeholder="Search..."
+                    style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem 1rem; font-size:0.85rem; outline:none;">
+                <select
+                    style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem; font-size:0.85rem; outline:none; font-weight:600;">
                     <option>Sort: Featured</option>
                     <option>Price: Low to High</option>
                     <option>Price: High to Low</option>
@@ -243,8 +249,10 @@
         } from '/src/js/data.js';
         import {
             renderHeader, renderFooter, renderProductCard,
-            wireNavDrawer, wireScrollReveal, skeletonProductCards
+            wireNavDrawer, wireScrollReveal, skeletonProductCards,
+            mountAuthListener, wireStoreActions
         } from '/src/js/components.js';
+        import { supabase } from '/src/js/supabase.js';
 
         // ── State ────────────────────────────────────────────
         let currentCategoryId = null;
@@ -270,6 +278,8 @@
         document.getElementById('header-placeholder').innerHTML = renderHeader('Shop', config);
         document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
         wireNavDrawer();
+        mountAuthListener(supabase);
+        wireStoreActions(supabase);
 
         // Re-attach scroll on new header
         window.addEventListener('scroll', () => {
@@ -340,7 +350,9 @@
                 return;
             }
 
-            gridEl.innerHTML = products.map(p => renderProductCard(p, waNumber)).join('');
+            gridEl.innerHTML = products.map(p =>
+                renderProductCard(p, waNumber, window.CURRENT_WISHLIST_IDS?.has(p.id))
+            ).join('');
         }
 
         // ── Category chip click ───────────────────────────────

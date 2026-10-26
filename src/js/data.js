@@ -167,3 +167,185 @@ export const _STATIC_CATEGORIES = [
 ];
 // To rollback: swap all Supabase calls with _STATIC_CONFIG and _STATIC_CATEGORIES above.
 */
+
+// ─── Cart & Wishlist Phase 3B Data Methods ─────────────────────────────────────
+
+function requireAuth() {
+  return supabase.auth.getSession().then(({ data }) => data?.session?.user?.id || null);
+}
+
+function invalidProductId(productId) {
+  return !productId || String(productId) === 'undefined' || String(productId) === 'null';
+}
+
+function normalizeQty(qty) {
+  const n = parseInt(qty, 10);
+  return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
+/** Treat zero-row UPDATE/DELETE as failure (PostgREST often returns error: null). */
+function mutationResult(data, error, emptyMessage) {
+  if (error) {
+    console.error('[Supabase mutation]', error);
+    return { data: null, error };
+  }
+  const rows = Array.isArray(data) ? data : (data ? [data] : []);
+  if (rows.length === 0) {
+    const err = { message: emptyMessage };
+    console.error('[Supabase mutation]', err.message);
+    return { data: null, error: err };
+  }
+  return { data: rows, error: null };
+}
+
+export async function getCartItems() {
+  const userId = await requireAuth();
+  if (!userId) return { data: null, error: 'unauthenticated' };
+
+  const { data, error } = await supabase
+    .from('cart_items')
+    .select('id, quantity, product_id, products(*)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true });
+
+  if (error) console.error('[Supabase getCartItems] Error:', error);
+  return { data, error };
+}
+
+export async function addToCart(productId, qty = 1) {
+  const userId = await requireAuth();
+  if (!userId) return { error: 'unauthenticated' };
+
+  if (invalidProductId(productId)) {
+    return { error: { message: 'Invalid product ID provided.' } };
+  }
+
+  const amount = normalizeQty(qty);
+
+  const { data: existing, error: existErr } = await supabase
+    .from('cart_items')
+    .select('id, quantity')
+    .eq('user_id', userId)
+    .eq('product_id', productId)
+    .maybeSingle();
+
+  if (existErr) {
+    console.error('[Supabase addToCart checks] Error:', existErr);
+    return { error: existErr };
+  }
+
+  if (existing) {
+    const newQty = existing.quantity + amount;
+    const { data, error } = await supabase
+      .from('cart_items')
+      .update({ quantity: newQty })
+      .eq('id', existing.id)
+      .eq('user_id', userId)
+      .select('id, quantity');
+
+    return mutationResult(data, error, 'Could not update cart quantity. Please try again.');
+  }
+
+  const { data, error } = await supabase
+    .from('cart_items')
+    .insert({ user_id: userId, product_id: productId, quantity: amount })
+    .select('id, quantity');
+
+  return mutationResult(data, error, 'Could not add item to cart. Please try again.');
+}
+
+export async function updateCartQuantity(productId, newQty) {
+  const userId = await requireAuth();
+  if (!userId) return { error: 'unauthenticated' };
+
+  if (invalidProductId(productId)) {
+    return { error: { message: 'Invalid product ID provided.' } };
+  }
+
+  const qty = parseInt(newQty, 10);
+  if (!Number.isFinite(qty) || qty <= 0) {
+    return await removeCartItem(productId);
+  }
+
+  const { data, error } = await supabase
+    .from('cart_items')
+    .update({ quantity: qty })
+    .eq('user_id', userId)
+    .eq('product_id', productId)
+    .select('id, quantity');
+
+  return mutationResult(data, error, 'Could not update cart quantity. Please try again.');
+}
+
+export async function removeCartItem(productId) {
+  const userId = await requireAuth();
+  if (!userId) return { error: 'unauthenticated' };
+
+  if (invalidProductId(productId)) {
+    return { error: { message: 'Invalid product ID provided.' } };
+  }
+
+  const { data, error } = await supabase
+    .from('cart_items')
+    .delete()
+    .eq('user_id', userId)
+    .eq('product_id', productId)
+    .select('id');
+
+  return mutationResult(data, error, 'Could not remove cart item. Please try again.');
+}
+
+export async function getWishlistItems() {
+  const userId = await requireAuth();
+  if (!userId) return { data: null, error: 'unauthenticated' };
+
+  const { data, error } = await supabase
+    .from('wishlist_items')
+    .select('id, product_id, products(*)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) console.error('[Supabase getWishlistItems] Error:', error);
+  return { data, error };
+}
+
+export async function toggleWishlist(productId) {
+  const userId = await requireAuth();
+  if (!userId) return { error: 'unauthenticated', action: null };
+
+  if (invalidProductId(productId)) {
+    return { error: { message: 'Invalid product ID provided.' }, action: null };
+  }
+
+  const { data: existing, error: existErr } = await supabase
+    .from('wishlist_items')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('product_id', productId)
+    .maybeSingle();
+
+  if (existErr) {
+    console.error('[Supabase toggleWishlist checks] Error:', existErr);
+    return { error: existErr, action: null };
+  }
+
+  if (existing) {
+    const { data, error } = await supabase
+      .from('wishlist_items')
+      .delete()
+      .eq('id', existing.id)
+      .eq('user_id', userId)
+      .select('id');
+
+    const result = mutationResult(data, error, 'Could not remove from wishlist. Please try again.');
+    return { ...result, action: result.error ? null : 'removed' };
+  }
+
+  const { data, error } = await supabase
+    .from('wishlist_items')
+    .insert({ user_id: userId, product_id: productId })
+    .select('id');
+
+  const result = mutationResult(data, error, 'Could not add to wishlist. Please try again.');
+  return { ...result, action: result.error ? null : 'added' };
+}

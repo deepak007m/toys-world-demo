@@ -1095,8 +1095,10 @@
         import {
             renderHeader, renderFooter, renderCategoryCard,
             renderProductCard, wireNavDrawer, wireScrollReveal,
-            skeletonProductCards, skeletonCategoryCards
+            skeletonProductCards, skeletonCategoryCards,
+            mountAuthListener, wireStoreActions
         } from '/src/js/components.js';
+        import { supabase } from '/src/js/supabase.js';
 
         // ── Immediate skeletons ───────────────────────────────────
         document.getElementById('category-grid').innerHTML = skeletonCategoryCards(6);
@@ -1117,6 +1119,8 @@
         document.getElementById('header-placeholder').innerHTML = renderHeader('Home', config);
         document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
         wireNavDrawer();
+        mountAuthListener(supabase);
+        wireStoreActions(supabase);
 
         const newHeader = document.querySelector('.header');
         window.addEventListener('scroll', () => {
@@ -1137,10 +1141,15 @@
         if (categories.length > 0) catGrid.innerHTML = categories.map(renderCategoryCard).join('');
         else catGrid.innerHTML = '<p>Categories loading...</p>';
 
-        // Featured Map
+        // Featured Map — wishlist active state from session cache when available
         const featGrid = document.getElementById('featured-grid');
-        if (featured.length > 0) featGrid.innerHTML = featured.map(p => renderProductCard(p, waNumber)).join('');
-        else featGrid.innerHTML = '<p>No featured products found.</p>';
+        if (featured.length > 0) {
+            featGrid.innerHTML = featured.map(p =>
+                renderProductCard(p, waNumber, window.CURRENT_WISHLIST_IDS?.has(p.id))
+            ).join('');
+        } else {
+            featGrid.innerHTML = '<p>No featured products found.</p>';
+        }
 
         wireScrollReveal();
     </script>

@@ -25,8 +25,9 @@ export function renderHeader(activePage = '', config = null) {
           <a href="/shop.html" class="icon-link" aria-label="Search" id="desktop-search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </a>
-          <a href="/wishlist.html" class="icon-link" aria-label="Wishlist" id="desktop-wishlist">
+          <a href="/wishlist.html" class="icon-link" aria-label="Wishlist" id="desktop-wishlist" style="position:relative;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <span class="wishlist-badge" style="position:absolute; top:-6px; right:-6px; background:var(--accent-gold); color:#000; font-size:0.65rem; font-weight:bold; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center;">0</span>
           </a>
           
           <div id="desktop-auth-container">
@@ -37,7 +38,7 @@ export function renderHeader(activePage = '', config = null) {
 
           <a href="/cart.html" class="icon-link" aria-label="Cart" style="position:relative;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-            <span class="cart-badge" style="position:absolute; top:-6px; right:-6px; background:var(--accent-gold); color:#000; font-size:0.65rem; font-weight:bold; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
+            <span class="cart-badge" id="header-cart-badge" style="position:absolute; top:-6px; right:-6px; background:var(--accent-gold); color:#000; font-size:0.65rem; font-weight:bold; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center;">0</span>
           </a>
         </div>
       </div>
@@ -151,7 +152,7 @@ export function renderFooter(config = null) {
   `;
 }
 
-export function renderProductCard(product, waNumber = '') {
+export function renderProductCard(product, waNumber = '', isWishlisted = false) {
   const badge = product.badge
     ? `<div class="product-badge">${product.badge}</div>` : '';
 
@@ -160,13 +161,13 @@ export function renderProductCard(product, waNumber = '') {
     : 'Price on request';
 
   const categoryName = product.categories?.title || product.category_name || '';
+  const wishActiveClass = isWishlisted ? ' active' : '';
 
-  // Generating completely static wishlist and cart button structures in HTML
   return `
     <div class="product-card" onclick="window.location.href='/product.html?id=${product.id}'" style="cursor:pointer;">
       <div class="product-img-wrap" style="position:relative;">
         ${badge}
-        <button class="wishlist-btn-corner" aria-label="Add to wishlist" onclick="event.stopPropagation(); this.classList.toggle('active');" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s;">
+        <button class="wishlist-btn-corner${wishActiveClass}" data-id="${product.id}" aria-label="Add to wishlist" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg>
         </button>
         ${product.image_url
@@ -180,7 +181,7 @@ export function renderProductCard(product, waNumber = '') {
         
         <div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
           <span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">${priceDisplay}</span>
-          <button class="btn btn-outline product-add-btn" onclick="event.stopPropagation(); window.location.href='/cart.html'" style="width:100%; padding:0.75rem; font-size:0.875rem;">
+          <button class="btn btn-outline product-add-btn" data-id="${product.id}" style="width:100%; padding:0.75rem; font-size:0.875rem;">
             Add to Cart
           </button>
         </div>
@@ -265,7 +266,6 @@ export function mountAuthListener(supabase) {
     if (!desktopAuth || !mobileAuth) return;
 
     if (session) {
-      // Safe fallback if profile fetch fails or trigger hasn't fired yet
       let firstName = 'Account';
       try {
         const { data } = await supabase.from('profiles').select('full_name').eq('id', session.user.id).limit(1);
@@ -274,26 +274,174 @@ export function mountAuthListener(supabase) {
         } else if (session.user.user_metadata?.full_name) {
           firstName = session.user.user_metadata.full_name.split(' ')[0];
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) { console.error(e); }
 
-      const loggedInHTML = `<a href="/account.html" class="nav-link" style="color:var(--accent-gold); font-size:0.875rem; text-transform:uppercase; font-weight:800; letter-spacing:0.04em;">${firstName}</a>`;
-      const loggedInMobileHTML = `<a href="/account.html" class="btn btn-gold" style="width:100%; text-align:center;">Hi, ${firstName} <span>→</span></a>`;
+      desktopAuth.innerHTML = `<a href="/account.html" class="nav-link" style="color:var(--accent-gold); font-size:0.875rem; text-transform:uppercase; font-weight:800; letter-spacing:0.04em;">${firstName}</a>`;
+      mobileAuth.innerHTML = `<a href="/account.html" class="btn btn-gold" style="width:100%; text-align:center;">Hi, ${firstName} <span>→</span></a>`;
 
-      desktopAuth.innerHTML = loggedInHTML;
-      mobileAuth.innerHTML = loggedInMobileHTML;
+      refreshBadges(supabase, session.user.id);
     } else {
-      const loggedOutHTML = `<a href="/login.html" class="icon-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>`;
-      const loggedOutMobileHTML = `<a href="/login.html" class="btn btn-outline" style="width:100%; text-align:center;">Sign In / Register</a>`;
+      desktopAuth.innerHTML = `<a href="/login.html" class="icon-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>`;
+      mobileAuth.innerHTML = `<a href="/login.html" class="btn btn-outline" style="width:100%; text-align:center;">Sign In / Register</a>`;
 
-      desktopAuth.innerHTML = loggedOutHTML;
-      mobileAuth.innerHTML = loggedOutMobileHTML;
+      document.querySelectorAll('.cart-badge').forEach(b => b.style.display = 'none');
+      document.querySelectorAll('.wishlist-badge').forEach(b => b.style.display = 'none');
+      window.CURRENT_WISHLIST_IDS = new Set();
     }
   };
 
   supabase.auth.getSession().then((res) => updateAuthUI(res?.data?.session)).catch(() => { });
   supabase.auth.onAuthStateChange((_event, session) => updateAuthUI(session));
+}
+
+export async function refreshBadges(supabase, userId) {
+  if (!userId) {
+    const res = await supabase.auth.getSession();
+    userId = res.data?.session?.user?.id;
+    if (!userId) return;
+  }
+
+  const { data: cartData } = await supabase.from('cart_items').select('quantity').eq('user_id', userId);
+  const cartCount = (cartData || []).reduce((sum, item) => sum + item.quantity, 0);
+
+  const { data: wishData } = await supabase.from('wishlist_items').select('product_id').eq('user_id', userId);
+  const wishCount = (wishData || []).length;
+
+  window.CURRENT_WISHLIST_IDS = new Set((wishData || []).map(w => w.product_id));
+
+  document.querySelectorAll('.cart-badge').forEach(b => {
+    b.textContent = cartCount;
+    b.style.display = cartCount > 0 ? 'flex' : 'none';
+  });
+
+  document.querySelectorAll('.wishlist-badge').forEach(b => {
+    b.textContent = wishCount;
+    b.style.display = wishCount > 0 ? 'flex' : 'none';
+  });
+
+  // Sync any rendered toggles on screen
+  document.querySelectorAll('.wishlist-btn-corner').forEach(btn => {
+    btn.classList.toggle('active', window.CURRENT_WISHLIST_IDS.has(btn.dataset.id));
+  });
+}
+
+function formatMutationError(err) {
+  if (!err) return 'Unknown error';
+  if (typeof err === 'string') return err;
+  return err.message || JSON.stringify(err);
+}
+
+function isWishlistPage() {
+  return window.location.pathname.includes('wishlist.html');
+}
+
+function syncWishlistEmptyState() {
+  const grid = document.getElementById('wishlist-grid');
+  const emptyState = document.getElementById('empty-wishlist');
+  if (!grid || !emptyState) return;
+
+  const visibleCards = Array.from(grid.querySelectorAll('.product-card'))
+    .filter(c => c.style.display !== 'none');
+
+  if (visibleCards.length === 0) {
+    grid.style.display = 'none';
+    emptyState.style.display = 'flex';
+  }
+}
+
+// ── Store Actions Wiring ────────────────────────────────────────────────────────
+export function wireStoreActions(supabase) {
+  import('/src/js/data.js').then(({ addToCart, toggleWishlist }) => {
+    document.addEventListener('click', async (e) => {
+      const addBtn = e.target.closest('.product-add-btn');
+      const wishBtn = e.target.closest('.wishlist-btn-corner');
+
+      if (addBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const originalText = addBtn.innerHTML;
+        addBtn.innerHTML = 'Adding...';
+        addBtn.disabled = true;
+
+        // Product page quantity selector (default 1 elsewhere)
+        let qty = 1;
+        const qtyInput = document.getElementById('pd-qty-input');
+        if (addBtn.id === 'pd-add-to-cart' && qtyInput) {
+          qty = parseInt(qtyInput.value, 10) || 1;
+        }
+
+        const res = await addToCart(addBtn.dataset.id, qty);
+
+        if (res.error === 'unauthenticated') {
+          window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+          return;
+        }
+
+        if (res.error) {
+          alert('Error adding to cart: ' + formatMutationError(res.error));
+          addBtn.innerHTML = originalText;
+          addBtn.disabled = false;
+          return;
+        }
+
+        addBtn.innerHTML = 'Added! ✓';
+        setTimeout(() => { addBtn.innerHTML = originalText; addBtn.disabled = false; }, 2000);
+        refreshBadges(supabase, null);
+
+        // Wishlist page: remove from wishlist only after successful cart add + wishlist delete
+        if (isWishlistPage()) {
+          const card = addBtn.closest('.product-card');
+          if (card) {
+            card.style.opacity = '0.5';
+            card.style.pointerEvents = 'none';
+            const wishRes = await toggleWishlist(addBtn.dataset.id);
+            if (wishRes.error) {
+              alert('Added to cart, but could not remove from wishlist: ' + formatMutationError(wishRes.error));
+              card.style.opacity = '1';
+              card.style.pointerEvents = '';
+            } else if (wishRes.action === 'removed') {
+              card.style.display = 'none';
+              syncWishlistEmptyState();
+              refreshBadges(supabase, null);
+            }
+          }
+        }
+        return;
+      }
+
+      if (wishBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        wishBtn.disabled = true;
+        const res = await toggleWishlist(wishBtn.dataset.id);
+        wishBtn.disabled = false;
+
+        if (res.error === 'unauthenticated') {
+          window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+          return;
+        }
+
+        if (res.error) {
+          alert('Error updating wishlist: ' + formatMutationError(res.error));
+          return;
+        }
+
+        if (res.action === 'added') wishBtn.classList.add('active');
+        if (res.action === 'removed') wishBtn.classList.remove('active');
+        refreshBadges(supabase, null);
+
+        // Wishlist page: hide card only after confirmed DELETE
+        if (isWishlistPage() && res.action === 'removed') {
+          const card = wishBtn.closest('.product-card');
+          if (card) {
+            card.style.display = 'none';
+            syncWishlistEmptyState();
+          }
+        }
+      }
+    });
+  });
 }
 
 // ── Scroll reveal observer ────────────────────────────────────────────────────

@@ -175,73 +175,22 @@
         <div class="page-header">
             <div class="container reveal">
                 <h1 class="page-title">Your Cart</h1>
-                <p style="color:var(--text-secondary);">3 items pending. Ready to roll.</p>
+                <p style="color:var(--text-secondary);" id="cart-subtitle">Loading...</p>
             </div>
         </div>
 
         <div class="container reveal reveal-delay-1">
-            <div class="cart-grid">
-                <!-- Cart Items (Static) -->
-                <div class="cart-items-list">
-                    <div class="cart-item">
-                        <img src="/images/prod_iron_man.png" alt="Iron Man" class="cart-item-img" />
-                        <div class="cart-item-details">
-                            <span class="cart-item-brand">ACTION FIGURES</span>
-                            <a href="/product.html" class="cart-item-name"
-                                style="color:var(--text-primary); text-decoration:none;">Iron Man Mk 50 Collector
-                                Edition</a>
-                            <span class="cart-item-price">₹4,500</span>
-                            <div class="qty-control">
-                                <button class="qty-btn">-</button>
-                                <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn">+</button>
-                            </div>
-                            <button class="cart-item-remove">Remove</button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="/images/prod_rc.png" alt="RC Buggy" class="cart-item-img" />
-                        <div class="cart-item-details">
-                            <span class="cart-item-brand">RC RACING</span>
-                            <a href="/product.html" class="cart-item-name"
-                                style="color:var(--text-primary); text-decoration:none;">Speedster Buggy 4x4 (Pro
-                                Series)</a>
-                            <span class="cart-item-price">₹2,200</span>
-                            <div class="qty-control">
-                                <button class="qty-btn">-</button>
-                                <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn">+</button>
-                            </div>
-                            <button class="cart-item-remove">Remove</button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="/images/prod_mini_gt.png" alt="Nissan GT-R" class="cart-item-img" />
-                        <div class="cart-item-details">
-                            <span class="cart-item-brand">DIE-CAST</span>
-                            <a href="/product.html" class="cart-item-name"
-                                style="color:var(--text-primary); text-decoration:none;">Mini GT Nissan GT-R R35
-                                1:64</a>
-                            <span class="cart-item-price">₹1,850</span>
-                            <div class="qty-control">
-                                <button class="qty-btn">-</button>
-                                <input type="text" class="qty-input" value="2" readonly>
-                                <button class="qty-btn">+</button>
-                            </div>
-                            <button class="cart-item-remove">Remove</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="cart-grid" id="cart-container" style="display:none;">
+                <!-- Cart Items (Dynamic) -->
+                <div class="cart-items-list" id="cart-list"></div>
 
                 <!-- Order Summary -->
                 <div>
                     <div class="summary-card">
                         <h2 class="summary-title">Order Summary</h2>
                         <div class="summary-row">
-                            <span>Subtotal (3 items)</span>
-                            <span>₹10,400</span>
+                            <span id="summary-items-count">Subtotal (0 items)</span>
+                            <span id="summary-subtotal">₹0</span>
                         </div>
                         <div class="summary-row">
                             <span>Standard Shipping</span>
@@ -249,7 +198,7 @@
                         </div>
                         <div class="summary-row total">
                             <span>Estimated Total</span>
-                            <span>₹10,400</span>
+                            <span id="summary-total">₹0</span>
                         </div>
                         <a href="/checkout.html" class="btn btn-gold"
                             style="width:100%; padding:1rem; font-size:1.1rem; justify-content:center;">Proceed to
@@ -261,19 +210,152 @@
                     </div>
                 </div>
             </div>
+
+            <div id="cart-empty" style="display:none; text-align:center; padding:5rem 0;">
+                <h2
+                    style="font-family:var(--font-heading); font-size:2rem; font-weight:800; margin-bottom:1rem; text-transform:uppercase;">
+                    Your cart is empty</h2>
+                <p style="color:var(--text-muted); margin-bottom:2rem;">Looks like you haven't added anything yet.</p>
+                <a href="/shop.html" class="btn btn-gold">Continue Shopping</a>
+            </div>
         </div>
     </main>
 
     <div id="footer-placeholder"></div>
 
     <script type="module">
-        import { getConfig } from '/src/js/data.js';
-        import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
+        import { getConfig, getCartItems, updateCartQuantity, removeCartItem } from '/src/js/data.js';
+        import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, refreshBadges } from '/src/js/components.js';
+        import { supabase } from '/src/js/supabase.js';
+
+        async function renderCart() {
+            const { data: sessionData } = await supabase.auth.getSession();
+            if (!sessionData?.session) {
+                window.location.href = '/login.html?redirect=/cart.html';
+                return;
+            }
+
+            const { data, error } = await getCartItems();
+            const container = document.getElementById('cart-container');
+            const emptyState = document.getElementById('cart-empty');
+
+            if (error || !data || data.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                document.getElementById('cart-subtitle').textContent = '0 items pending.';
+                refreshBadges(supabase, sessionData.session.user.id);
+                return;
+            }
+
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            const listEl = document.getElementById('cart-list');
+            let subtotal = 0;
+            let totalItems = 0;
+
+            listEl.innerHTML = data.map(item => {
+                let product = item.products;
+                if (Array.isArray(product)) product = product[0];
+                if (!product) return '';
+
+                const itemTotal = (product.price || 0) * item.quantity;
+                subtotal += itemTotal;
+                totalItems += item.quantity;
+
+                return `
+                    <div class="cart-item" data-id="${product.id}">
+                        ${product.image_url
+                        ? `<img src="${product.image_url}" alt="${product.name}" class="cart-item-img" />`
+                        : `<div class="cart-item-img" style="background:#222;"></div>`}
+                        <div class="cart-item-details">
+                            <span class="cart-item-brand">Item</span>
+                            <a href="/product.html?id=${product.id}" class="cart-item-name" style="color:var(--text-primary); text-decoration:none;">${product.name}</a>
+                            <span class="cart-item-price">₹${(product.price || 0).toLocaleString('en-IN')}</span>
+                            <div class="qty-control">
+                                <button type="button" class="qty-btn btn-minus" data-id="${product.id}" data-qty="${item.quantity}">-</button>
+                                <input type="text" class="qty-input" value="${item.quantity}" readonly>
+                                <button type="button" class="qty-btn btn-plus" data-id="${product.id}" data-qty="${item.quantity}">+</button>
+                            </div>
+                            <button type="button" class="cart-item-remove btn-remove" data-id="${product.id}">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('cart-subtitle').textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''} pending. Ready to roll.`;
+            document.getElementById('summary-items-count').textContent = `Subtotal (${totalItems} item${totalItems !== 1 ? 's' : ''})`;
+            const formattedTotal = `₹${subtotal.toLocaleString('en-IN')}`;
+            document.getElementById('summary-subtotal').textContent = formattedTotal;
+            document.getElementById('summary-total').textContent = formattedTotal;
+
+            refreshBadges(supabase, sessionData.session.user.id);
+        }
+
+        async function handleCartAction(e) {
+            const btnPlus = e.target.closest('.btn-plus');
+            const btnMinus = e.target.closest('.btn-minus');
+            const btnRemove = e.target.closest('.btn-remove');
+
+            if (!btnPlus && !btnMinus && !btnRemove) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const btn = btnPlus || btnMinus || btnRemove;
+            const productId = btn.dataset.id;
+            const currentQty = parseInt(btn.dataset.qty, 10) || 1;
+
+            if (!productId || productId === 'undefined') {
+                alert('Error: Could not determine product ID. Please reload the page.');
+                return;
+            }
+
+            const { data: sesData } = await supabase.auth.getSession();
+            if (!sesData?.session?.user?.id) {
+                window.location.href = '/login.html?redirect=/cart.html';
+                return;
+            }
+
+            const parentItem = btn.closest('.cart-item');
+            if (parentItem) {
+                parentItem.style.opacity = '0.5';
+                parentItem.style.pointerEvents = 'none';
+            }
+
+            let res;
+            if (btnPlus) {
+                res = await updateCartQuantity(productId, currentQty + 1);
+            } else if (btnMinus) {
+                if (currentQty <= 1) {
+                    if (parentItem) { parentItem.style.opacity = '1'; parentItem.style.pointerEvents = ''; }
+                    return;
+                }
+                res = await updateCartQuantity(productId, currentQty - 1);
+            } else {
+                res = await removeCartItem(productId);
+            }
+
+            if (res?.error) {
+                const errMsg = res.error?.message || (typeof res.error === 'string' ? res.error : JSON.stringify(res.error));
+                console.error('[Cart] Mutation ERROR:', res.error);
+                alert('Error: ' + errMsg);
+                if (parentItem) { parentItem.style.opacity = '1'; parentItem.style.pointerEvents = ''; }
+                return;
+            }
+
+            await renderCart();
+        }
 
         async function init() {
             const config = await getConfig();
             document.getElementById('header-placeholder').innerHTML = renderHeader('Cart', config);
             document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
+
+            mountAuthListener(supabase);
+            await renderCart();
+            document.getElementById('cart-list')?.addEventListener('click', handleCartAction);
+
             wireNavDrawer();
             wireScrollReveal();
         }
