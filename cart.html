@@ -225,6 +225,7 @@
 
     <script type="module">
         import { getConfig, getCartItems, updateCartQuantity, removeCartItem } from '/src/js/data.js';
+        import { getStockState } from '/src/js/inventory.js';
         import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, refreshBadges } from '/src/js/components.js';
         import { supabase } from '/src/js/supabase.js';
 
@@ -262,6 +263,9 @@
                 const itemTotal = (product.price || 0) * item.quantity;
                 subtotal += itemTotal;
                 totalItems += item.quantity;
+                const stockState = getStockState(product.stock_quantity);
+                const exceedsStock = stockState.quantity > 0 && item.quantity > stockState.quantity;
+                const unavailable = stockState.quantity === 0;
 
                 return `
                     <div class="cart-item" data-id="${product.id}">
@@ -272,10 +276,13 @@
                             <span class="cart-item-brand">Item</span>
                             <a href="/product.html?id=${product.id}" class="cart-item-name" style="color:var(--text-primary); text-decoration:none;">${product.name}</a>
                             <span class="cart-item-price">₹${(product.price || 0).toLocaleString('en-IN')}</span>
+                            <span style="display:block; color:${unavailable || exceedsStock ? '#f87171' : stockState.key === 'LOW_STOCK' ? 'var(--accent-gold)' : '#4ade80'}; font-size:0.8rem; margin-top:0.5rem;">
+                                ${unavailable ? 'Currently unavailable for purchase.' : exceedsStock ? `Quantity exceeds current stock (${stockState.quantity}). Please adjust.` : stockState.label}
+                            </span>
                             <div class="qty-control">
                                 <button type="button" class="qty-btn btn-minus" data-id="${product.id}" data-qty="${item.quantity}">-</button>
                                 <input type="text" class="qty-input" value="${item.quantity}" readonly>
-                                <button type="button" class="qty-btn btn-plus" data-id="${product.id}" data-qty="${item.quantity}">+</button>
+                                <button type="button" class="qty-btn btn-plus" data-id="${product.id}" data-qty="${item.quantity}" ${unavailable || item.quantity >= stockState.quantity ? 'disabled' : ''}>+</button>
                             </div>
                             <button type="button" class="cart-item-remove btn-remove" data-id="${product.id}">Remove</button>
                         </div>

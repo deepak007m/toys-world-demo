@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../js/supabase.js';
+import { getStockState } from '../../js/inventory.js';
 import { uploadImage } from '../lib/adminData.js';
 
 const ProductForm = () => {
@@ -20,6 +21,7 @@ const ProductForm = () => {
         short_description: '',
         long_description: '',
         price: '',
+        stock_quantity: 0,
         category_id: '',
         subcategory_id: '',
         availability: 'IN_STOCK',
@@ -42,6 +44,7 @@ const ProductForm = () => {
                     setFormData({
                         ...prodData,
                         price: prodData.price || '',
+                        stock_quantity: prodData.stock_quantity ?? 0,
                         category_id: prodData.category_id || '',
                         subcategory_id: prodData.subcategory_id || '',
                         short_description: prodData.short_description || '',
@@ -86,6 +89,11 @@ const ProductForm = () => {
         setError(null);
 
         try {
+            const stockQuantity = Number(formData.stock_quantity);
+            if (!Number.isInteger(stockQuantity) || stockQuantity < 0) {
+                throw new Error('Stock Quantity must be a whole number greater than or equal to 0.');
+            }
+
             let finalImageUrl = formData.image_url;
 
             if (imageFile) {
@@ -98,6 +106,7 @@ const ProductForm = () => {
                 short_description: formData.short_description,
                 long_description: formData.long_description,
                 price: formData.price ? parseFloat(formData.price) : null,
+                stock_quantity: stockQuantity,
                 category_id: formData.category_id || null,
                 subcategory_id: formData.subcategory_id || null,
                 availability: formData.availability,
@@ -162,6 +171,24 @@ const ProductForm = () => {
                             onChange={e => setFormData({ ...formData, price: e.target.value })}
                             placeholder="Leave empty for 'Price on Request'"
                         />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Stock Quantity</label>
+                        <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            required
+                            value={formData.stock_quantity}
+                            onChange={e => setFormData({ ...formData, stock_quantity: e.target.value })}
+                        />
+                        <small style={{ color: 'var(--text-muted)' }}>
+                            Numeric physical inventory. This is separate from Availability.
+                        </small>
+                        <small style={{ color: 'var(--text-secondary)' }}>
+                            Current state: {getStockState(Number(formData.stock_quantity)).label}
+                        </small>
                     </div>
 
                     <div style={{ display: 'flex', gap: '1rem' }}>

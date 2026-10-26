@@ -1,9 +1,10 @@
 import { supabase } from '../../js/supabase.js';
+import { LOW_STOCK_THRESHOLD } from '../../js/inventory.js';
 
 // --- Dashboard Stats ---
 export async function getDashboardStats() {
     const [productsRes, categoriesRes] = await Promise.all([
-        supabase.from('products').select('id, is_featured, availability'),
+        supabase.from('products').select('id, is_featured, stock_quantity'),
         supabase.from('categories').select('id', { count: 'exact' })
     ]);
 
@@ -12,14 +13,15 @@ export async function getDashboardStats() {
         totalProducts: products.length,
         featuredProducts: products.filter(p => p.is_featured).length,
         totalCategories: categoriesRes.data?.length || 0,
-        lowStock: products.filter(p => p.availability !== 'IN_STOCK' && p.availability !== 'CONFIRM_ON_WA').length
+        lowStock: products.filter(p => p.stock_quantity > 0 && p.stock_quantity <= LOW_STOCK_THRESHOLD).length,
+        outOfStock: products.filter(p => p.stock_quantity === 0).length
     };
 }
 
 export async function getRecentProducts() {
     const { data, error } = await supabase
         .from('products')
-        .select('id, name, price, availability, image_url, created_at, categories(title)')
+        .select('id, name, price, availability, stock_quantity, image_url, created_at, categories(title)')
         .order('created_at', { ascending: false })
         .limit(5);
 

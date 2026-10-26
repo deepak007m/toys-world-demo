@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getDashboardStats, getRecentProducts } from '../lib/adminData.js';
+import { getStockState } from '../../js/inventory.js';
 
 const Dashboard = () => {
-    const [stats, setStats] = useState({ totalProducts: 0, featuredProducts: 0, totalCategories: 0, lowStock: 0 });
+    const [stats, setStats] = useState({ totalProducts: 0, featuredProducts: 0, totalCategories: 0, lowStock: 0, outOfStock: 0 });
     const [recentProducts, setRecentProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -47,8 +48,12 @@ const Dashboard = () => {
                     <div style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: 'var(--text-primary)' }}>{stats.totalCategories}</div>
                 </div>
                 <div className="admin-card">
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '0.5rem' }}>Low / Out of Stock</div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '0.5rem' }}>Low Stock</div>
                     <div style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: stats.lowStock > 0 ? 'var(--status-warning)' : 'var(--text-primary)' }}>{stats.lowStock}</div>
+                </div>
+                <div className="admin-card">
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '0.5rem' }}>Out of Stock</div>
+                    <div style={{ fontSize: '2.5rem', fontFamily: 'var(--font-heading)', fontWeight: 800, color: stats.outOfStock > 0 ? 'var(--status-danger)' : 'var(--text-primary)' }}>{stats.outOfStock}</div>
                 </div>
             </div>
 
@@ -74,6 +79,7 @@ const Dashboard = () => {
                                 <th>Product Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
+                                <th>Stock</th>
                                 <th>Availability</th>
                             </tr>
                         </thead>
@@ -92,6 +98,12 @@ const Dashboard = () => {
                                     <td style={{ fontWeight: 500 }}>{p.name}</td>
                                     <td>{p.categories?.title || '—'}</td>
                                     <td>{p.price != null ? `₹${p.price}` : <span style={{ color: 'var(--text-muted)' }}>On Request</span>}</td>
+                                    <td>
+                                        <strong>{p.stock_quantity ?? 0}</strong>
+                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                                            {getStockState(p.stock_quantity).label}
+                                        </div>
+                                    </td>
                                     <td>
                                         {p.availability === 'IN_STOCK' && <span className="badge badge-success">In Stock</span>}
                                         {p.availability === 'LIMITED' && <span className="badge badge-warning">Limited</span>}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../js/supabase.js';
+import { getStockState } from '../../js/inventory.js';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -96,6 +97,7 @@ const Products = () => {
                                 <th>Subcat</th>
                                 <th>Price</th>
                                 <th>Stock</th>
+                                <th>Availability</th>
                                 <th>Featured</th>
                                 <th style={{ textAlign: 'right' }}>Actions</th>
                             </tr>
@@ -116,6 +118,12 @@ const Products = () => {
                                     <td>{p.categories?.title || '—'}</td>
                                     <td>{p.subcategories?.title || '—'}</td>
                                     <td>{p.price != null ? `₹${p.price}` : <span style={{ color: 'var(--text-muted)' }}>Req</span>}</td>
+                                    <td>
+                                        <strong>{p.stock_quantity ?? 0}</strong>
+                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                                            {getStockState(p.stock_quantity).label}
+                                        </div>
+                                    </td>
                                     <td>
                                         {p.availability === 'IN_STOCK' && <span className="badge badge-success">In</span>}
                                         {p.availability === 'LIMITED' && <span className="badge badge-warning">Ltd</span>}

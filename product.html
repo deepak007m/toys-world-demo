@@ -321,6 +321,7 @@
 
         <script type="module">
             import { getProductById, getConfig, buildWhatsAppLink } from '/src/js/data.js';
+            import { getStockState } from '/src/js/inventory.js';
             import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, wireStoreActions } from '/src/js/components.js';
             import { supabase } from '/src/js/supabase.js';
 
@@ -383,6 +384,13 @@
                 avEl.classList.remove('in', 'limited', 'out');
                 avEl.classList.add(avail.cls);
 
+                const stockState = getStockState(product.stock_quantity);
+                const stockQuantity = stockState.quantity;
+                const stockStateEl = document.createElement('div');
+                stockStateEl.textContent = stockState.label;
+                stockStateEl.style.cssText = `margin:-1rem 0 1.5rem; color:${stockState.key === 'OUT_OF_STOCK' ? '#f87171' : stockState.key === 'LOW_STOCK' ? 'var(--accent-gold)' : '#4ade80'}; font-weight:600;`;
+                avEl.insertAdjacentElement('afterend', stockStateEl);
+
                 // WhatsApp link
                 const waLink = waNumber
                     ? buildWhatsAppLink(waNumber, product.name)
@@ -398,6 +406,14 @@
                 // Assign buttons ID
                 document.getElementById('pd-add-to-cart').dataset.id = product.id;
                 document.getElementById('pd-add-to-wishlist').dataset.id = product.id;
+                const addToCartButton = document.getElementById('pd-add-to-cart');
+                const qtyMinus = document.getElementById('pd-qty-minus');
+                const qtyPlus = document.getElementById('pd-qty-plus');
+                const qtyInput = document.getElementById('pd-qty-input');
+                addToCartButton.disabled = stockQuantity === 0;
+                addToCartButton.textContent = stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart';
+                qtyInput.max = String(stockQuantity);
+                qtyInput.value = stockQuantity === 0 ? '0' : '1';
 
                 // Set wishlist active state from global cache if available
                 if (window.CURRENT_WISHLIST_IDS && window.CURRENT_WISHLIST_IDS.has(product.id)) {
@@ -405,18 +421,19 @@
                 }
 
                 // Plus / minus quantity logic
-                const qtyMinus = document.getElementById('pd-qty-minus');
-                const qtyPlus = document.getElementById('pd-qty-plus');
-                const qtyInput = document.getElementById('pd-qty-input');
                 if (qtyMinus && qtyPlus && qtyInput) {
                     qtyMinus.addEventListener('click', () => {
                         let c = parseInt(qtyInput.value) || 1;
                         if (c > 1) qtyInput.value = c - 1;
+                        qtyPlus.disabled = stockQuantity === 0 || c - 1 >= stockQuantity;
                     });
                     qtyPlus.addEventListener('click', () => {
                         let c = parseInt(qtyInput.value) || 1;
-                        qtyInput.value = c + 1;
+                        if (c < stockQuantity) qtyInput.value = c + 1;
+                        qtyPlus.disabled = stockQuantity === 0 || parseInt(qtyInput.value, 10) >= stockQuantity;
                     });
+                    qtyMinus.disabled = stockQuantity === 0;
+                    qtyPlus.disabled = stockQuantity <= 1;
                 }
             }
 

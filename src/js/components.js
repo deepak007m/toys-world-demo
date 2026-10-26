@@ -1,4 +1,5 @@
 import { buildWhatsAppLink } from './data.js';
+import { getStockState } from './inventory.js';
 
 export function renderHeader(activePage = '', config = null) {
   return `
@@ -162,6 +163,8 @@ export function renderProductCard(product, waNumber = '', isWishlisted = false) 
 
   const categoryName = product.categories?.title || product.category_name || '';
   const wishActiveClass = isWishlisted ? ' active' : '';
+  const stockState = getStockState(product.stock_quantity);
+  const isOutOfStock = stockState.key === 'OUT_OF_STOCK';
 
   return `
     <div class="product-card" onclick="window.location.href='/product.html?id=${product.id}'" style="cursor:pointer;">
@@ -178,11 +181,12 @@ export function renderProductCard(product, waNumber = '', isWishlisted = false) 
       <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
         <p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">${categoryName}</p>
         <h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">${product.name}</h3>
+        <span style="font-size:0.8rem; color:${isOutOfStock ? '#f87171' : stockState.key === 'LOW_STOCK' ? 'var(--accent-gold)' : '#4ade80'}; margin-bottom:0.75rem;">${stockState.label}</span>
         
         <div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
           <span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">${priceDisplay}</span>
-          <button class="btn btn-outline product-add-btn" data-id="${product.id}" style="width:100%; padding:0.75rem; font-size:0.875rem;">
-            Add to Cart
+          <button class="btn btn-outline product-add-btn" data-id="${product.id}" ${isOutOfStock ? 'disabled aria-disabled="true"' : ''} style="width:100%; padding:0.75rem; font-size:0.875rem;">
+            ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
           </button>
         </div>
       </div>
