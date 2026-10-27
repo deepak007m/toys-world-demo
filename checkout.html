@@ -168,6 +168,106 @@
         .checkout-steps span.active {
             color: var(--accent-gold);
         }
+
+        .checkout-message {
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+        }
+
+        .checkout-message.error {
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.35);
+            color: #fecaca;
+        }
+
+        .checkout-message.info {
+            background: rgba(232, 184, 75, 0.12);
+            border: 1px solid rgba(232, 184, 75, 0.35);
+            color: #f5d98b;
+        }
+
+        .checkout-message.success {
+            background: rgba(74, 222, 128, 0.12);
+            border: 1px solid rgba(74, 222, 128, 0.35);
+            color: #bbf7d0;
+        }
+
+        .address-options {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .address-option {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: block;
+            padding: 1rem;
+        }
+
+        .address-option.selected {
+            border-color: var(--accent-gold);
+        }
+
+        .address-option input {
+            margin-right: 0.5rem;
+        }
+
+        .address-option-title {
+            font-weight: 700;
+        }
+
+        .address-option-details {
+            color: var(--text-secondary);
+            display: block;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0.5rem 0 0 1.35rem;
+        }
+
+        .checkout-items-empty {
+            color: var(--text-secondary);
+            padding: 1rem 0;
+        }
+
+        .checkout-invalid-item {
+            color: #fca5a5;
+            display: block;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .checkout-success {
+            margin: 4rem auto;
+            max-width: 620px;
+            text-align: center;
+        }
+
+        .checkout-success h1 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .checkout-success-details {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .checkout-success-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
@@ -186,61 +286,98 @@
             </header>
 
             <div class="reveal reveal-delay-1">
-                <form
-                    onsubmit="event.preventDefault(); alert('Static placeholder: Order would process here.'); window.location.href='/';">
+                <div id="checkout-state" class="checkout-message info" hidden></div>
+                <form id="checkout-form">
 
                     <div class="form-section">
                         <h2 class="form-section-title">Contact</h2>
                         <div class="form-row">
-                            <div class="form-col"><input type="email" class="form-input"
-                                    placeholder="Email or mobile phone number" required></div>
+                            <div class="form-col">
+                                <label class="form-label" for="contact-name">Contact name</label>
+                                <input id="contact-name" name="contact_name" type="text" class="form-input"
+                                    placeholder="Your full name" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="contact-phone">Contact phone</label>
+                                <input id="contact-phone" name="contact_phone" type="tel" class="form-input"
+                                    placeholder="+91 98765 43210" required>
+                            </div>
                         </div>
-                        <label
-                            style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; color:var(--text-secondary); margin-top:0.5rem;">
-                            <input type="checkbox" checked> Email me with news and offers
-                        </label>
+                        <p id="contact-email" style="color:var(--text-secondary); font-size:0.85rem;"></p>
                     </div>
 
                     <div class="form-section">
                         <h2 class="form-section-title">Delivery</h2>
-                        <div class="form-row">
-                            <div class="form-col"><input type="text" class="form-input" placeholder="First name"
-                                    required></div>
-                            <div class="form-col"><input type="text" class="form-input" placeholder="Last name"
-                                    required></div>
+                        <div id="address-options" class="address-options" aria-live="polite">
+                            <div style="color:var(--text-secondary);">Loading saved addresses...</div>
                         </div>
                         <div class="form-row">
-                            <div class="form-col"><input type="text" class="form-input" placeholder="Address" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col"><input type="text" class="form-input"
-                                    placeholder="Apartment, suite, etc. (optional)"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col"><input type="text" class="form-input" placeholder="City" required>
+                            <div class="form-col">
+                                <label class="form-label" for="shipping-full-name">Full name</label>
+                                <input id="shipping-full-name" name="shipping_full_name" type="text"
+                                    class="form-input" placeholder="Recipient full name" required>
                             </div>
                             <div class="form-col">
-                                <select class="form-input" required>
-                                    <option value="MH">Maharashtra</option>
-                                    <option value="GJ">Gujarat</option>
-                                    <option value="KA">Karnataka</option>
-                                    <option value="DL">Delhi</option>
-                                </select>
-                            </div>
-                            <div class="form-col"><input type="text" class="form-input" placeholder="PIN code" required>
+                                <label class="form-label" for="shipping-phone">Phone</label>
+                                <input id="shipping-phone" name="shipping_phone" type="tel" class="form-input"
+                                    placeholder="+91 98765 43210" required>
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="shipping-address-line1">Address line 1</label>
+                                <input id="shipping-address-line1" name="shipping_address_line1" type="text"
+                                    class="form-input" placeholder="House number and street" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="shipping-address-line2">Address line 2
+                                    (optional)</label>
+                                <input id="shipping-address-line2" name="shipping_address_line2" type="text"
+                                    class="form-input" placeholder="Apartment, suite, landmark">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="shipping-city">City</label>
+                                <input id="shipping-city" name="shipping_city" type="text" class="form-input"
+                                    placeholder="City" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="shipping-state">State</label>
+                                <input id="shipping-state" name="shipping_state" type="text" class="form-input"
+                                    placeholder="State" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="shipping-postal-code">Postal code</label>
+                                <input id="shipping-postal-code" name="shipping_postal_code" type="text"
+                                    class="form-input" placeholder="PIN code" required>
+                            </div>
+                        </div>
+                        <label
+                            style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; color:var(--text-secondary); margin-top:0.5rem;">
+                            <input id="save-address" type="checkbox">
+                            Save this address
+                        </label>
                     </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Payment</h2>
+                        <p style="color:var(--text-secondary); line-height:1.6;">
+                            Payment is not collected online yet. Your order will be created as pending confirmation.
+                        </p>
+                    </div>
+
+                    <div id="checkout-form-error" class="checkout-message error" role="alert" hidden></div>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:3rem;">
                         <a href="/cart.html"
                             style="color:var(--accent-gold); text-decoration:none; font-size:0.9rem;">&lt; Return to
                             cart</a>
-                        <button type="submit" class="btn btn-gold"
-                            style="padding:1rem 2rem; font-size:1.05rem;">Continue to Shipping</button>
+                        <button id="submit-order" type="submit" class="btn btn-gold"
+                            style="padding:1rem 2rem; font-size:1.05rem;">Place Order</button>
                     </div>
-
                 </form>
             </div>
         </main>
@@ -249,54 +386,41 @@
         <aside class="checkout-sidebar reveal">
             <div style="position:sticky; top:2rem;">
 
-                <div class="checkout-items-list"
+                <div id="checkout-items-list" class="checkout-items-list"
                     style="margin-bottom:2rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1rem;">
-
-                    <div class="checkout-item">
-                        <div style="position:relative;">
-                            <img src="/images/prod_iron_man.png" class="checkout-item-img">
-                            <span class="checkout-item-badge">1</span>
-                        </div>
-                        <div class="checkout-item-details">
-                            <div class="checkout-item-name">Iron Man Mk 50 Collector Edition</div>
-                        </div>
-                        <div class="checkout-item-price">₹4,500</div>
-                    </div>
-
-                    <div class="checkout-item">
-                        <div style="position:relative;">
-                            <img src="/images/prod_rc.png" class="checkout-item-img">
-                            <span class="checkout-item-badge">1</span>
-                        </div>
-                        <div class="checkout-item-details">
-                            <div class="checkout-item-name">Speedster Buggy 4x4 (Pro Series)</div>
-                        </div>
-                        <div class="checkout-item-price">₹2,200</div>
-                    </div>
                 </div>
 
-                <div class="checkout-totals">
+                <div id="checkout-totals" class="checkout-totals">
                     <div class="checkout-total-row">
                         <span>Subtotal</span>
-                        <span>₹6,700</span>
+                        <span id="checkout-subtotal">₹0</span>
                     </div>
                     <div class="checkout-total-row">
                         <span>Shipping</span>
-                        <span style="color:var(--text-muted); font-size:0.8rem;">Calculated at next step</span>
+                        <span id="checkout-shipping">₹0</span>
+                    </div>
+                    <div class="checkout-total-row">
+                        <span>Discount</span>
+                        <span id="checkout-discount">₹0</span>
+                    </div>
+                    <div class="checkout-total-row">
+                        <span>Tax</span>
+                        <span id="checkout-tax">₹0</span>
                     </div>
                     <div class="checkout-total-row final">
                         <span>Total</span>
-                        <span>₹6,700</span>
+                        <span id="checkout-total">₹0</span>
                     </div>
+                    <p style="color:var(--text-muted); font-size:0.8rem; line-height:1.5;">
+                        Final total is calculated securely when your order is created.
+                    </p>
                 </div>
+                <div id="checkout-sidebar-state" class="checkout-message info" hidden></div>
             </div>
         </aside>
     </div>
 
-    <script type="module">
-        import { wireScrollReveal } from '/src/js/components.js';
-        wireScrollReveal();
-    </script>
+    <script type="module" src="/src/js/pages/checkout.js"></script>
 </body>
 
 </html>
