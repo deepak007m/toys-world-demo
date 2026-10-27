@@ -10,75 +10,191 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="/src/css/global.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
-    <link rel="stylesheet" href="/src/css/account.css">
+    <link rel="stylesheet" href="/src/css/account.css" />
     <style>
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+        .orders-state {
+            text-align: center;
+            padding: 4rem 2rem;
         }
 
-        .status-dot.transit {
-            background: #3b82f6;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        .orders-state h2 {
+            color: #111827;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
         }
 
-        .status-dot.delivered {
-            background: #10b981;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        .orders-state p {
+            color: #6B7280;
+            margin-bottom: 1.5rem;
         }
 
-        .progress-track {
-            width: 100%;
-            height: 4px;
-            background: #E5E7EB;
-            border-radius: 2px;
-            position: relative;
+        .orders-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            color: #991B1B;
+            padding: 1.25rem;
+        }
+
+        .order-status-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .order-status-badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35rem 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .order-status-badge.order-status {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1D4ED8;
+        }
+
+        .order-status-badge.payment-status {
+            background: rgba(232, 184, 75, 0.16);
+            color: #8A650C;
+        }
+
+        .order-summary-text {
+            color: #6B7280;
+            font-size: 0.9rem;
             margin-top: 1rem;
         }
 
-        .progress-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: #3b82f6;
-            position: absolute;
-            top: 0;
-            left: 0;
+        .order-details-panel {
+            border-top: 1px solid #E5E7EB;
+            padding: 2rem;
         }
 
-        .progress-fill.delivered {
-            background: #10b981;
-            width: 100%;
+        .order-details-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(220px, 1fr);
+            gap: 2rem;
         }
 
-        .order-items-light {
+        .order-detail-section h3 {
+            color: #111827;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-item-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
-        .order-item {
+        .order-history-item {
+            align-items: center;
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
-        .order-item-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 12px;
+        .order-history-item img,
+        .order-history-item-placeholder {
+            background: #F3F4F6;
             border: 1px solid #E5E7EB;
+            border-radius: 10px;
+            flex: 0 0 64px;
+            height: 64px;
+            object-fit: cover;
+            width: 64px;
         }
 
-        .order-item-info p {
-            font-size: 0.85rem;
+        .order-history-item-placeholder {
+            align-items: center;
+            color: #9CA3AF;
+            display: flex;
+            font-size: 1.4rem;
+            justify-content: center;
+        }
+
+        .order-history-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .order-history-item-info h4 {
+            color: #111827;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .order-history-item-info p,
+        .order-address,
+        .order-price-row {
             color: #6B7280;
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .order-price-summary,
+        .order-address {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .order-price-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .order-price-row.total {
+            border-top: 1px solid #E5E7EB;
+            color: #111827;
+            font-weight: 800;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+        }
+
+        .order-address {
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .order-address strong {
+            color: #111827;
+        }
+
+        .orders-loading-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 20px;
+            color: #6B7280;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .order-details-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .order-details-panel,
+            .order-body-light {
+                padding: 1.25rem;
+            }
+
+            .order-header-light {
+                padding: 1.25rem;
+            }
         }
     </style>
 </head>
 
-<body class="account-mode">
+<body class="account-mode" style="--header-h: 70px;">
     <div id="header-placeholder"></div>
 
     <main class="dashboard-page">
@@ -102,125 +218,19 @@
 
             <section class="dash-content reveal">
                 <div class="dash-heading-wrap">
-                    <h1 class="dash-title">Track Orders</h1>
-                    <p class="dash-subtitle">View and manage your recent purchases and shipments.</p>
+                    <h1 class="dash-title">My Orders</h1>
+                    <p class="dash-subtitle">View your purchases and order details.</p>
                 </div>
-
-                <!-- Active Order -->
-                <div class="order-card-light">
-                    <div class="order-header-light">
-                        <div class="order-details" style="display:flex; gap:3rem; flex-wrap:wrap;">
-                            <div class="order-meta-col">
-                                <span class="order-meta-label">Order Placed</span>
-                                <span class="order-meta-value">22 Sep 2026</span>
-                            </div>
-                            <div class="order-meta-col">
-                                <span class="order-meta-label">Total</span>
-                                <span class="order-meta-value">₹4,500</span>
-                            </div>
-                            <div class="order-meta-col">
-                                <span class="order-meta-label">Order #</span>
-                                <span class="order-meta-value">TW-889021</span>
-                            </div>
-                        </div>
-                        <a href="#" class="order-receipt">View Receipt</a>
-                    </div>
-                    <div class="order-body-light">
-                        <div style="margin-bottom:2.5rem;">
-                            <h3 class="order-status-title"><span class="status-dot transit"></span> Arriving by
-                                Thursday, Sep 28</h3>
-                            <p style="font-size:0.85rem; color:#6B7280;">Your order is currently in transit to Palghar
-                                facility.</p>
-                            <div class="progress-track">
-                                <div class="progress-fill" style="width: 60%;"></div>
-                            </div>
-                        </div>
-                        <div class="order-items-light">
-                            <div class="order-item">
-                                <img src="/images/product_iron_man.png" class="order-item-img"
-                                    onerror="this.src='https://placehold.co/100'" />
-                                <div class="order-item-info">
-                                    <h4>Iron Man Mk 50 Collector Edition</h4>
-                                    <p>Qty: 1 • Sold by Toys World Official</p>
-                                    <button class="btn btn-outline"
-                                        style="padding:0.4rem 1rem; font-size:0.75rem;">Track Package</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="orders-content" aria-live="polite">
+                    <div class="orders-loading-card">Loading your orders...</div>
                 </div>
-
-                <!-- Delivered Order -->
-                <div class="order-card-light reveal reveal-delay-1">
-                    <div class="order-header-light">
-                        <div class="order-details" style="display:flex; gap:3rem; flex-wrap:wrap;">
-                            <div class="order-meta-col">
-                                <span class="order-meta-label">Order Placed</span>
-                                <span class="order-meta-value">05 Aug 2026</span>
-                            </div>
-                            <div class="order-meta-col">
-                                <span class="order-meta-label">Total</span>
-                                <span class="order-meta-value">₹2,200</span>
-                            </div>
-                            <div class="order-meta-col">
-                                <span class="order-meta-label">Order #</span>
-                                <span class="order-meta-value">TW-667104</span>
-                            </div>
-                        </div>
-                        <a href="#" class="order-receipt">View Receipt</a>
-                    </div>
-                    <div class="order-body-light">
-                        <div style="margin-bottom:2.5rem;">
-                            <h3 class="order-status-title"><span class="status-dot delivered"></span> Delivered on 08
-                                Aug 2026</h3>
-                            <p style="font-size:0.85rem; color:#6B7280;">Your package was handed directly to resident.
-                            </p>
-                            <div class="progress-track">
-                                <div class="progress-fill delivered"></div>
-                            </div>
-                        </div>
-                        <div class="order-items-light">
-                            <div class="order-item">
-                                <img src="/images/product_rc_buggy.png" class="order-item-img"
-                                    onerror="this.src='https://placehold.co/100'" />
-                                <div class="order-item-info">
-                                    <h4>Speedster Buggy 4x4</h4>
-                                    <p>Qty: 1 • Sold by Toys World Official</p>
-                                    <button class="btn btn-black"
-                                        style="padding:0.4rem 1rem; font-size:0.75rem; margin-right:0.5rem;"
-                                        onclick="window.location.href='/product.html'">Buy It Again</button>
-                                    <button class="btn btn-outline"
-                                        style="padding:0.4rem 1rem; font-size:0.75rem;">Leave a Review</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </section>
         </div>
     </main>
 
     <div id="footer-placeholder"></div>
 
-    <script type="module">
-        import { getConfig } from '/src/js/data.js';
-        import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal } from '/src/js/components.js';
-        import { supabase } from '/src/js/supabase.js';
-
-        async function init() {
-            const config = await getConfig();
-            document.getElementById('header-placeholder').innerHTML = renderHeader('Account', config);
-            document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
-            wireNavDrawer(); wireScrollReveal();
-
-            document.getElementById('signout-btn')?.addEventListener('click', async () => {
-                await supabase.auth.signOut();
-                window.location.href = '/login.html';
-            });
-        }
-        init();
-    </script>
+    <script type="module" src="/src/js/pages/orders.js"></script>
 </body>
 
 </html>
