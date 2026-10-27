@@ -13,6 +13,7 @@ const Sidebar = ({ isOpen, setOpen }) => {
     const menuItems = [
         { name: 'Dashboard', path: '/dashboard', icon: '📊' },
         { name: 'Products', path: '/products', icon: '📦' },
+        { name: 'Orders', path: '/orders', icon: '🧾' },
         { name: 'Categories', path: '/categories', icon: '📁' },
         { name: 'Store Settings', path: '/settings', icon: '⚙️' },
     ];

@@ -29,6 +29,68 @@ export async function getRecentProducts() {
     return data || [];
 }
 
+// --- Orders ---
+export async function getAdminOrders() {
+    const { data, error } = await supabase
+        .from('orders')
+        .select(`
+            id,
+            order_number,
+            user_id,
+            contact_name,
+            contact_phone,
+            contact_email,
+            shipping_full_name,
+            shipping_phone,
+            shipping_address_line1,
+            shipping_address_line2,
+            shipping_city,
+            shipping_state,
+            shipping_postal_code,
+            shipping_country,
+            subtotal,
+            shipping_amount,
+            discount_amount,
+            tax_amount,
+            total_amount,
+            currency,
+            status,
+            payment_status,
+            created_at,
+            order_items ( count )
+        `)
+        .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return (data || []).map(order => ({
+        ...order,
+        item_count: order.order_items?.[0]?.count || 0
+    }));
+}
+
+export async function getAdminOrderItems(orderId) {
+    const { data, error } = await supabase
+        .from('order_items')
+        .select('order_id, product_id, product_name, product_image_url, unit_price, quantity, line_total, created_at')
+        .eq('order_id', orderId)
+        .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+}
+
+export async function updateAdminOrderStatus(orderId, status, paymentStatus) {
+    const { data, error } = await supabase.rpc('admin_update_order_status', {
+        p_order_id: orderId,
+        p_status: status || null,
+        p_payment_status: paymentStatus || null
+    });
+
+    if (error) throw error;
+    return Array.isArray(data) ? data[0] : data;
+}
+
 // --- Images ---
 export async function uploadImage(file, pathPrefix) {
     if (!file) return null;

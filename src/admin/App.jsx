@@ -9,6 +9,7 @@ import Products from './pages/Products.jsx';
 import ProductForm from './pages/ProductForm.jsx';
 import Categories from './pages/Categories.jsx';
 import Settings from './pages/Settings.jsx';
+import Orders from './pages/Orders.jsx';
 
 function App() {
     const [session, setSession] = useState(null);
@@ -93,6 +94,14 @@ function App() {
                 element={
                     <ProtectedRoute>
                         <Settings />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/orders"
+                element={
+                    <ProtectedRoute>
+                        <Orders />
                     </ProtectedRoute>
                 }
             />
