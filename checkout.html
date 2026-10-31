@@ -365,7 +365,7 @@
                     <div class="form-section">
                         <h2 class="form-section-title">Payment</h2>
                         <p style="color:var(--text-secondary); line-height:1.6;">
-                            Payment is not collected online yet. Your order will be created as pending confirmation.
+                            You will complete payment securely in Razorpay Checkout. Your order remains pending until payment is verified.
                         </p>
                     </div>
 
@@ -376,7 +376,7 @@
                             style="color:var(--accent-gold); text-decoration:none; font-size:0.9rem;">&lt; Return to
                             cart</a>
                         <button id="submit-order" type="submit" class="btn btn-gold"
-                            style="padding:1rem 2rem; font-size:1.05rem;">Place Order</button>
+                            style="padding:1rem 2rem; font-size:1.05rem;">Pay securely</button>
                     </div>
                 </form>
             </div>
@@ -420,6 +420,7 @@
         </aside>
     </div>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script type="module" src="/src/js/pages/checkout.js"></script>
 </body>
 
