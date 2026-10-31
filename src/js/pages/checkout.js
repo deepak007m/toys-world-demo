@@ -34,7 +34,11 @@ const fields = {
 let session;
 let cartItems = [];
 let addresses = [];
-let idempotencyKey;
+let orderIdempotencyKey;
+let paymentIdempotencyKey;
+let currentOrder;
+let currentPaymentAttemptId;
+let paymentResponse;
 let submitting = false;
 let selectedAddressId = 'new';
 
@@ -213,7 +217,12 @@ function errorMessage(error) {
         'INVALID_CONTACT',
         'INVALID_ADDRESS',
         'AUTH_REQUIRED',
-        'ORDER_CREATION_FAILED'
+        'ORDER_CREATION_FAILED',
+        'PAYMENT_ORDER_UNAVAILABLE',
+        'PAYMENT_CHECKOUT_UNAVAILABLE',
+        'PAYMENT_CHECKOUT_FAILED',
+        'PAYMENT_VERIFICATION_FAILED',
+        'RAZORPAY_ORDER_FAILED'
     ];
     const prefix = prefixes.find(value => message.includes(value));
     const messages = {
@@ -226,7 +235,12 @@ function errorMessage(error) {
         INVALID_CONTACT: 'Please check your contact name and phone number.',
         INVALID_ADDRESS: 'Please complete the required shipping address fields.',
         AUTH_REQUIRED: 'Your session expired. Please sign in again.',
-        ORDER_CREATION_FAILED: 'We could not create your order right now. Please try again.'
+        ORDER_CREATION_FAILED: 'We could not create your order right now. Please try again.',
+        PAYMENT_ORDER_UNAVAILABLE: 'We could not start payment for this order. Please try again.',
+        PAYMENT_CHECKOUT_UNAVAILABLE: 'Payment checkout is temporarily unavailable. Please try again later.',
+        PAYMENT_CHECKOUT_FAILED: 'We could not open payment checkout. Please try again.',
+        PAYMENT_VERIFICATION_FAILED: 'We could not verify your payment yet. Your order remains pending.',
+        RAZORPAY_ORDER_FAILED: 'The payment provider rejected the payment request. Please try again.'
     };
     return messages[prefix] || 'We could not create your order right now. Please try again.';
 }
@@ -309,15 +323,15 @@ async function saveAddress() {
     if (error) throw error;
 }
 
-function renderSuccess(order) {
+function renderPaymentSuccess(order) {
     document.querySelector('.checkout-main').innerHTML = `
         <div class="checkout-success">
-            <h1>Order placed successfully.</h1>
-            <p>Your order is pending confirmation. Payment has not been completed online.</p>
+            <h1>Payment successful.</h1>
+            <p>Your payment has been verified and your order is confirmed.</p>
             <div class="checkout-success-details">
                 <div><strong>Order:</strong> ${escapeHtml(order.order_number || order.order_id)}</div>
-                <div><strong>Status:</strong> ${escapeHtml(order.status || 'PENDING')}</div>
-                <div><strong>Payment:</strong> ${escapeHtml(order.payment_status || 'PENDING')}</div>
+                <div><strong>Status:</strong> ${escapeHtml(order.status || 'CONFIRMED')}</div>
+                <div><strong>Payment:</strong> ${escapeHtml(order.payment_status || 'PAID')}</div>
                 <div><strong>Total:</strong> ${formatAmount(order.total_amount)}</div>
             </div>
             <div class="checkout-success-actions">
@@ -329,52 +343,200 @@ function renderSuccess(order) {
     document.querySelector('.checkout-sidebar').hidden = true;
 }
 
+function paymentAmountInPaise(amount) {
+    const numericAmount = Number(amount);
+    if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
+        throw new Error('PAYMENT_ORDER_UNAVAILABLE');
+    }
+    const paise = Math.round(numericAmount * 100);
+    if (!Number.isSafeInteger(paise) || paise <= 0) {
+        throw new Error('PAYMENT_ORDER_UNAVAILABLE');
+    }
+    return paise;
+}
+
+async function getFunctionErrorCode(error) {
+    const context = error?.context;
+    if (!(context instanceof Response)) return null;
+
+    try {
+        const body = await context.clone().json();
+        return typeof body?.error?.code === 'string' ? body.error.code : null;
+    } catch {
+        return null;
+    }
+}
+
+async function createRazorpayOrder(order) {
+    if (typeof window.Razorpay !== 'function') {
+        throw new Error('PAYMENT_CHECKOUT_UNAVAILABLE');
+    }
+
+    if (!paymentIdempotencyKey) paymentIdempotencyKey = crypto.randomUUID();
+    const { data, error } = await supabase.functions.invoke('create-razorpay-order', {
+        body: {
+            order_id: order.order_id,
+            idempotency_key: paymentIdempotencyKey
+        }
+    });
+    if (error) {
+        console.error('[Checkout] Razorpay order creation failed:', error);
+        const code = await getFunctionErrorCode(error);
+        if (code === 'RAZORPAY_ORDER_FAILED') paymentIdempotencyKey = null;
+        throw new Error(code || 'PAYMENT_ORDER_UNAVAILABLE');
+    }
+
+    const amount = Number(data?.amount);
+    if (!data?.payment_attempt_id
+        || !data?.razorpay_order_id
+        || !data?.key_id
+        || !Number.isFinite(amount)
+        || amount <= 0
+        || !data?.currency) {
+        throw new Error('PAYMENT_ORDER_UNAVAILABLE');
+    }
+
+    const options = {
+        key: data.key_id,
+        amount: paymentAmountInPaise(amount),
+        currency: data.currency,
+        name: 'Toys World & Gift Gallery',
+        description: `Order ${order.order_number || order.order_id}`,
+        order_id: data.razorpay_order_id,
+        prefill: {
+            name: fields.contactName.value.trim(),
+            email: session.user.email || '',
+            contact: fields.contactPhone.value.trim()
+        },
+        theme: {
+            color: '#E8B84B'
+        },
+        handler(response) {
+            paymentResponse = {
+                razorpay_payment_id: response?.razorpay_payment_id || null,
+                razorpay_order_id: response?.razorpay_order_id || null,
+                razorpay_signature: response?.razorpay_signature || null
+            };
+            verifyRazorpayPayment(order, data.payment_attempt_id, paymentResponse);
+        },
+        modal: {
+            ondismiss() {
+                submitting = false;
+                elements.submit.disabled = false;
+                elements.submit.textContent = `Pay ${formatAmount(order.total_amount)}`;
+                setMessage(elements.state, 'Payment window closed. Your order is still pending. You can try payment again.', 'info');
+            }
+        }
+    };
+
+    try {
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+    } catch (error) {
+        console.error('[Checkout] Razorpay Checkout initialization failed:', error);
+        throw new Error('PAYMENT_CHECKOUT_FAILED');
+    }
+}
+
+async function verifyRazorpayPayment(order, paymentAttemptId, response) {
+    if (!response.razorpay_payment_id
+        || !response.razorpay_order_id
+        || !response.razorpay_signature) {
+        setMessage(elements.formError, 'We could not verify the payment response. Your order remains pending.', 'error');
+        submitting = false;
+        elements.submit.disabled = false;
+        elements.submit.textContent = `Pay ${formatAmount(order.total_amount)}`;
+        return;
+    }
+
+    setMessage(elements.formError, '');
+    setMessage(elements.state, 'Payment response received. Verifying your payment...', 'info');
+    try {
+        const { data, error } = await supabase.functions.invoke('verify-razorpay-payment', {
+            body: {
+                order_id: order.order_id,
+                payment_attempt_id: paymentAttemptId,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+            }
+        });
+
+        if (error || !data?.order_id || data.payment_status !== 'PAID' || data.status !== 'CONFIRMED') {
+            console.error('[Checkout] Razorpay payment verification failed:', error?.message ?? 'Invalid verification response');
+            throw new Error('PAYMENT_VERIFICATION_FAILED');
+        }
+
+        currentPaymentAttemptId = data.payment_attempt_id;
+        renderPaymentSuccess({
+            order_id: data.order_id,
+            order_number: data.order_number,
+            status: data.status,
+            payment_status: data.payment_status,
+            total_amount: order.total_amount
+        });
+    } catch (error) {
+        console.error('[Checkout] Razorpay payment verification failed:', error);
+        setMessage(elements.formError, 'We could not verify your payment yet. Your order remains pending. You can try again.', 'error');
+        setMessage(elements.state, '');
+        submitting = false;
+        elements.submit.disabled = false;
+        elements.submit.textContent = `Pay ${formatAmount(order.total_amount)}`;
+    }
+}
+
+async function createOrder() {
+    const { data, error } = await supabase.rpc('create_order_from_cart', {
+        p_idempotency_key: orderIdempotencyKey,
+        p_contact_name: fields.contactName.value.trim(),
+        p_contact_phone: fields.contactPhone.value.trim(),
+        p_shipping_full_name: fields.shippingFullName.value.trim(),
+        p_shipping_phone: fields.shippingPhone.value.trim(),
+        p_shipping_address_line1: fields.addressLine1.value.trim(),
+        p_shipping_address_line2: fields.addressLine2.value.trim() || null,
+        p_shipping_city: fields.city.value.trim(),
+        p_shipping_state: fields.state.value.trim(),
+        p_shipping_postal_code: fields.postalCode.value.trim()
+    });
+
+    if (error) throw error;
+    const order = Array.isArray(data) ? data[0] : data;
+    if (!order) throw new Error('ORDER_CREATION_FAILED');
+    return order;
+}
+
 async function submitOrder(event) {
     event.preventDefault();
     if (submitting) return;
     setMessage(elements.formError, '');
 
-    const validationError = validateForm();
+    const validationError = currentOrder ? null : validateForm();
     if (validationError) {
         setMessage(elements.formError, validationError);
         return;
     }
 
-    if (!idempotencyKey) idempotencyKey = crypto.randomUUID();
+    if (!currentOrder && !orderIdempotencyKey) orderIdempotencyKey = crypto.randomUUID();
     submitting = true;
     elements.submit.disabled = true;
-    elements.submit.textContent = 'Creating order...';
-    setMessage(elements.state, 'Creating your pending order...', 'info');
+    elements.submit.textContent = currentOrder ? 'Starting payment...' : 'Creating order...';
+    setMessage(elements.state, currentOrder ? 'Preparing secure payment...' : 'Creating your pending order...', 'info');
 
     try {
-        try {
-            await saveAddress();
-        } catch (error) {
-            console.error('[Checkout] Address save failed:', error);
-            throw new Error('ADDRESS_SAVE_FAILED');
+        if (!currentOrder) {
+            try {
+                await saveAddress();
+            } catch (error) {
+                console.error('[Checkout] Address save failed:', error);
+                throw new Error('ADDRESS_SAVE_FAILED');
+            }
+            currentOrder = await createOrder();
+            orderIdempotencyKey = null;
         }
 
-        const { data, error } = await supabase.rpc('create_order_from_cart', {
-            p_idempotency_key: idempotencyKey,
-            p_contact_name: fields.contactName.value.trim(),
-            p_contact_phone: fields.contactPhone.value.trim(),
-            p_shipping_full_name: fields.shippingFullName.value.trim(),
-            p_shipping_phone: fields.shippingPhone.value.trim(),
-            p_shipping_address_line1: fields.addressLine1.value.trim(),
-            p_shipping_address_line2: fields.addressLine2.value.trim() || null,
-            p_shipping_city: fields.city.value.trim(),
-            p_shipping_state: fields.state.value.trim(),
-            p_shipping_postal_code: fields.postalCode.value.trim()
-        });
-
-        if (error) throw error;
-        const order = Array.isArray(data) ? data[0] : data;
-        if (!order) throw new Error('ORDER_CREATION_FAILED');
-
-        idempotencyKey = null;
-        renderSuccess(order);
+        await createRazorpayOrder(currentOrder);
     } catch (error) {
-        console.error('[Checkout] Order creation failed:', error);
+        console.error('[Checkout] Checkout payment flow failed:', error);
         setMessage(
             elements.formError,
             error?.message === 'ADDRESS_SAVE_FAILED'
@@ -384,7 +546,7 @@ async function submitOrder(event) {
         setMessage(elements.state, '');
         submitting = false;
         elements.submit.disabled = false;
-        elements.submit.textContent = 'Place Order';
+        elements.submit.textContent = currentOrder ? `Pay ${formatAmount(currentOrder.total_amount)}` : 'Pay securely';
     }
 }
 
@@ -400,6 +562,7 @@ async function init() {
     }
     session = currentSession;
     elements.contactEmail.textContent = `Signed in as ${session.user.email || 'your account'}`;
+    orderIdempotencyKey = crypto.randomUUID();
 
     const { data, error } = await getCartItems();
     if (error) {
