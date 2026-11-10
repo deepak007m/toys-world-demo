@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const signupLink = document.getElementById('signup-link');
     const googleBtn = document.getElementById('google-btn');
+    const adminChoicePanel = document.getElementById('admin-choice-panel');
+    const customerAuthLinks = document.getElementById('customer-auth-links');
 
     // Handle redirect param
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,12 +17,45 @@ document.addEventListener('DOMContentLoaded', () => {
         signupLink.href = `/signup.html?redirect=${encodeURIComponent(redirectPath)}`;
     }
 
-    // Pre-check if already logged in
-    supabase.auth.getSession().then((res) => {
-        if (res?.data?.session) {
-            window.location.href = redirectPath;
+    const showError = (message) => {
+        if (!errorBox) return;
+        errorBox.style.display = 'block';
+        errorBox.textContent = message;
+    };
+
+    const showAdminChoices = () => {
+        if (loginForm) loginForm.hidden = true;
+        if (googleBtn) googleBtn.hidden = true;
+        if (customerAuthLinks) customerAuthLinks.hidden = true;
+        if (adminChoicePanel) adminChoicePanel.hidden = false;
+    };
+
+    const routeAuthenticatedUser = async (session) => {
+        if (!session?.user?.id) return;
+
+        const { data, error } = await supabase
+            .from('admin_users')
+            .select('user_id')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+
+        if (error) {
+            showError('We could not verify access. Please try again.');
+            return;
         }
-    }).catch(() => { });
+
+        if (data?.user_id === session.user.id) {
+            showAdminChoices();
+            return;
+        }
+
+        window.location.href = redirectPath;
+    };
+
+    // Pre-check if already logged in and route only after admin membership verification.
+    supabase.auth.getSession()
+        .then((res) => routeAuthenticatedUser(res?.data?.session))
+        .catch(() => showError('We could not verify your session. Please try again.'));
 
     // ── Google OAuth ──────────────────────────────────────────────
     if (googleBtn) {
@@ -36,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin + '/account.html',
+                    redirectTo: window.location.origin + '/login.html',
                 },
             });
 
@@ -73,19 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) throw error;
 
-            console.log('DIAGNOSTIC_LOGIN_DATA_USER:', JSON.stringify(data.user));
-            console.log('DIAGNOSTIC_LOGIN_SESSION:', JSON.stringify(data.session));
-            console.log('DIAGNOSTIC_LOGIN_ERROR:', JSON.stringify(error));
-
-            // Success - let auth listener header update, and redirect
-            window.location.href = redirectPath;
+            await routeAuthenticatedUser(data.session);
 
         } catch (error) {
-            errorBox.style.display = 'block';
-            errorBox.textContent = error.message;
+            showError(error.message);
             submitBtn.textContent = 'Sign In';
             submitBtn.disabled = false;
         }
     });
 });
-

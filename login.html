@@ -113,6 +113,28 @@
         .auth-links a:hover {
             color: #fff;
         }
+
+        .admin-choice {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .admin-choice .btn {
+            display: block;
+            text-decoration: none;
+        }
+
+        .admin-choice-description {
+            display: block;
+            margin-top: 0.35rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: normal;
+        }
     </style>
 </head>
 
@@ -170,7 +192,19 @@
                     style="width: 100%; padding:1rem; font-size:1.05rem; margin-top:1rem;">Sign In</button>
             </form>
 
-            <div class="auth-links">
+            <div id="admin-choice-panel" class="admin-choice" hidden>
+                    <h2 class="auth-title" style="font-size:1.5rem; margin-bottom:0;">Welcome, Store Admin!</h2>
+                    <a href="/admin/" class="btn btn-primary">
+                        Open Admin Dashboard
+                        <span class="admin-choice-description">Manage the store.</span>
+                    </a>
+                    <a href="/account.html" class="btn btn-outline">
+                        Browse as Customer
+                        <span class="admin-choice-description">View the normal storefront.</span>
+                    </a>
+            </div>
+
+            <div id="customer-auth-links" class="auth-links">
                 <a href="/forgot-password.html">Forgot your password?</a>
                 <div style="color:var(--text-secondary);">
                     Don't have an account? <a href="/signup.html" id="signup-link">Sign Up</a>
