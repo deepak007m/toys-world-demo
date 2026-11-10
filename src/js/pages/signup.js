@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginLink = document.getElementById('login-link');
     const googleBtn = document.getElementById('google-btn');
 
+    document.querySelectorAll('.password-toggle').forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+            const passwordInput = document.getElementById(toggle.dataset.passwordTarget);
+            if (!passwordInput) return;
+
+            const isVisible = passwordInput.type === 'text';
+            passwordInput.type = isVisible ? 'password' : 'text';
+            toggle.classList.toggle('is-visible', !isVisible);
+            toggle.setAttribute('aria-pressed', String(!isVisible));
+            toggle.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+        });
+    });
+
     // Handle redirect param
     const urlParams = new URLSearchParams(window.location.search);
     const redirectPath = urlParams.get('redirect') || '/account.html';
@@ -95,10 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) throw error;
 
-            console.log('DIAGNOSTIC_SIGNUP_DATA_USER:', JSON.stringify(data.user));
-            console.log('DIAGNOSTIC_SIGNUP_SESSION:', JSON.stringify(data.session));
-            console.log('DIAGNOSTIC_SIGNUP_ERROR:', JSON.stringify(error));
-
             // If email confirmation is enabled on this Supabase project, 
             // the user will receive session: null and user.identities
             if (data.user && data.user.identities && data.user.identities.length === 0) {
@@ -122,4 +131,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-

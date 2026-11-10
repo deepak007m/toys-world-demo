@@ -1,25 +1,22 @@
-/* Account Dashboard Redesign - Premium Light Theme */
+/* Account dashboard styling aligned with the Toys World storefront. */
 :root {
-    --bg-account: #FDFBF7;
-    /* warm cream/off-white */
-    --card-bg: #FFFFFF;
-    --text-account-dark: #1F2937;
-    /* charcoal */
-    --text-account-muted: #6B7280;
-    --border-light: #E5E7EB;
-    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+    --bg-account: var(--bg-primary);
+    --card-bg: var(--bg-card, var(--bg-secondary));
+    --text-account-dark: var(--text-primary);
+    --text-account-muted: var(--text-secondary);
+    --border-light: var(--bg-glass-border);
+    --shadow-card: var(--shadow-md);
 }
 
 body.account-mode {
     background: var(--bg-account);
-    color: var(--text-account-dark);
+    color: var(--text-primary);
 }
 
 /* Override Global Header for Account Pages */
 body.account-mode .header {
-    background: #0D0D0F;
-    /* solid dark */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-md);
 }
 
 /* Dashboard Base Layout */
@@ -83,7 +80,7 @@ body.account-mode .header {
     font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 800;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 0.25rem;
 }
 
@@ -107,7 +104,7 @@ body.account-mode .header {
     width: 100%;
     text-align: left;
     padding: 0.85rem 2rem;
-    color: #4B5563;
+    color: var(--text-secondary);
     background: transparent;
     border: none;
     text-decoration: none;
@@ -121,16 +118,15 @@ body.account-mode .header {
 
 .dash-menu button:hover,
 .dash-menu a:hover {
-    color: #111827;
-    background: #F9FAFB;
+    color: var(--text-primary);
+    background: var(--bg-glass);
 }
 
 .dash-menu button.active,
 .dash-menu a.active {
-    color: #B48512;
+    color: var(--accent-gold);
     border-left-color: var(--accent-gold);
-    background: rgba(232, 184, 75, 0.08);
-    /* slight Toys World yellow tint */
+    background: var(--accent-gold-dim);
 }
 
 /* Mobile Sidebar (Horizontal Scroll) */
@@ -167,13 +163,12 @@ body.account-mode .header {
     .dash-menu a {
         display: inline-block;
         width: auto;
-        border: 1px solid var(--border-light);
+        border: 1px solid var(--bg-glass-border);
         border-radius: 9999px;
         padding: 0.65rem 1.25rem;
-        background: var(--card-bg);
-        border-left: 1px solid var(--border-light);
-        /* reset border */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        background: var(--bg-surface);
+        border-left: 1px solid var(--bg-glass-border);
+        box-shadow: var(--shadow-sm);
     }
 
     .dash-menu button.active,
@@ -207,7 +202,7 @@ body.account-mode .header {
     font-size: 2.25rem;
     font-weight: 900;
     text-transform: uppercase;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 0.25rem;
     letter-spacing: -0.02em;
 }
@@ -239,16 +234,16 @@ body.account-mode .header {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #4B5563;
+    color: var(--text-secondary);
     font-weight: 700;
 }
 
 .form-group input {
-    background: #F9FAFB;
-    border: 1px solid var(--border-light);
+    background: var(--bg-surface);
+    border: 1px solid var(--bg-glass-border);
     border-radius: 12px;
     padding: 0.875rem 1rem;
-    color: #111827;
+    color: var(--text-primary);
     transition: all 0.2s;
     font-family: var(--font-sans);
     font-size: 1rem;
@@ -260,24 +255,24 @@ body.account-mode .header {
     outline: none;
     border-color: var(--accent-gold);
     box-shadow: 0 0 0 3px rgba(232, 184, 75, 0.2);
-    background: #FFF;
+    background: var(--bg-elevated);
 }
 
 .form-group input:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background: #F3F4F6;
+    background: var(--bg-secondary);
 }
 
 /* Overrides for Buttons in Light Mode */
 body.account-mode .btn-outline {
-    color: #111827;
-    border-color: #D1D5DB;
+    color: var(--text-primary);
+    border-color: var(--bg-glass-border);
 }
 
 body.account-mode .btn-outline:hover {
     border-color: var(--accent-gold);
-    color: #111827;
+    color: var(--text-primary);
     background: rgba(232, 184, 75, 0.1);
 }
 
@@ -308,34 +303,34 @@ body.account-mode .btn-outline:hover {
     text-align: center;
     padding: 5rem 2rem;
     background: var(--card-bg);
-    border: 1px dashed #D1D5DB;
+    border: 1px dashed var(--bg-glass-border);
     border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    box-shadow: var(--shadow-sm);
 }
 
 .empty-state-icon {
     width: 64px;
     height: 64px;
-    background: #F3F4F6;
+    background: var(--bg-surface);
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 1.75rem;
     margin-bottom: 1.25rem;
-    color: #9CA3AF;
+    color: var(--text-muted);
 }
 
 .empty-state h3 {
     font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 800;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
 .empty-state p {
-    color: #6B7280;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
 }
 
@@ -355,7 +350,7 @@ body.account-mode .btn-outline:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #F9FAFB;
+    background: var(--bg-surface);
     flex-wrap: wrap;
     gap: 1rem;
 }
@@ -368,7 +363,7 @@ body.account-mode .btn-outline:hover {
 
 .order-meta-label {
     font-size: 0.75rem;
-    color: #6B7280;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 700;
@@ -377,12 +372,12 @@ body.account-mode .btn-outline:hover {
 .order-meta-value {
     font-size: 0.95rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .order-receipt {
     font-size: 0.85rem;
-    color: #B48512;
+    color: var(--accent-gold);
     font-weight: 700;
     text-decoration: none;
 }
@@ -396,14 +391,14 @@ body.account-mode .btn-outline:hover {
     font-size: 1.25rem;
     font-weight: 800;
     margin-bottom: 0.75rem;
-    color: #111827;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
 .order-items-light .order-item-info h4 {
-    color: #111827;
+    color: var(--text-primary);
 }
 
 /* Light Theme overrides for existing generic components like .product-card */
@@ -414,19 +409,19 @@ body.account-mode .product-card {
 }
 
 body.account-mode .product-img-wrap {
-    background: #F9FAFB;
+    background: var(--bg-surface);
 }
 
 body.account-mode .product-name {
-    color: #111827;
+    color: var(--text-primary);
 }
 
 body.account-mode .product-price {
-    color: #111827;
+    color: var(--text-primary);
 }
 
 body.account-mode .product-desc {
-    color: #4B5563;
+    color: var(--text-secondary);
 }
 
 body.account-mode .product-footer {
@@ -434,5 +429,40 @@ body.account-mode .product-footer {
 }
 
 body.account-mode .product-cat {
-    color: #B48512;
+    color: var(--accent-gold);
+}
+
+.account-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-gold);
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    transition: color var(--t-fast), transform var(--t-fast);
+}
+
+.account-back-link:hover {
+    color: var(--text-primary);
+    transform: translateX(-2px);
+}
+
+.account-back-link:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 4px;
+    border-radius: var(--radius-xs);
+}
+
+@media (max-width: 900px) {
+    .account-back-link {
+        margin-bottom: 1rem;
+    }
+
+    .dash-card {
+        padding: 1.5rem;
+    }
 }
