@@ -14,6 +14,8 @@ import Orders from './pages/Orders.jsx';
 function App() {
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [adminCheckLoading, setAdminCheckLoading] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -30,6 +32,32 @@ function App() {
         return () => subscription.unsubscribe();
     }, []);
 
+    useEffect(() => {
+        let cancelled = false;
+
+        async function checkAdminAccess() {
+            if (!session?.user?.id) {
+                setIsAdmin(false);
+                setAdminCheckLoading(false);
+                return;
+            }
+
+            setAdminCheckLoading(true);
+            const { data, error } = await supabase
+                .from('admin_users')
+                .select('user_id')
+                .eq('user_id', session.user.id)
+                .maybeSingle();
+
+            if (cancelled) return;
+            setIsAdmin(!error && data?.user_id === session.user.id);
+            setAdminCheckLoading(false);
+        }
+
+        checkAdminAccess();
+        return () => { cancelled = true; };
+    }, [session]);
+
     if (loading) {
         return <div style={{ color: 'white', padding: '2rem', textAlign: 'center' }}>Loading Admin...</div>;
     }
@@ -38,6 +66,20 @@ function App() {
     const ProtectedRoute = ({ children }) => {
         if (!session) {
             return <Navigate to="/login" replace />;
+        }
+        if (adminCheckLoading) {
+            return <div style={{ color: 'white', padding: '2rem', textAlign: 'center' }}>Checking administrator access...</div>;
+        }
+        if (!isAdmin) {
+            return (
+                <div style={{ color: 'white', padding: '3rem', textAlign: 'center' }}>
+                    <h1>Administrator access required</h1>
+                    <p style={{ margin: '1rem 0 2rem', color: 'var(--text-secondary)' }}>
+                        This account can browse the customer storefront but is not authorized for the admin dashboard.
+                    </p>
+                    <a href="/" className="btn btn-primary">View Storefront</a>
+                </div>
+            );
         }
         return <Layout session={session}>{children}</Layout>;
     };

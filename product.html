@@ -250,7 +250,7 @@
                         <span id="pd-avail-text"></span>
                     </div>
 
-                    <!-- Static E-Commerce Actions (Phase A) -->
+                    <!-- Cart remains available for later re-enablement; customer enquiries use WhatsApp. -->
                     <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
                         <div style="display:flex; gap:1rem; align-items:center;">
                             <div
@@ -273,8 +273,6 @@
                                 </svg>
                             </button>
                         </div>
-                        <button class="btn btn-gold" style="width:100%; height:50px; font-size:1.05rem;"
-                            onclick="window.location.href='/checkout.html'">Buy It Now</button>
                     </div>
 
                     <a href="#" class="pd-wa-btn" id="pd-wa-link" target="_blank" rel="noopener">
@@ -320,7 +318,7 @@
         <div id="footer-placeholder"></div>
 
         <script type="module">
-            import { getProductById, getConfig, buildWhatsAppLink } from '/src/js/data.js';
+            import { getProductById, getConfig, buildProductWhatsAppLink } from '/src/js/data.js';
             import { getStockState } from '/src/js/inventory.js';
             import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, wireStoreActions } from '/src/js/components.js';
             import { supabase } from '/src/js/supabase.js';
@@ -391,10 +389,10 @@
                 avEl.insertAdjacentElement('afterend', stockStateEl);
 
                 // WhatsApp link
-                const waLink = waNumber
-                    ? buildWhatsAppLink(waNumber, product.name)
-                    : `https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in ${product.name} at Toys World Palghar.`)}`;
-                document.getElementById('pd-wa-link').href = waLink;
+                const pdWaLink = document.getElementById('pd-wa-link');
+                const updateWhatsAppLink = () => {
+                    pdWaLink.href = buildProductWhatsAppLink(waNumber, product, parseInt(document.getElementById('pd-qty-input')?.value, 10) || 1);
+                };
 
                 // Badge
                 if (product.badge) {
@@ -413,6 +411,7 @@
                 addToCartButton.textContent = stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart';
                 qtyInput.max = String(stockQuantity);
                 qtyInput.value = stockQuantity === 0 ? '0' : '1';
+                updateWhatsAppLink();
 
                 // Set wishlist active state from global cache if available
                 if (window.CURRENT_WISHLIST_IDS && window.CURRENT_WISHLIST_IDS.has(product.id)) {
@@ -425,11 +424,13 @@
                         let c = parseInt(qtyInput.value) || 1;
                         if (c > 1) qtyInput.value = c - 1;
                         qtyPlus.disabled = stockQuantity === 0 || c - 1 >= stockQuantity;
+                        updateWhatsAppLink();
                     });
                     qtyPlus.addEventListener('click', () => {
                         let c = parseInt(qtyInput.value) || 1;
                         if (c < stockQuantity) qtyInput.value = c + 1;
                         qtyPlus.disabled = stockQuantity === 0 || parseInt(qtyInput.value, 10) >= stockQuantity;
+                        updateWhatsAppLink();
                     });
                     qtyMinus.disabled = stockQuantity === 0;
                     qtyPlus.disabled = stockQuantity <= 1;

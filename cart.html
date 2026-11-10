@@ -200,12 +200,11 @@
                             <span>Estimated Total</span>
                             <span id="summary-total">₹0</span>
                         </div>
-                        <a href="/checkout.html" class="btn btn-gold"
-                            style="width:100%; padding:1rem; font-size:1.1rem; justify-content:center;">Proceed to
-                            Checkout</a>
+                        <a href="#" id="cart-whatsapp-link" class="btn btn-whatsapp"
+                            style="width:100%; padding:1rem; font-size:1.1rem; justify-content:center;"
+                            target="_blank" rel="noopener">💬 Enquire About Cart on WhatsApp</a>
                         <p style="text-align:center; margin-top:1.5rem; font-size:0.8rem; color:var(--text-muted);">
-                            By checking out, you agree to our <a href="/terms.html"
-                                style="color:var(--text-muted);">Terms of Service</a>.
+                            This enquiry is not a confirmed order. The store will confirm availability and next steps.
                         </p>
                     </div>
                 </div>
@@ -224,12 +223,14 @@
     <div id="footer-placeholder"></div>
 
     <script type="module">
-        import { formatCartMutationError, getConfig, getCartItems, updateCartQuantity, removeCartItem } from '/src/js/data.js';
+        import { buildCartWhatsAppLink, formatCartMutationError, getConfig, getCartItems, updateCartQuantity, removeCartItem } from '/src/js/data.js';
         import { getStockState } from '/src/js/inventory.js';
         import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, refreshBadges } from '/src/js/components.js';
         import { supabase } from '/src/js/supabase.js';
 
-        async function renderCart() {
+        let pageConfig = null;
+
+        async function renderCart(config = pageConfig) {
             const { data: sessionData } = await supabase.auth.getSession();
             if (!sessionData?.session) {
                 window.location.href = '/login.html?redirect=/cart.html';
@@ -254,14 +255,18 @@
             const listEl = document.getElementById('cart-list');
             let subtotal = 0;
             let totalItems = 0;
+            let hasAccurateSubtotal = true;
 
             listEl.innerHTML = data.map(item => {
                 let product = item.products;
                 if (Array.isArray(product)) product = product[0];
                 if (!product) return '';
 
-                const itemTotal = (product.price || 0) * item.quantity;
-                subtotal += itemTotal;
+                if (typeof product.price === 'number' && Number.isFinite(product.price)) {
+                    subtotal += product.price * item.quantity;
+                } else {
+                    hasAccurateSubtotal = false;
+                }
                 totalItems += item.quantity;
                 const stockState = getStockState(product.stock_quantity);
                 const exceedsStock = stockState.quantity > 0 && item.quantity > stockState.quantity;
@@ -292,9 +297,20 @@
 
             document.getElementById('cart-subtitle').textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''} pending. Ready to roll.`;
             document.getElementById('summary-items-count').textContent = `Subtotal (${totalItems} item${totalItems !== 1 ? 's' : ''})`;
-            const formattedTotal = `₹${subtotal.toLocaleString('en-IN')}`;
+            const formattedTotal = hasAccurateSubtotal
+                ? `₹${subtotal.toLocaleString('en-IN')}`
+                : 'Price on request';
             document.getElementById('summary-subtotal').textContent = formattedTotal;
             document.getElementById('summary-total').textContent = formattedTotal;
+            document.getElementById('cart-whatsapp-link').href = buildCartWhatsAppLink(
+                config?.whatsapp_number,
+                data.map(item => {
+                    let product = item.products;
+                    if (Array.isArray(product)) product = product[0];
+                    return { product, quantity: item.quantity };
+                }).filter(item => item.product),
+                hasAccurateSubtotal ? subtotal : null,
+            );
 
             refreshBadges(supabase, sessionData.session.user.id);
         }
@@ -361,7 +377,8 @@
         }
 
         async function init() {
-            const config = await getConfig();
+            pageConfig = await getConfig();
+            const config = pageConfig;
             document.getElementById('header-placeholder').innerHTML = renderHeader('Cart', config);
             document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
 

@@ -1,4 +1,4 @@
-import { buildWhatsAppLink } from './data.js';
+import { buildProductWhatsAppLink } from './data.js';
 import { getStockState } from './inventory.js';
 
 export function renderHeader(activePage = '', config = null) {
@@ -11,7 +11,9 @@ export function renderHeader(activePage = '', config = null) {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
 
-        <a href="/" class="logo">TOYS WORLD<span class="logo-dot"></span></a>
+        <a href="/" class="logo" aria-label="Toys World & Gift Gallery home">
+          <img src="/images/toys-world-logo.png" alt="Toys World & Gift Gallery" class="brand-logo" />
+        </a>
         
         <nav class="nav" id="desktop-nav">
           <a href="/shop.html" class="nav-link${activePage === 'Shop' ? ' nav-link--active' : ''}">Shop</a>
@@ -101,7 +103,10 @@ export function renderFooter(config = null) {
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:3rem; margin-bottom:4rem;">
           
           <div style="grid-column: 1 / -1; max-width:400px;">
-            <div class="logo" style="margin-bottom:1rem; font-size:1.5rem;">TOYS WORLD<span class="logo-dot"></span></div>
+            <div class="footer-brand">
+              <img src="/images/toys-world-logo.png" alt="Toys World & Gift Gallery" class="footer-logo" />
+              <span class="sr-only">${storeName}</span>
+            </div>
             <p style="color:var(--text-secondary); line-height:1.7; font-size:0.95rem;">
               Premium anime figures, die-cast collectibles, RC cars, and exclusive gifts. Your collector's paradise built for enthusiasts.
             </p>
@@ -188,6 +193,9 @@ export function renderProductCard(product, waNumber = '', isWishlisted = false) 
           <button class="btn btn-outline product-add-btn" data-id="${product.id}" ${isOutOfStock ? 'disabled aria-disabled="true"' : ''} style="width:100%; padding:0.75rem; font-size:0.875rem;">
             ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
           </button>
+          <a class="product-wa-btn" href="${buildProductWhatsAppLink(waNumber, product)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" aria-label="Enquire about ${product.name} on WhatsApp">
+            <span aria-hidden="true">💬</span> Enquire on WhatsApp
+          </a>
         </div>
       </div>
     </div>

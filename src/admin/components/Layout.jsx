@@ -107,7 +107,7 @@ const Layout = ({ children, session }) => {
                         </div>
                     </div>
                     <div>
-                        <a href="/" target="_blank" className="btn btn-outline" style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem' }}>View Live Site ↗</a>
+                        <a href="/" target="_blank" rel="noopener" className="btn btn-outline" style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem' }}>View Storefront ↗</a>
                     </div>
                 </header>
 

@@ -19,11 +19,44 @@ import { supabase } from './supabase.js';
 
 // ─── WhatsApp Helper ──────────────────────────────────────────────────────────
 // Pure function — callers must pass the whatsapp number from getConfig().
+const DEFAULT_WHATSAPP_NUMBER = '919272040160';
+
+function getWhatsAppNumber(whatsappNumber) {
+  return String(whatsappNumber || DEFAULT_WHATSAPP_NUMBER).replace(/\D/g, '');
+}
+
+function getProductPriceText(product) {
+  return typeof product?.price === 'number' && Number.isFinite(product.price)
+    ? `₹${product.price.toLocaleString('en-IN')}`
+    : 'Please confirm the price';
+}
+
 export function buildWhatsAppLink(whatsappNumber, productName) {
   const msg = productName
-    ? `Hi! I'm interested in *${productName}* from Toys World & Gift Gallery, Palghar. Is it currently available?`
-    : `Hi Toys World & Gift Gallery! I'd like to know more about your products.`;
-  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    ? `Hello Toys World & Gift Gallery! I'm interested in this product:\n\nProduct: ${productName}\nPrice: Please confirm the price\nQuantity: 1\nProduct link: ${window.location.origin}/product.html\n\nCould you please confirm its availability and share more details?`
+    : `Hello Toys World & Gift Gallery! I'd like to enquire about your products.`;
+  return `https://wa.me/${getWhatsAppNumber(whatsappNumber)}?text=${encodeURIComponent(msg)}`;
+}
+
+export function buildProductWhatsAppLink(whatsappNumber, product, quantity = 1) {
+  const productUrl = new URL(`/product.html?id=${encodeURIComponent(product.id)}`, window.location.origin).href;
+  const availability = Number(product.stock_quantity) === 0
+    ? 'This product may be out of stock; could you please confirm whether it is available or will be restocked?'
+    : 'Could you please confirm its availability and share more details?';
+  const message = `Hello Toys World & Gift Gallery! I'd like to enquire about:\n\nProduct: ${product.name}\nPrice: ${getProductPriceText(product)}\nQuantity: ${Math.max(1, Number(quantity) || 1)}\nLink: ${productUrl}\n\n${availability}`;
+  return `https://wa.me/${getWhatsAppNumber(whatsappNumber)}?text=${encodeURIComponent(message)}`;
+}
+
+export function buildCartWhatsAppLink(whatsappNumber, items, subtotal = null) {
+  const lines = items.map(({ product, quantity }) => {
+    const productUrl = new URL(`/product.html?id=${encodeURIComponent(product.id)}`, window.location.origin).href;
+    return `- ${product.name} | ${getProductPriceText(product)} | Quantity: ${quantity} | ${productUrl}`;
+  });
+  const subtotalText = typeof subtotal === 'number'
+    ? `\nEstimated subtotal: ₹${subtotal.toLocaleString('en-IN')}`
+    : '\nEstimated subtotal: Please confirm prices';
+  const message = `Hello Toys World & Gift Gallery! I'd like to enquire about these products:\n\n${lines.join('\n')}${subtotalText}\n\nPlease confirm availability and share the next steps.`;
+  return `https://wa.me/${getWhatsAppNumber(whatsappNumber)}?text=${encodeURIComponent(message)}`;
 }
 
 // ─── Store Config ─────────────────────────────────────────────────────────────
