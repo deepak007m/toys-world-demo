@@ -1,21 +1,80 @@
 import { supabase } from '../supabase.js';
 
-console.log('TOYS WORLD ACCOUNT.JS LOADED — VERSION 10');
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Initial Auth Check
+    const profileEmail = document.getElementById('profile-email');
+    const profileName = document.getElementById('profile-name');
+    const profilePhone = document.getElementById('profile-phone');
+    let activeUserId = null;
+    let profileLoadToken = 0;
+
+    const clearProfileFields = () => {
+        profileEmail.value = '';
+        profileName.value = '';
+        profilePhone.value = '';
+    };
+
+    const loadProfile = async (user) => {
+        const loadToken = ++profileLoadToken;
+        clearProfileFields();
+        profileEmail.value = user.email || '';
+
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('id, full_name, phone, avatar_url, created_at, updated_at')
+                .eq('id', user.id)
+                .limit(1);
+
+            if (loadToken !== profileLoadToken || activeUserId !== user.id) return;
+
+            if (error) {
+                console.error('[Toys World] Profile Load Error:', error);
+                showMsg(document.getElementById('profile-msg'), 'Failed to load profile data securely.', 'error');
+                return;
+            }
+
+            const profile = data?.[0];
+            if (profile) {
+                profileName.value = profile.full_name || '';
+                profilePhone.value = profile.phone || '';
+            } else {
+                profileName.value = user.user_metadata?.full_name || '';
+            }
+        } catch (err) {
+            if (loadToken === profileLoadToken && activeUserId === user.id) {
+                console.error('[Toys World] Unexpected error loading profile:', err);
+            }
+        }
+    };
+
+    const applySession = async (session) => {
+        const user = session?.user;
+        if (!user?.id) {
+            activeUserId = null;
+            profileLoadToken += 1;
+            clearProfileFields();
+            window.location.replace('/login.html?redirect=%2Faccount.html');
+            return;
+        }
+
+        activeUserId = user.id;
+        document.body.style.opacity = '0';
+        await loadProfile(user);
+        if (activeUserId === user.id) document.body.style.opacity = '1';
+    };
+
     const { data: { session }, error: authError } = await supabase.auth.getSession();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    console.log("AUTH USER ID:", user?.id);
-    console.log("AUTH USER EMAIL:", user?.email);
-    console.log("AUTH ERROR:", authError);
-
-    if (!session) {
+    if (authError || !session) {
         window.location.replace(`/login.html?redirect=${encodeURIComponent(window.location.pathname)}`);
         return;
     }
 
-    document.body.style.opacity = '1';
+    await applySession(session);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
+        if (nextSession?.user?.id === activeUserId) return;
+        await applySession(nextSession);
+    });
 
     // 2. Setup Nav Tabs
     const menuButtons = document.querySelectorAll('.account-menu button[data-target]');
@@ -30,45 +89,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // 3. Load Profile Data Safely
-    // We strictly use array limiting instead of single() to completely bypass PostgREST's 
-    // network-level 406 response if a race condition ever leaves a row uncreated.
-    const loadProfile = async () => {
-        document.getElementById('profile-email').value = user.email || '';
-
-        try {
-            console.log("PROFILE QUERY USER ID:", user.id);
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('id, full_name, phone, avatar_url, created_at, updated_at')
-                .eq('id', user.id)
-                .limit(1);
-
-            console.log("PROFILE RESULT:", data);
-            console.log("PROFILE ERROR:", error);
-
-            if (error) {
-                console.error('[Toys World] Profile Load Error:', error);
-                showMsg(document.getElementById('profile-msg'), 'Failed to load profile data securely.', 'error');
-                return;
-            }
-
-            if (data && data.length > 0) {
-                const profile = data[0];
-                document.getElementById('profile-name').value = profile.full_name || '';
-                document.getElementById('profile-phone').value = profile.phone || '';
-            } else {
-                // If profile truly genuinely doesn't exist, handle it quietly
-                console.warn('[Toys World] Profile row not found. Re-syncing from auth metadata.');
-                document.getElementById('profile-name').value = user.user_metadata?.full_name || '';
-            }
-        } catch (err) {
-            console.error('[Toys World] Unexpected error loading profile:', err);
-        }
-    };
-
-    loadProfile();
-
     // 4. Handle Profile Updates
     const profileForm = document.getElementById('profile-form');
     const profileMsg = document.getElementById('profile-msg');
@@ -77,6 +97,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     profileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         hideMsg(profileMsg);
+        if (!activeUserId) {
+            showMsg(profileMsg, 'Your session has expired. Please sign in again.', 'error');
+            return;
+        }
         profileBtn.disabled = true;
         profileBtn.textContent = 'Saving...';
 
@@ -91,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { error } = await supabase
                 .from('profiles')
                 .update(updatePayload)
-                .eq('id', user.id);
+                .eq('id', activeUserId);
 
             if (error) throw error;
 
@@ -151,7 +175,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 6. Sign Out
     document.getElementById('signout-btn').addEventListener('click', async () => {
         await supabase.auth.signOut();
-        window.location.href = '/login.html';
     });
 
     function showMsg(el, text, type) {
