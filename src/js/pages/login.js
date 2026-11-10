@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle redirect param
     const urlParams = new URLSearchParams(window.location.search);
-    const redirectPath = urlParams.get('redirect') || '/account.html';
+    const redirectPath = urlParams.get('redirect') || '/';
 
     if (signupLink) {
         signupLink.href = `/signup.html?redirect=${encodeURIComponent(redirectPath)}`;
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        window.location.href = redirectPath;
+        window.location.href = '/';
     };
 
     // Pre-check if already logged in and route only after admin membership verification.

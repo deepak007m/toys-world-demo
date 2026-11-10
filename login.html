@@ -121,6 +121,10 @@
             margin-top: 1.5rem;
         }
 
+        .admin-choice[hidden] {
+            display: none;
+        }
+
         .admin-choice .btn {
             display: block;
             text-decoration: none;
@@ -193,15 +197,15 @@
             </form>
 
             <div id="admin-choice-panel" class="admin-choice" hidden>
-                    <h2 class="auth-title" style="font-size:1.5rem; margin-bottom:0;">Welcome, Store Admin!</h2>
-                    <a href="/admin/" class="btn btn-primary">
-                        Open Admin Dashboard
-                        <span class="admin-choice-description">Manage the store.</span>
-                    </a>
-                    <a href="/account.html" class="btn btn-outline">
-                        Browse as Customer
-                        <span class="admin-choice-description">View the normal storefront.</span>
-                    </a>
+                <h2 class="auth-title" style="font-size:1.5rem; margin-bottom:0;">Welcome, Store Admin!</h2>
+                <a href="/admin/" class="btn btn-primary">
+                    Open Admin Dashboard
+                    <span class="admin-choice-description">Manage the store.</span>
+                </a>
+                <a href="/" class="btn btn-outline">
+                    Browse as Customer
+                    <span class="admin-choice-description">View the normal storefront.</span>
+                </a>
             </div>
 
             <div id="customer-auth-links" class="auth-links">
