@@ -2,7 +2,7 @@
  * Toys World & Gift Gallery — Data Layer
  * ========================================
  * All product/category/config data now comes from Supabase.
- * Reviews remain static (no reviews table in Phase 2).
+ * Reviews are loaded from Supabase and only approved reviews are public.
  *
  * Public API (all async unless marked static):
  *   getConfig()                          → store branding, contact, images
@@ -12,17 +12,23 @@
  *   getProductById(id)                   → single product by UUID
  *   getFeaturedProducts(limit)           → shorthand for featured products
  *   buildWhatsAppLink(productName)       → static helper, needs config.whatsapp_number
- *   reviews                              → static array (Phase 2)
+ *   getProductReviews(productId)         → approved reviews and rating summary
+ *   submitProductReview(review)          → submit a pending customer review
  */
 
 import { supabase } from './supabase.js';
+import { getAvailabilityLabel, getProductAvailability } from './inventory.js';
 
 // ─── WhatsApp Helper ──────────────────────────────────────────────────────────
 // Pure function — callers must pass the whatsapp number from getConfig().
 const DEFAULT_WHATSAPP_NUMBER = '919272040160';
 
 function getWhatsAppNumber(whatsappNumber) {
-  return String(whatsappNumber || DEFAULT_WHATSAPP_NUMBER).replace(/\D/g, '');
+  const digits = String(whatsappNumber || DEFAULT_WHATSAPP_NUMBER).replace(/\D/g, '');
+  if (digits.length === 10) {
+    return `91${digits}`;
+  }
+  return digits || DEFAULT_WHATSAPP_NUMBER;
 }
 
 function getProductPriceText(product) {
@@ -40,10 +46,11 @@ export function buildWhatsAppLink(whatsappNumber, productName) {
 
 export function buildProductWhatsAppLink(whatsappNumber, product, quantity = 1) {
   const productUrl = new URL(`/product.html?id=${encodeURIComponent(product.id)}`, window.location.origin).href;
-  const availability = Number(product.stock_quantity) === 0
-    ? 'This product may be out of stock; could you please confirm whether it is available or will be restocked?'
-    : 'Could you please confirm its availability and share more details?';
-  const message = `Hello Toys World & Gift Gallery! I'd like to enquire about:\n\nProduct: ${product.name}\nPrice: ${getProductPriceText(product)}\nQuantity: ${Math.max(1, Number(quantity) || 1)}\nLink: ${productUrl}\n\n${availability}`;
+  const availability = getAvailabilityLabel(getProductAvailability(product));
+  const availabilityMessage = availability === 'Out of Stock'
+    ? 'This product is currently out of stock; could you please confirm whether it will be restocked?'
+    : 'This product is currently available. Could you please confirm the latest details?';
+  const message = `Hello Toys World & Gift Gallery! I'd like to enquire about:\n\nProduct: ${product.name}\nPrice: ${getProductPriceText(product)}\nAvailability: ${availability}\nQuantity: ${Math.max(1, Number(quantity) || 1)}\nLink: ${productUrl}\n\n${availabilityMessage}`;
   return `https://wa.me/${getWhatsAppNumber(whatsappNumber)}?text=${encodeURIComponent(message)}`;
 }
 
@@ -57,6 +64,43 @@ export function buildCartWhatsAppLink(whatsappNumber, items, subtotal = null) {
     : '\nEstimated subtotal: Please confirm prices';
   const message = `Hello Toys World & Gift Gallery! I'd like to enquire about these products:\n\n${lines.join('\n')}${subtotalText}\n\nPlease confirm availability and share the next steps.`;
   return `https://wa.me/${getWhatsAppNumber(whatsappNumber)}?text=${encodeURIComponent(message)}`;
+}
+
+// Record only the fact that an enquiry link was opened. This is intentionally
+// fire-and-forget so analytics never prevents WhatsApp from opening.
+export async function trackWhatsAppEnquiry(productId = null, source = 'product', quantity = 1) {
+  try {
+    await supabase.rpc('track_whatsapp_enquiry', {
+      p_product_id: productId || null,
+      p_source: source,
+      p_quantity: Math.max(1, Math.min(100, Number(quantity) || 1)),
+    });
+    await supabase.rpc('track_catalog_event', {
+      p_event_type: 'WHATSAPP_CLICK',
+      p_product_id: productId || null,
+      p_source: source,
+    });
+  } catch (error) {
+    console.warn('[data] WhatsApp enquiry tracking failed:', error.message);
+  }
+
+}
+
+if (typeof window !== 'undefined') {
+  window.trackWhatsAppEnquiry = trackWhatsAppEnquiry;
+}
+
+export async function trackProductView(productId) {
+  if (!productId) return;
+  try {
+    await supabase.rpc('track_catalog_event', {
+      p_event_type: 'PRODUCT_VIEW',
+      p_product_id: productId,
+      p_source: 'product-page',
+    });
+  } catch (error) {
+    console.warn('[data] product view tracking failed:', error.message);
+  }
 }
 
 // ─── Store Config ─────────────────────────────────────────────────────────────
@@ -122,6 +166,7 @@ export async function getProducts({ categoryId, subcategoryId, featured, limit }
   if (categoryId) query = query.eq('category_id', categoryId);
   if (subcategoryId) query = query.eq('subcategory_id', subcategoryId);
   if (featured) query = query.eq('is_featured', true);
+  query = query.eq('is_hidden', false);
   if (limit) query = query.limit(limit);
 
   const { data, error } = await query;
@@ -148,6 +193,7 @@ export async function getProductById(id) {
       subcategories ( slug, title )
     `)
     .eq('id', id)
+    .eq('is_hidden', false)
     .single();
 
   if (error) {
@@ -157,24 +203,115 @@ export async function getProductById(id) {
   return data;
 }
 
-// ─── Reviews (static — no database table in Phase 2) ─────────────────────────
-export const reviews = [
-  {
-    id: 1,
-    text: 'Amazing variety of toys at genuine prices. Best shop in Palghar for collectibles — Hot Wheels, anime figures, everything!',
-    rating: 5,
-  },
-  {
-    id: 2,
-    text: 'Love this place! Found an incredible soft toy collection and the staff was super helpful. Will come back again.',
-    rating: 5,
-  },
-  {
-    id: 3,
-    text: "You never know what you'll find here — it's like a treasure hunt every time. Prices are very reasonable.",
-    rating: 5,
-  },
-];
+// ─── Reviews ─────────────────────────────────────────────────────────────────
+export async function getProductReviews(productId) {
+  if (!productId) return { reviews: [], average: 0, count: 0 };
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('id, product_id, display_name, rating, title, body, created_at')
+    .eq('product_id', productId)
+    .eq('status', 'APPROVED')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[data] getProductReviews error:', error.message);
+    return { reviews: [], average: 0, count: 0 };
+  }
+
+  const approved = data ?? [];
+  const average = approved.length
+    ? approved.reduce((sum, review) => sum + Number(review.rating), 0) / approved.length
+    : 0;
+  return { reviews: approved, average, count: approved.length };
+}
+
+export async function getCustomerProductReview(productId) {
+  if (!productId) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user?.id) return null;
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('id, product_id, user_id, display_name, rating, title, body, status, created_at')
+    .eq('product_id', productId)
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[data] getCustomerProductReview error:', error.message);
+    return null;
+  }
+  return data;
+}
+
+export async function submitProductReview({ productId, rating, title, body, authorName }) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user?.id) return { data: null, error: { message: 'Please sign in to leave a review.' } };
+
+  // Check if customer already has an existing review for this product
+  const existing = await getCustomerProductReview(productId);
+  if (existing) {
+    let msg = "You have already submitted a review for this product.";
+    if (existing.status === 'APPROVED') msg = "You've already reviewed this product.";
+    else if (existing.status === 'PENDING') msg = "Your review is awaiting approval.";
+    return {
+      data: null,
+      error: { code: 'DUPLICATE_REVIEW', message: msg, existingReview: existing }
+    };
+  }
+
+  let displayName = String(authorName || '').trim();
+  if (!displayName) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', session.user.id)
+      .maybeSingle();
+    displayName = profile?.full_name?.trim() || '';
+  }
+  if (!displayName) {
+    displayName = session.user.user_metadata?.full_name?.trim() 
+      || session.user.user_metadata?.name?.trim() 
+      || '';
+  }
+  if (!displayName && session.user.email) {
+    const prefix = session.user.email.split('@')[0];
+    displayName = prefix.replace(/[._-]/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+  }
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .insert({
+      product_id: productId,
+      user_id: session.user.id,
+      display_name: displayName || 'Verified Customer',
+      rating: Number(rating),
+      title: String(title || '').trim().slice(0, 120) || null,
+      body: String(body || '').trim()
+    })
+    .select('id, status, created_at')
+    .single();
+
+  if (error) {
+    if (error.code === '23505' || error.message?.includes('duplicate key') || error.message?.includes('reviews_one_per_customer_product_idx')) {
+      const existingAfterRace = await getCustomerProductReview(productId);
+      let msg = "You've already submitted a review for this product.";
+      if (existingAfterRace?.status === 'APPROVED') msg = "You've already reviewed this product.";
+      else if (existingAfterRace?.status === 'PENDING') msg = "Your review is awaiting approval.";
+      return {
+        data: null,
+        error: {
+          code: 'DUPLICATE_REVIEW',
+          message: msg,
+          existingReview: existingAfterRace
+        }
+      };
+    }
+  }
+
+  return { data, error };
+}
 
 // ─── STATIC FALLBACK (safe rollback — do not delete until Supabase is verified) ──
 /*

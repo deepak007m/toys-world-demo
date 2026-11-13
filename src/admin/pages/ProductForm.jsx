@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../js/supabase.js';
-import { getAvailabilityFromStock, getStockState } from '../../js/inventory.js';
+import { getProductAvailability } from '../../js/inventory.js';
 import { uploadImage } from '../lib/adminData.js';
 
 const ProductForm = () => {
@@ -25,6 +25,7 @@ const ProductForm = () => {
         category_id: '',
         subcategory_id: '',
         availability: 'IN_STOCK',
+        is_hidden: false,
         is_featured: false,
         image_url: ''
     });
@@ -45,7 +46,8 @@ const ProductForm = () => {
                         ...prodData,
                         price: prodData.price || '',
                         stock_quantity: prodData.stock_quantity ?? 0,
-                        availability: getAvailabilityFromStock(prodData.stock_quantity),
+                        availability: getProductAvailability(prodData),
+                        is_hidden: Boolean(prodData.is_hidden),
                         category_id: prodData.category_id || '',
                         subcategory_id: prodData.subcategory_id || '',
                         short_description: prodData.short_description || '',
@@ -90,11 +92,6 @@ const ProductForm = () => {
         setError(null);
 
         try {
-            const stockQuantity = Number(formData.stock_quantity);
-            if (!Number.isInteger(stockQuantity) || stockQuantity < 0) {
-                throw new Error('Stock Quantity must be a whole number greater than or equal to 0.');
-            }
-
             let finalImageUrl = formData.image_url;
 
             if (imageFile) {
@@ -107,10 +104,13 @@ const ProductForm = () => {
                 short_description: formData.short_description,
                 long_description: formData.long_description,
                 price: formData.price ? parseFloat(formData.price) : null,
-                stock_quantity: stockQuantity,
+                stock_quantity: Number.isInteger(Number(formData.stock_quantity)) && Number(formData.stock_quantity) >= 0
+                    ? Number(formData.stock_quantity)
+                    : 0,
                 category_id: formData.category_id || null,
                 subcategory_id: formData.subcategory_id || null,
-                availability: getAvailabilityFromStock(stockQuantity),
+                availability: formData.availability,
+                is_hidden: Boolean(formData.is_hidden),
                 is_featured: formData.is_featured,
                 image_url: finalImageUrl
             };
@@ -175,20 +175,16 @@ const ProductForm = () => {
                     </div>
 
                     <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label">Stock Quantity</label>
+                        <label className="form-label">Legacy Stock Quantity (optional)</label>
                         <input
                             type="number"
                             min="0"
                             step="1"
-                            required
                             value={formData.stock_quantity}
                             onChange={e => setFormData({ ...formData, stock_quantity: e.target.value })}
                         />
                         <small style={{ color: 'var(--text-muted)' }}>
-                            Numeric physical inventory. This is separate from Availability.
-                        </small>
-                        <small style={{ color: 'var(--text-secondary)' }}>
-                            Current state: {getStockState(Number(formData.stock_quantity)).label}
+                            Preserved for compatibility. Use the availability control below for normal catalogue management.
                         </small>
                     </div>
 
@@ -224,11 +220,20 @@ const ProductForm = () => {
                             value={formData.availability}
                             onChange={e => setFormData({ ...formData, availability: e.target.value })}
                         >
-                            <option value="IN_STOCK">In Stock</option>
-                            <option value="LIMITED">Limited Stock</option>
+                            <option value="IN_STOCK">Available</option>
                             <option value="OUT_OF_STOCK">Out of Stock</option>
-                            <option value="CONFIRM_ON_WA">Confirm on WhatsApp</option>
                         </select>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0, flexDirection: 'row', alignItems: 'center', gap: '0.75rem' }}>
+                        <input
+                            type="checkbox"
+                            id="is_hidden"
+                            checked={formData.is_hidden}
+                            onChange={e => setFormData({ ...formData, is_hidden: e.target.checked })}
+                            style={{ width: 'auto', cursor: 'pointer' }}
+                        />
+                        <label className="form-label" htmlFor="is_hidden" style={{ cursor: 'pointer', margin: 0 }}>Hide from public catalogue</label>
                     </div>
 
                     <div className="form-group" style={{ marginBottom: 0 }}>

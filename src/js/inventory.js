@@ -1,5 +1,19 @@
 export const LOW_STOCK_THRESHOLD = 3;
 
+export function getProductAvailability(product) {
+    const availability = String(product?.availability || '').toUpperCase();
+    if (availability === 'OUT_OF_STOCK') return 'OUT_OF_STOCK';
+    if (availability === 'IN_STOCK' || availability === 'LIMITED' || availability === 'CONFIRM_ON_WA') {
+        return 'IN_STOCK';
+    }
+
+    return getAvailabilityFromStock(product?.stock_quantity);
+}
+
+export function getAvailabilityLabel(availability) {
+    return availability === 'OUT_OF_STOCK' ? 'Out of Stock' : 'Available';
+}
+
 export function getAvailabilityFromStock(stockQuantity) {
     const quantity = Number.isInteger(stockQuantity)
         ? stockQuantity

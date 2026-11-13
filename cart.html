@@ -302,7 +302,8 @@
                 : 'Price on request';
             document.getElementById('summary-subtotal').textContent = formattedTotal;
             document.getElementById('summary-total').textContent = formattedTotal;
-            document.getElementById('cart-whatsapp-link').href = buildCartWhatsAppLink(
+            const cartWhatsAppLink = document.getElementById('cart-whatsapp-link');
+            cartWhatsAppLink.href = buildCartWhatsAppLink(
                 config?.whatsapp_number,
                 data.map(item => {
                     let product = item.products;
@@ -311,6 +312,7 @@
                 }).filter(item => item.product),
                 hasAccurateSubtotal ? subtotal : null,
             );
+            cartWhatsAppLink.onclick = () => window.trackWhatsAppEnquiry && window.trackWhatsAppEnquiry(null, 'cart', totalItems);
 
             refreshBadges(supabase, sessionData.session.user.id);
         }

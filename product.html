@@ -13,209 +13,8 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="/src/css/global.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
+    <link rel="stylesheet" href="/src/css/product.css" />
 
-    <style>
-        .pd-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            padding-top: 3rem;
-            padding-bottom: 5rem;
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .pd-layout {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        .pd-img-wrap {
-            background: var(--bg-surface);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-xl);
-            padding: 2.5rem;
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-        }
-
-        .pd-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .pd-badge {
-            position: absolute;
-            top: 1.25rem;
-            left: 1.25rem;
-            background: var(--accent-gold);
-            color: #0D0D0F;
-            font-family: var(--font-heading);
-            font-size: 0.62rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 0.35rem 0.9rem;
-            border-radius: 9999px;
-        }
-
-        .pd-breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .pd-breadcrumb a {
-            color: var(--text-secondary);
-            transition: color var(--t-fast);
-        }
-
-        .pd-breadcrumb a:hover {
-            color: var(--text-primary);
-        }
-
-        .pd-cat {
-            font-family: var(--font-heading);
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            margin-bottom: 0.5rem;
-        }
-
-        .pd-title {
-            font-size: clamp(1.75rem, 4vw, 2.75rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.25rem;
-        }
-
-        .pd-price {
-            font-family: var(--font-heading);
-            font-size: 2.25rem;
-            font-weight: 800;
-            margin-bottom: 1.25rem;
-        }
-
-        .pd-avail {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 2rem;
-        }
-
-        .pd-avail.in {
-            background: rgba(34, 197, 94, 0.12);
-            color: #4ade80;
-        }
-
-        .pd-avail.limited {
-            background: rgba(232, 184, 75, 0.12);
-            color: var(--accent-gold);
-        }
-
-        .pd-avail.out {
-            background: rgba(239, 68, 68, 0.12);
-            color: #f87171;
-        }
-
-        .pd-wa-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            width: 100%;
-            background: #25D366;
-            color: #fff;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1.05rem;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            padding: 1.1rem;
-            border-radius: var(--radius-md);
-            transition: background var(--t-fast), box-shadow var(--t-fast);
-            margin-bottom: 1.5rem;
-        }
-
-        .pd-wa-btn:hover {
-            background: #1db954;
-            box-shadow: var(--shadow-md);
-        }
-
-        .pd-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            transition: color var(--t-fast);
-        }
-
-        .pd-back:hover {
-            color: var(--text-primary);
-        }
-
-        .pd-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.07);
-            margin: 1.75rem 0;
-        }
-
-        .pd-desc-heading {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.01em;
-        }
-
-        .pd-desc {
-            font-size: 0.95rem;
-            line-height: 1.75;
-            color: var(--text-secondary);
-        }
-
-        .pd-demo-note {
-            margin-top: 1.5rem;
-            padding: 1rem 1.25rem;
-            background: rgba(232, 184, 75, 0.08);
-            border: 1px solid rgba(232, 184, 75, 0.2);
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            color: var(--accent-gold);
-            line-height: 1.5;
-        }
-
-        /* Error state */
-        .pd-error {
-            text-align: center;
-            padding: 8rem 0;
-        }
-
-        .pd-error h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-    </style>
 </head>
 
 <body>
@@ -250,8 +49,8 @@
                         <span id="pd-avail-text"></span>
                     </div>
 
-                    <!-- Cart remains available for later re-enablement; customer enquiries use WhatsApp. -->
-                    <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
+                    <!-- Catalogue ordering is handled directly through WhatsApp. -->
+                    <div style="display:none;">
                         <div style="display:flex; gap:1rem; align-items:center;">
                             <div
                                 style="display:flex; align-items:center; border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); height:50px;">
@@ -282,7 +81,7 @@
                             <path
                                 d="M11.94 2c-5.523 0-9.94 4.418-9.94 9.94 0 1.752.458 3.396 1.26 4.824L2 22l5.395-1.297A9.903 9.903 0 0 0 11.94 21.88c5.523 0 9.94-4.418 9.94-9.94S17.463 2 11.94 2zm0 18.16c-1.633 0-3.17-.44-4.494-1.207l-.322-.19-3.205.77.82-3.11-.21-.34A8.13 8.13 0 0 1 3.8 11.94c0-4.495 3.644-8.14 8.14-8.14 4.496 0 8.14 3.645 8.14 8.14 0 4.496-3.644 8.14-8.14 8.14z" />
                         </svg>
-                        Ask on WhatsApp
+                        Order on WhatsApp
                     </a>
 
                     <div class="pd-divider"></div>
@@ -295,21 +94,36 @@
                         pricing and stock.
                         <div class="pd-divider"></div>
 
-                        <!-- Fake Ratings & Reviews Module -->
-                        <div style="margin-bottom:2.5rem;">
-                            <h3 class="pd-desc-heading">Collector Reviews</h3>
-                            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
-                                <div style="color:var(--accent-gold); font-size:1.1rem;">★★★★★</div>
-                                <span style="font-size:0.9rem; font-weight:700;">4.9</span>
-                                <span style="font-size:0.8rem; color:var(--text-muted);">(12 reviews)</span>
+                        <section id="reviews-section" aria-labelledby="reviews-heading" style="margin-bottom:2.5rem;">
+                            <h3 class="pd-desc-heading" id="reviews-heading">Customer Reviews</h3>
+                            <div id="reviews-summary" style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+                                <span style="color:var(--accent-gold); font-size:1.1rem;">★★★★★</span>
+                                <strong id="reviews-average">No ratings yet</strong>
+                                <span id="reviews-count" style="font-size:0.8rem; color:var(--text-muted);"></span>
                             </div>
-                            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.75rem;">
-                                "Incredible detail on this model. Very happy with the shipping protection." – A. Kumar
+                            <div id="reviews-list" style="display:grid; gap:1rem;"></div>
+                            <p id="reviews-empty" style="font-size:0.85rem; color:var(--text-secondary);">Be the first to review this product.</p>
+                            <div id="user-review-status" style="display:none; margin-top:1.5rem;"></div>
+
+                            <form id="review-form" style="display:none; margin-top:1.5rem;">
+                                <h4 style="margin-bottom:0.75rem;">Leave a review</h4>
+                                <div style="display:grid; gap:0.75rem;">
+                                    <input id="review-name" maxlength="80" placeholder="Your Name" style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); color:#fff; padding:0.5rem 0.8rem; font-size:0.85rem;" />
+                                    <select id="review-rating" required aria-label="Rating">
+                                        <option value="">Rating</option><option value="5">5 — Excellent</option>
+                                        <option value="4">4 — Great</option><option value="3">3 — Good</option>
+                                        <option value="2">2 — Fair</option><option value="1">1 — Poor</option>
+                                    </select>
+                                    <input id="review-title" maxlength="120" placeholder="Review title (optional)">
+                                    <textarea id="review-body" minlength="10" maxlength="2000" rows="4" placeholder="Tell other customers what you think (10–2000 characters)." required></textarea>
+                                    <button class="btn btn-outline" type="submit">Submit for approval</button>
+                                    <p id="review-message" role="status" style="font-size:0.85rem;"></p>
+                                </div>
+                            </form>
+                            <p id="review-signin" style="font-size:0.85rem; color:var(--text-secondary); margin-top:1rem;">
+                                <a href="/login.html?redirect=/product.html" style="color:var(--accent-gold);">Sign in</a> to share your review.
                             </p>
-                            <a href="#"
-                                style="font-size:0.85rem; color:var(--accent-gold); text-decoration:underline;">Read all
-                                reviews →</a>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -317,130 +131,7 @@
 
         <div id="footer-placeholder"></div>
 
-        <script type="module">
-            import { getProductById, getConfig, buildProductWhatsAppLink } from '/src/js/data.js';
-            import { getStockState } from '/src/js/inventory.js';
-            import { renderHeader, renderFooter, wireNavDrawer, wireScrollReveal, mountAuthListener, wireStoreActions } from '/src/js/components.js';
-            import { supabase } from '/src/js/supabase.js';
-
-            // ── Load config and product in parallel ──────────────────────────────
-            const params = new URLSearchParams(window.location.search);
-            const productId = params.get('id');
-
-            const [config, product] = await Promise.all([
-                getConfig(),
-                getProductById(productId),
-            ]);
-
-            const waNumber = config?.whatsapp_number || '';
-
-            document.getElementById('header-placeholder').innerHTML = renderHeader('Shop', config);
-            document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
-            wireNavDrawer();
-
-            if (!product) {
-                document.getElementById('pd-error').style.display = 'block';
-                document.title = 'Not Found — Toys World';
-            } else {
-                const el = document.getElementById('pd-content');
-                el.style.display = 'block';
-                document.title = `${product.name} — Toys World`;
-
-                // Image
-                const imgEl = document.getElementById('pd-img');
-                if (product.image_url) {
-                    imgEl.src = product.image_url;
-                    imgEl.alt = product.name;
-                } else {
-                    imgEl.closest('.pd-img-wrap').innerHTML = '<div class="product-img-placeholder" style="width:100%;height:100%;"></div>';
-                }
-
-                // Category name (nested join from Supabase)
-                const catName = product.categories?.title || '';
-                document.getElementById('pd-cat').textContent = catName;
-
-                // Title & description
-                document.getElementById('pd-title').textContent = product.name;
-                document.getElementById('pd-desc').textContent = product.long_description || product.short_description || '';
-
-                // Price
-                const priceEl = document.getElementById('pd-price');
-                priceEl.textContent = (typeof product.price === 'number' && product.price !== null)
-                    ? `₹${product.price.toLocaleString('en-IN')}`
-                    : 'Price on request';
-
-                // Availability — map DB enum to display text + CSS class
-                const availabilityMap = {
-                    'IN_STOCK': { label: 'In Stock', cls: 'in' },
-                    'OUT_OF_STOCK': { label: 'Out of Stock', cls: 'out' },
-                };
-                const stockState = getStockState(product.stock_quantity);
-                const availability = stockState.quantity > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK';
-                const avail = availabilityMap[availability];
-                document.getElementById('pd-avail-text').textContent = avail.label;
-                const avEl = document.getElementById('pd-avail');
-                avEl.classList.remove('in', 'limited', 'out');
-                avEl.classList.add(avail.cls);
-
-                const stockQuantity = stockState.quantity;
-                const stockStateEl = document.createElement('div');
-                stockStateEl.textContent = stockState.label;
-                stockStateEl.style.cssText = `margin:-1rem 0 1.5rem; color:${stockState.key === 'OUT_OF_STOCK' ? '#f87171' : stockState.key === 'LOW_STOCK' ? 'var(--accent-gold)' : '#4ade80'}; font-weight:600;`;
-                avEl.insertAdjacentElement('afterend', stockStateEl);
-
-                // WhatsApp link
-                const pdWaLink = document.getElementById('pd-wa-link');
-                const updateWhatsAppLink = () => {
-                    pdWaLink.href = buildProductWhatsAppLink(waNumber, product, parseInt(document.getElementById('pd-qty-input')?.value, 10) || 1);
-                };
-
-                // Badge
-                if (product.badge) {
-                    const b = document.getElementById('pd-badge-el');
-                    b.style.display = 'block';
-                    b.textContent = product.badge;
-                }
-                // Assign buttons ID
-                document.getElementById('pd-add-to-cart').dataset.id = product.id;
-                document.getElementById('pd-add-to-wishlist').dataset.id = product.id;
-                const addToCartButton = document.getElementById('pd-add-to-cart');
-                const qtyMinus = document.getElementById('pd-qty-minus');
-                const qtyPlus = document.getElementById('pd-qty-plus');
-                const qtyInput = document.getElementById('pd-qty-input');
-                addToCartButton.disabled = stockQuantity === 0;
-                addToCartButton.textContent = stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart';
-                qtyInput.max = String(stockQuantity);
-                qtyInput.value = stockQuantity === 0 ? '0' : '1';
-                updateWhatsAppLink();
-
-                // Set wishlist active state from global cache if available
-                if (window.CURRENT_WISHLIST_IDS && window.CURRENT_WISHLIST_IDS.has(product.id)) {
-                    document.getElementById('pd-add-to-wishlist').classList.add('active');
-                }
-
-                // Plus / minus quantity logic
-                if (qtyMinus && qtyPlus && qtyInput) {
-                    qtyMinus.addEventListener('click', () => {
-                        let c = parseInt(qtyInput.value) || 1;
-                        if (c > 1) qtyInput.value = c - 1;
-                        qtyPlus.disabled = stockQuantity === 0 || c - 1 >= stockQuantity;
-                        updateWhatsAppLink();
-                    });
-                    qtyPlus.addEventListener('click', () => {
-                        let c = parseInt(qtyInput.value) || 1;
-                        if (c < stockQuantity) qtyInput.value = c + 1;
-                        qtyPlus.disabled = stockQuantity === 0 || parseInt(qtyInput.value, 10) >= stockQuantity;
-                        updateWhatsAppLink();
-                    });
-                    qtyMinus.disabled = stockQuantity === 0;
-                    qtyPlus.disabled = stockQuantity <= 1;
-                }
-            }
-
-            mountAuthListener(supabase);
-            wireStoreActions(supabase);
-            wireScrollReveal();
-        </script>
+        <script type="module" src="/src/js/pages/product.js"></script>
 
 </body>
 

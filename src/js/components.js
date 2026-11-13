@@ -1,5 +1,5 @@
 import { buildProductWhatsAppLink } from './data.js';
-import { getStockState } from './inventory.js';
+import { getAvailabilityLabel, getProductAvailability } from './inventory.js';
 
 export function renderHeader(activePage = '', config = null) {
   return `
@@ -28,21 +28,18 @@ export function renderHeader(activePage = '', config = null) {
           <a href="/shop.html" class="icon-link" aria-label="Search" id="desktop-search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </a>
-          <a href="/wishlist.html" class="icon-link" aria-label="Wishlist" id="desktop-wishlist" style="position:relative;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-            <span class="wishlist-badge" style="position:absolute; top:-6px; right:-6px; background:var(--accent-gold); color:#000; font-size:0.65rem; font-weight:bold; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center;">0</span>
-          </a>
-          
           <div id="desktop-auth-container">
-            <a href="/login.html" class="icon-link">
+            <a href="/login.html" class="icon-link" aria-label="Account" title="Account">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </a>
           </div>
 
+          <!--
           <a href="/cart.html" class="icon-link" aria-label="Cart" style="position:relative;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
             <span class="cart-badge" id="header-cart-badge" style="position:absolute; top:-6px; right:-6px; background:var(--accent-gold); color:#000; font-size:0.65rem; font-weight:bold; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center;">0</span>
           </a>
+          -->
         </div>
       </div>
       
@@ -50,8 +47,8 @@ export function renderHeader(activePage = '', config = null) {
         .icon-link { color: var(--text-primary); transition: color 0.2s; display: flex; align-items: center; }
         .icon-link:hover { color: var(--accent-gold); }
         @media (max-width: 900px) {
-          #desktop-nav, #desktop-search, #desktop-wishlist, #desktop-auth-container { display: none; }
-          #menu-btn { display: block; border:none; background:transparent; color:#fff; padding:0.5rem; margin-left:-0.5rem; cursor:pointer;}
+          #desktop-nav, #desktop-search { display: none; }
+          #menu-btn { display: block !important; border:none; background:transparent; color:#fff; padding:0.5rem; margin-left:-0.5rem; cursor:pointer;}
           .header-inner { gap: 1rem; }
           .logo { font-size: 1.25rem; margin-right: auto; }
         }
@@ -83,7 +80,6 @@ export function renderHeader(activePage = '', config = null) {
           <a href="/shop.html?category=new-arrivals" style="color:var(--text-primary); text-decoration:none;">New Arrivals</a>
           <a href="/shop.html?category=die-cast" style="color:var(--text-primary); text-decoration:none;">Die-Cast</a>
           <a href="/shop.html?category=anime" style="color:var(--text-primary); text-decoration:none;">Anime Figures</a>
-          <a href="/wishlist.html" style="color:var(--text-primary); text-decoration:none;">My Wishlist</a>
         </div>
       </div>
     </div>
@@ -126,8 +122,7 @@ export function renderFooter(config = null) {
           <div>
             <p style="font-family:var(--font-heading); font-weight:800; font-size:0.875rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-primary); margin-bottom:1.5rem;">Customer Care</p>
             <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1rem; font-size:0.95rem;">
-              <li><a href="/account.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">My Account</a></li>
-              <li><a href="/orders.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Track Order</a></li>
+              <li><a href="/contact.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Contact the Store</a></li>
               <li><a href="/faq.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">FAQ</a></li>
               <li><a href="/shipping.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Shipping Info</a></li>
               <li><a href="/returns.html" style="color:var(--text-secondary); text-decoration:none; transition:color 0.2s;">Returns Policy</a></li>
@@ -158,7 +153,7 @@ export function renderFooter(config = null) {
   `;
 }
 
-export function renderProductCard(product, waNumber = '', isWishlisted = false) {
+export function renderProductCard(product, waNumber = '') {
   const badge = product.badge
     ? `<div class="product-badge">${product.badge}</div>` : '';
 
@@ -167,15 +162,17 @@ export function renderProductCard(product, waNumber = '', isWishlisted = false) 
     : 'Price on request';
 
   const categoryName = product.categories?.title || product.category_name || '';
-  const wishActiveClass = isWishlisted ? ' active' : '';
-  const stockState = getStockState(product.stock_quantity);
-  const isOutOfStock = stockState.key === 'OUT_OF_STOCK';
+  const wishActiveClass = '';
+  const availability = getProductAvailability(product);
+  const isOutOfStock = availability === 'OUT_OF_STOCK';
+  const availabilityLabel = getAvailabilityLabel(availability);
 
   return `
     <div class="product-card" onclick="window.location.href='/product.html?id=${product.id}'" style="cursor:pointer;">
       <div class="product-img-wrap" style="position:relative;">
         ${badge}
-        <button class="wishlist-btn-corner${wishActiveClass}" data-id="${product.id}" aria-label="Add to wishlist" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(13,13,15,0.6); border:1px solid rgba(255,255,255,0.1); width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s;">
+        <!-- wishlist removed from the public catalogue -->
+        <button class="wishlist-btn-corner${wishActiveClass}" data-id="${product.id}" aria-label="Add to wishlist" style="display:none;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" stroke="currentColor" stroke-width="2"/></svg>
         </button>
         ${product.image_url
@@ -186,15 +183,12 @@ export function renderProductCard(product, waNumber = '', isWishlisted = false) 
       <div class="product-body" style="padding:1.5rem; display:flex; flex-direction:column;">
         <p class="product-cat" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:0.5rem;">${categoryName}</p>
         <h3 class="product-name" style="font-size:1.1rem; font-weight:700; margin-bottom:1rem; line-height:1.4;">${product.name}</h3>
-        <span style="font-size:0.8rem; color:${isOutOfStock ? '#f87171' : stockState.key === 'LOW_STOCK' ? 'var(--accent-gold)' : '#4ade80'}; margin-bottom:0.75rem;">${stockState.label}</span>
+        <span style="font-size:0.8rem; color:${isOutOfStock ? '#f87171' : '#4ade80'}; margin-bottom:0.75rem;">${availabilityLabel}</span>
         
         <div class="product-footer" style="display:flex; flex-direction:column; gap:1.25rem; margin-top:auto;">
           <span class="product-price" style="font-size:1.25rem; font-weight:800; color:var(--text-primary);">${priceDisplay}</span>
-          <button class="btn btn-outline product-add-btn" data-id="${product.id}" ${isOutOfStock ? 'disabled aria-disabled="true"' : ''} style="width:100%; padding:0.75rem; font-size:0.875rem;">
-            ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-          </button>
-          <a class="product-wa-btn" href="${buildProductWhatsAppLink(waNumber, product)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" aria-label="Enquire about ${product.name} on WhatsApp">
-            <span aria-hidden="true">💬</span> Enquire on WhatsApp
+          <a class="product-wa-btn" href="${buildProductWhatsAppLink(waNumber, product)}" target="_blank" rel="noopener" onclick="event.stopPropagation(); window.trackWhatsAppEnquiry && window.trackWhatsAppEnquiry('${product.id}', 'product', 1)" aria-label="Enquire about ${product.name} on WhatsApp">
+            <span aria-hidden="true">💬</span> Order on WhatsApp
           </a>
         </div>
       </div>
@@ -293,7 +287,7 @@ export function mountAuthListener(supabase) {
 
       refreshBadges(supabase, session.user.id);
     } else {
-      desktopAuth.innerHTML = `<a href="/login.html" class="icon-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>`;
+      desktopAuth.innerHTML = `<a href="/login.html" class="icon-link" aria-label="Account" title="Account"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>`;
       mobileAuth.innerHTML = `<a href="/login.html" class="btn btn-outline" style="width:100%; text-align:center;">Sign In / Register</a>`;
 
       document.querySelectorAll('.cart-badge').forEach(b => b.style.display = 'none');

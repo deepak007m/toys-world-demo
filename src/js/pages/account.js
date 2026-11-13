@@ -40,6 +40,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 profileName.value = user.user_metadata?.full_name || '';
             }
+
+            const displayName = profile?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'My Account';
+            const initial = displayName.charAt(0).toUpperCase();
+            const avatarEl = document.querySelector('.dash-avatar');
+            if (avatarEl) avatarEl.textContent = initial;
+            const nameEl = document.querySelector('.dash-user h3');
+            if (nameEl && displayName) nameEl.textContent = displayName;
+            const emailEl = document.querySelector('.dash-user p');
+            if (emailEl && user.email) emailEl.textContent = user.email;
         } catch (err) {
             if (loadToken === profileLoadToken && activeUserId === user.id) {
                 console.error('[Toys World] Unexpected error loading profile:', err);

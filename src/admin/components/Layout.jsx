@@ -13,20 +13,33 @@ const Sidebar = ({ isOpen, setOpen }) => {
     const menuItems = [
         { name: 'Dashboard', path: '/dashboard', icon: '📊' },
         { name: 'Products', path: '/products', icon: '📦' },
-        { name: 'Orders', path: '/orders', icon: '🧾' },
         { name: 'Categories', path: '/categories', icon: '📁' },
+        { name: 'Analytics', path: '/analytics', icon: '📈' },
+        { name: 'Manual Sales', path: '/manual-sales', icon: '💰' },
+        { name: 'Reviews', path: '/reviews', icon: '⭐' },
         { name: 'Store Settings', path: '/settings', icon: '⚙️' },
     ];
 
     return (
         <aside className={`admin-sidebar ${isOpen ? 'open' : ''}`}>
-            <div style={{ padding: '2rem 1.5rem', borderBottom: '1px solid var(--border-subtle)' }}>
-                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: 'var(--accent-gold)' }}>
-                    TOYS WORLD
-                </h2>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '4px' }}>
-                    Admin Portal
+            <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: 'var(--accent-gold)' }}>
+                        TOYS WORLD
+                    </h2>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '4px' }}>
+                        Admin Portal
+                    </div>
                 </div>
+                {isOpen && (
+                    <button
+                        onClick={() => setOpen(false)}
+                        aria-label="Close admin navigation"
+                        style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', padding: '0.25rem 0.5rem', cursor: 'pointer' }}
+                    >
+                        ✕
+                    </button>
+                )}
             </div>
 
             <nav style={{ padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flexGrow: 1 }}>
@@ -96,8 +109,9 @@ const Layout = ({ children, session }) => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         {/* Mobile menu toggle */}
                         <button
-                            className="d-md-none"
-                            style={{ color: 'var(--text-primary)', fontSize: '1.25rem', display: 'none' /* handled via media queries in a real app, keeping simple here */ }}
+                            className="admin-mobile-menu"
+                            aria-label="Open admin navigation"
+                            aria-expanded={sidebarOpen}
                             onClick={() => setSidebarOpen(true)}
                         >
                             ☰

@@ -338,6 +338,18 @@
             background: linear-gradient(to right, rgba(13, 13, 15, 0.6), transparent 60%);
         }
 
+        .brand-img-fallback {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
         @media (max-width: 900px) {
             .brand-statement-grid {
                 grid-template-columns: 1fr;
@@ -755,6 +767,38 @@
         </div>
     </section>
 
+    <section class="section" id="store-story">
+        <div class="container">
+            <div class="section-header-row reveal">
+                <div>
+                    <p class="label">Our Store</p>
+                    <h2 class="section-heading">About Toys World &amp; Gift Gallery</h2>
+                </div>
+            </div>
+            <div class="brand-statement-grid">
+                <div class="brand-text-col">
+                    <p class="brand-statement-sub reveal">
+                        A local destination for toys, collectibles and thoughtful gifts. Browse the latest
+                        products online, or visit the store to explore the collection in person.
+                    </p>
+                    <p class="brand-statement-sub reveal reveal-delay-1">
+                        Store photographs and more details will be added as they become available.
+                    </p>
+                    <a href="/about.html" class="btn btn-outline reveal reveal-delay-2">Learn More</a>
+                </div>
+                <div class="brand-img-col scale-in">
+                    <img src="/images/real_store_interior.png" alt="Toys World store interior"
+                        class="brand-img" id="store-story-image"
+                        loading="lazy" />
+                    <div class="brand-img-fallback" id="store-story-image-fallback" hidden>
+                        Store photographs will be added here as they become available.
+                    </div>
+                    <div class="brand-img-overlay"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 6. NEW ARRIVALS (Static Placeholder) -->
     <section class="section" style="background:var(--bg-primary);">
         <div class="container">
@@ -977,35 +1021,7 @@
         </div>
     </section>
 
-    <!-- 10. STORE STORY -->
-    <section class="section brand-statement">
-        <div class="container">
-            <div class="brand-statement-grid">
-                <div class="brand-text-col">
-                    <p class="label reveal">Toys World & Gift Gallery</p>
-                    <h2 class="brand-statement-title reveal reveal-delay-1">
-                        Rooted In<br />
-                        <em>Palghar.</em>
-                    </h2>
-                    <p class="brand-statement-sub reveal reveal-delay-2">
-                        We are a physical store, not just a website. Come in, pick it up, and feel the quality.
-                        Built for enthusiasts, gifted to fans.
-                    </p>
-                    <div class="reveal reveal-delay-3">
-                        <a href="/about.html" class="btn btn-outline">Read Our Story</a>
-                    </div>
-                </div>
-                <div class="brand-img-col scale-in">
-                    <img src="/images/real_store_interior.png"
-                        alt="Toys World store interior — shelves full of collectibles" class="brand-img" id="store-img"
-                        loading="lazy" />
-                    <div class="brand-img-overlay"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 11. INSTAGRAM SECTION -->
+    <!-- 10. INSTAGRAM SECTION -->
     <section class="section ig-section" id="instagram">
         <div class="container">
             <div class="section-header-row reveal">
@@ -1041,31 +1057,14 @@
         </div>
     </section>
 
-    <!-- 12. CUSTOMER REVIEWS (Placeholders) -->
+    <!-- 12. CUSTOMER REVIEWS -->
     <section class="section reviews-section bg-secondary">
         <div class="container">
             <div class="section-header centered reveal">
                 <h2 class="section-heading">Happy Collectors</h2>
             </div>
-            <div class="grid-3 stagger" style="margin-top:2rem;">
-                <div class="review-card reveal">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Customer review placeholder. Actual verified reviews will appear here once
-                        connected."</p>
-                    <div class="review-source">- Collector from Palghar</div>
-                </div>
-                <div class="review-card reveal reveal-delay-1">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Customer review placeholder. Real feedback regarding service/delivery goes
-                        here."</p>
-                    <div class="review-source">- Anime Fan</div>
-                </div>
-                <div class="review-card reveal reveal-delay-2">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"Customer review placeholder. Ensures we maintain a complete UI structure."
-                    </p>
-                    <div class="review-source">- Verified Buyer</div>
-                </div>
+            <div class="review-card" style="margin-top:2rem; text-align:center; color:var(--text-secondary);">
+                Product reviews are shown on their product pages after approval.
             </div>
         </div>
     </section>
@@ -1122,6 +1121,13 @@
         mountAuthListener(supabase);
         wireStoreActions(supabase);
 
+        const storeStoryImage = document.getElementById('store-story-image');
+        const storeStoryFallback = document.getElementById('store-story-image-fallback');
+        storeStoryImage?.addEventListener('error', () => {
+            storeStoryImage.hidden = true;
+            if (storeStoryFallback) storeStoryFallback.hidden = false;
+        });
+
         const newHeader = document.querySelector('.header');
         window.addEventListener('scroll', () => {
             newHeader?.classList.toggle('scrolled', window.scrollY > 60);
@@ -1133,9 +1139,6 @@
         // Dynamic overrides
         const heroImg = document.getElementById('hero-img');
         if (heroImg && config?.hero_image_url) heroImg.src = config.hero_image_url;
-        const storeImg = document.getElementById('store-img');
-        if (storeImg && config?.story_image_url) storeImg.src = config.story_image_url;
-
         // Categories Map
         const catGrid = document.getElementById('category-grid');
         if (categories.length > 0) catGrid.innerHTML = categories.map(renderCategoryCard).join('');

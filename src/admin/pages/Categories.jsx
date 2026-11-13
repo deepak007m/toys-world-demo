@@ -74,7 +74,13 @@ const Categories = () => {
                 <div className="admin-card" style={{ padding: '1rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', padding: '0 0.5rem' }}>
                         <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Categories</h3>
-                        <button className="btn btn-outline" style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }} onClick={() => alert("Add category form would open here (simplified for this task)")}>+ Add</button>
+                        <button className="btn btn-outline" style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem' }} onClick={async () => {
+                            const title = window.prompt('Category name');
+                            if (!title?.trim()) return;
+                            const slug = title.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                            const { error } = await supabase.from('categories').insert({ title: title.trim(), slug });
+                            if (error) alert(error.message); else loadData();
+                        }}>+ Add</button>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -119,7 +125,13 @@ const Categories = () => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                 <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Subcategories ({activeSubcats.length})</h3>
-                                <button className="btn btn-outline" style={{ padding: '0.3rem 0.75rem', fontSize: '0.75rem' }} onClick={() => alert("Add subcategory form would open here")}>+ Add Subcategory</button>
+                                <button className="btn btn-outline" style={{ padding: '0.3rem 0.75rem', fontSize: '0.75rem' }} onClick={async () => {
+                                    const title = window.prompt('Subcategory name');
+                                    if (!title?.trim()) return;
+                                    const slug = title.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                                    const { error } = await supabase.from('subcategories').insert({ title: title.trim(), slug, category_id: activeCategoryId });
+                                    if (error) alert(error.message); else loadData();
+                                }}>+ Add Subcategory</button>
                             </div>
 
                             {activeSubcats.length === 0 ? (

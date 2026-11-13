@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../js/supabase.js';
-import { getAvailabilityFromStock, getStockState } from '../../js/inventory.js';
+import { getAvailabilityLabel, getProductAvailability } from '../../js/inventory.js';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -98,6 +98,7 @@ const Products = () => {
                                 <th>Price</th>
                                 <th>Stock</th>
                                 <th>Availability</th>
+                                <th>Visibility</th>
                                 <th>Featured</th>
                                 <th style={{ textAlign: 'right' }}>Actions</th>
                             </tr>
@@ -121,13 +122,14 @@ const Products = () => {
                                     <td>
                                         <strong>{p.stock_quantity ?? 0}</strong>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                                            {getStockState(p.stock_quantity).label}
+                                            {getAvailabilityLabel(getProductAvailability(p))}
                                         </div>
                                     </td>
                                     <td>
-                                        {getAvailabilityFromStock(p.stock_quantity) === 'IN_STOCK' && <span className="badge badge-success">In</span>}
-                                        {getAvailabilityFromStock(p.stock_quantity) === 'OUT_OF_STOCK' && <span className="badge badge-danger">Out</span>}
+                                        {getProductAvailability(p) === 'IN_STOCK' && <span className="badge badge-success">Available</span>}
+                                        {getProductAvailability(p) === 'OUT_OF_STOCK' && <span className="badge badge-danger">Out</span>}
                                     </td>
+                                    <td>{p.is_hidden ? <span className="badge badge-danger">Hidden</span> : <span className="badge badge-success">Visible</span>}</td>
                                     <td>{p.is_featured ? <span style={{ color: 'var(--accent-gold)' }}>★</span> : '—'}</td>
                                     <td style={{ textAlign: 'right' }}>
                                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>

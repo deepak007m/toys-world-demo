@@ -1,0 +1,172 @@
+/* ── Shop Hero ────────────────────────────────────── */
+.shop-hero {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: calc(var(--header-h) + 3.5rem) 0 3rem;
+}
+
+.shop-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 1.0;
+}
+
+.shop-sub {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+/* ── Filter Bar ───────────────────────────────────── */
+.filter-bar {
+    padding: 1rem 0;
+    background: var(--bg-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: var(--header-h);
+    z-index: 40;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.filter-scroll {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+}
+
+.filter-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-chip {
+    flex-shrink: 0;
+    padding: 0.5rem 1.2rem;
+    border-radius: 9999px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all var(--t-fast);
+}
+
+.filter-chip:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.filter-chip.active {
+    background: var(--accent-gold);
+    color: #0D0D0F;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 16px var(--accent-gold-glow);
+}
+
+/* ── Subcategory pill row ─────────────────────────── */
+.subfilter-bar {
+    padding: 0.65rem 0;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    position: sticky;
+    top: calc(var(--header-h) + 54px);
+    z-index: 39;
+    display: none;
+}
+
+.subfilter-bar.visible {
+    display: block;
+}
+
+.subfilter-scroll {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+}
+
+.subfilter-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.subfilter-chip {
+    flex-shrink: 0;
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all var(--t-fast);
+}
+
+.subfilter-chip:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.subfilter-chip.active {
+    background: rgba(232, 184, 75, 0.15);
+    color: var(--accent-gold);
+    border-color: rgba(232, 184, 75, 0.35);
+}
+
+/* ── Grid area ────────────────────────────────────── */
+.shop-grid-wrap {
+    padding: 3rem 0 5rem;
+}
+
+/* ── Empty / Error states ─────────────────────────── */
+.empty-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 5rem 1rem;
+    color: var(--text-secondary);
+}
+
+.empty-msg h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.empty-msg p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.error-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 0.92rem;
+}

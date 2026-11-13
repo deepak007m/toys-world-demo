@@ -10,6 +10,11 @@ import ProductForm from './pages/ProductForm.jsx';
 import Categories from './pages/Categories.jsx';
 import Settings from './pages/Settings.jsx';
 import Orders from './pages/Orders.jsx';
+import Reviews from './pages/Reviews.jsx';
+import Coupons from './pages/Coupons.jsx';
+import Enquiries from './pages/Enquiries.jsx';
+import Analytics from './pages/Analytics.jsx';
+import ManualSales from './pages/ManualSales.jsx';
 
 function App() {
     const [session, setSession] = useState(null);
@@ -139,11 +144,37 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+            <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+            <Route path="/manual-sales" element={<ProtectedRoute><ManualSales /></ProtectedRoute>} />
             <Route
                 path="/orders"
                 element={
                     <ProtectedRoute>
                         <Orders />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/reviews"
+                element={
+                    <ProtectedRoute>
+                        <Reviews />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/coupons"
+                element={
+                    <ProtectedRoute>
+                        <Coupons />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/enquiries"
+                element={
+                    <ProtectedRoute>
+                        <Enquiries />
                     </ProtectedRoute>
                 }
             />
