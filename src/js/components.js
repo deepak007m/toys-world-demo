@@ -17,6 +17,7 @@ export function renderHeader(activePage = '', config = null) {
         
         <nav class="nav" id="desktop-nav">
           <a href="/shop.html" class="nav-link${activePage === 'Shop' ? ' nav-link--active' : ''}">Shop</a>
+          <a href="${activePage === 'Home' ? '#store-story' : '/#store-story'}" class="nav-link${activePage === 'Our Story' ? ' nav-link--active' : ''}">Our Story</a>
           <a href="/shop.html#categories" class="nav-link">Categories</a>
           <a href="/shop.html?category=new-arrivals" class="nav-link">New Arrivals</a>
           <a href="/shop.html?category=die-cast" class="nav-link">Hot Wheels</a>
@@ -76,6 +77,7 @@ export function renderHeader(activePage = '', config = null) {
         <div class="mobile-nav-links" style="display:flex; flex-direction:column; gap:1.25rem; font-size:1.15rem; font-family:var(--font-heading); text-transform:uppercase; font-weight:800; letter-spacing:0.04em;">
           <a href="/" style="color:var(--text-primary); text-decoration:none;">Home</a>
           <a href="/shop.html" style="color:var(--text-primary); text-decoration:none;">Shop All</a>
+          <a href="${activePage === 'Home' ? '#store-story' : '/#store-story'}" style="color:var(--text-primary); text-decoration:none;">Our Story</a>
           <a href="/shop.html#categories" style="color:var(--text-primary); text-decoration:none;">Categories</a>
           <a href="/shop.html?category=new-arrivals" style="color:var(--text-primary); text-decoration:none;">New Arrivals</a>
           <a href="/shop.html?category=die-cast" style="color:var(--text-primary); text-decoration:none;">Die-Cast</a>
@@ -257,9 +259,12 @@ export function wireNavDrawer() {
   const closeBtn = document.getElementById('menu-close');
   if (menuBtn && mobileNav) {
     menuBtn.addEventListener('click', () => mobileNav.classList.add('open'));
-    closeBtn.addEventListener('click', () => mobileNav.classList.remove('open'));
+    closeBtn?.addEventListener('click', () => mobileNav.classList.remove('open'));
     mobileNav.addEventListener('click', e => {
       if (e.target === mobileNav) mobileNav.classList.remove('open');
+    });
+    mobileNav.querySelectorAll('.mobile-nav-links a').forEach(link => {
+      link.addEventListener('click', () => mobileNav.classList.remove('open'));
     });
   }
 }

@@ -511,25 +511,237 @@
             }
         }
 
-        /* ── Reviews ─────────────────────────────────────────── */
+        /* ── Store Story & Map ────────────────────────────────── */
+        .store-story-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3.5rem;
+            align-items: stretch;
+        }
+
+        .store-story-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .store-intro-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        .store-address-card {
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .store-story-map .map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 420px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-elevated);
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 900px) {
+            .store-story-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .store-story-map .map-wrapper {
+                min-height: 320px;
+                height: 320px;
+            }
+        }
+
+        /* ── Reviews Marquee ──────────────────────────────────── */
         .reviews-section {
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 4rem;
         }
 
-        .reviews-empty {
-            background: var(--bg-surface);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-xl);
-            padding: 4rem 2rem;
-            text-align: center;
+        .reviews-marquee-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 1.5rem 0 2rem;
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        .reviews-empty-stars {
-            font-size: 2rem;
+        /* Subtle edge fade masks */
+        .reviews-marquee-wrapper::before,
+        .reviews-marquee-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: clamp(24px, 7vw, 100px);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .reviews-marquee-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-secondary), transparent);
+        }
+
+        .reviews-marquee-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-secondary), transparent);
+        }
+
+        .reviews-marquee-track {
+            display: flex;
+            width: max-content;
+            animation: reviews-marquee-scroll 40s linear infinite;
+            will-change: transform;
+        }
+
+        .reviews-marquee-wrapper:hover .reviews-marquee-track,
+        .reviews-marquee-wrapper.is-paused .reviews-marquee-track {
+            animation-play-state: paused;
+        }
+
+        .reviews-marquee-group {
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        @keyframes reviews-marquee-scroll {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .google-review-card {
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 360px;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .google-review-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(232, 184, 75, 0.35);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+        }
+
+        .review-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .review-stars {
+            color: var(--accent-gold);
+            font-size: 1.05rem;
+            letter-spacing: 0.15em;
+        }
+
+        .review-google-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             color: var(--text-muted);
-            letter-spacing: 0.1em;
-            margin-bottom: 1.25rem;
-            opacity: 0.4;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .review-quote {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            line-height: 1.65;
+            margin: 0 0 1.5rem 0;
+            font-style: italic;
+            flex-grow: 1;
+        }
+
+        .reviewer-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .reviewer-avatar-initial {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 1px solid rgba(232, 184, 75, 0.3);
+            color: var(--accent-gold);
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            letter-spacing: 0.01em;
+        }
+
+        @media (max-width: 640px) {
+            .google-review-card {
+                width: min(320px, 80vw);
+                margin-right: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reviews-marquee-track {
+                animation: none !important;
+            }
+            .reviews-marquee-wrapper {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+            .google-review-card {
+                scroll-snap-align: start;
+            }
+            .reviews-marquee-group:last-child {
+                display: none;
+            }
         }
 
         /* ── Visit Store ─────────────────────────────────────── */
@@ -767,33 +979,61 @@
         </div>
     </section>
 
-    <section class="section" id="store-story">
+    <section class="section" id="store-story" style="background:var(--bg-secondary); border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
         <div class="container">
-            <div class="section-header-row reveal">
-                <div>
-                    <p class="label">Our Store</p>
-                    <h2 class="section-heading">About Toys World &amp; Gift Gallery</h2>
-                </div>
-            </div>
-            <div class="brand-statement-grid">
-                <div class="brand-text-col">
-                    <p class="brand-statement-sub reveal">
-                        A local destination for toys, collectibles and thoughtful gifts. Browse the latest
-                        products online, or visit the store to explore the collection in person.
+            <div class="store-story-grid">
+                <!-- Left Column: Story & Information -->
+                <div class="store-story-info reveal">
+                    <p class="label" style="margin-bottom:0.75rem;">OUR STORE</p>
+                    <h2 class="section-heading" style="margin-bottom:1.25rem;">About Toys World &amp; Gift Gallery</h2>
+                    <p class="store-intro-text">
+                        Discover a world of wonder at TOYS WORLD &amp; GIFT GALLERY, your destination for joy and play in Palghar. Located on Manor Highway Road, this toy shop offers toys, collectibles and gifts for all ages. From memorable gifts to additions to your collection, there is something for everyone.
                     </p>
-                    <p class="brand-statement-sub reveal reveal-delay-1">
-                        Store photographs and more details will be added as they become available.
-                    </p>
-                    <a href="/about.html" class="btn btn-outline reveal reveal-delay-2">Learn More</a>
-                </div>
-                <div class="brand-img-col scale-in">
-                    <img src="/images/real_store_interior.png" alt="Toys World store interior"
-                        class="brand-img" id="store-story-image"
-                        loading="lazy" />
-                    <div class="brand-img-fallback" id="store-story-image-fallback" hidden>
-                        Store photographs will be added here as they become available.
+
+                    <div class="store-address-card">
+                        <div style="display:flex; align-items:flex-start; gap:1rem;">
+                            <span style="font-size:1.5rem; color:var(--accent-gold); line-height:1;">📍</span>
+                            <div>
+                                <h3 style="font-family:var(--font-heading); font-size:1rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:0.5rem; color:var(--text-primary);">
+                                    Store Location
+                                </h3>
+                                <address style="color:var(--text-secondary); font-size:0.95rem; line-height:1.6; margin:0; font-style:normal;">
+                                    <strong>TOYS WORLD &amp; GIFT GALLERY</strong><br>
+                                    Manor Highway Road, opposite Holy Spirit High School,<br>
+                                    near Royal Enfield Showroom, Tembhode, Mahim,<br>
+                                    Palghar, Maharashtra 401404
+                                </address>
+                            </div>
+                        </div>
                     </div>
-                    <div class="brand-img-overlay"></div>
+
+                    <div class="store-action-btns" style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
+                        <a id="story-wa-btn" href="https://wa.me/919272040160" target="_blank" rel="noopener" class="btn btn-whatsapp" style="display:inline-flex; align-items:center; gap:0.5rem;">
+                            <span>💬</span> Chat on WhatsApp
+                        </a>
+                        <a id="story-dir-btn" href="https://www.google.com/maps/dir/?api=1&destination=TOYS+WORLD+%26+GIFT+GALLERY,+Manor+Highway+Road,+opposite+Holy+Spirit+High+School,+near+Royal+Enfield+Showroom,+Tembhode,+Mahim,+Palghar,+Maharashtra+401404" target="_blank" rel="noopener" class="btn btn-outline" style="display:inline-flex; align-items:center; gap:0.5rem;">
+                            <span>🗺️</span> Get Directions ↗
+                        </a>
+                        <a href="/about.html" class="btn btn-outline" style="font-size:0.85rem; padding:0.6rem 1rem;">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Google Map -->
+                <div class="store-story-map reveal reveal-delay-1">
+                    <div class="map-wrapper">
+                        <iframe
+                            title="Toys World & Gift Gallery Palghar Location Map"
+                            src="https://maps.google.com/maps?q=TOYS+WORLD+%26+GIFT+GALLERY,+Manor+Highway+Road,+opposite+Holy+Spirit+High+School,+near+Royal+Enfield+Showroom,+Tembhode,+Mahim,+Palghar,+Maharashtra+401404&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            width="100%"
+                            height="100%"
+                            style="border:0; position:absolute; inset:0; width:100%; height:100%;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1057,14 +1297,249 @@
         </div>
     </section>
 
-    <!-- 12. CUSTOMER REVIEWS -->
-    <section class="section reviews-section bg-secondary">
+    <!-- 12. CUSTOMER REVIEWS (GOOGLE REVIEWS MARQUEE) -->
+    <section class="section reviews-section bg-secondary" id="reviews">
         <div class="container">
-            <div class="section-header centered reveal">
-                <h2 class="section-heading">Happy Collectors</h2>
+            <div class="section-header-row reveal" style="align-items:flex-end; margin-bottom:2.5rem;">
+                <div>
+                    <p class="label" style="margin-bottom:0.5rem;">VERIFIED FEEDBACK</p>
+                    <h2 class="section-heading">Happy Collectors</h2>
+                    <p class="section-sub" style="margin:0; color:var(--text-secondary);">
+                        Real customer experiences from Google Reviews
+                    </p>
+                </div>
+                <div>
+                    <a href="https://maps.google.com/?q=Toys+World+Gift+Gallery+Palghar+Manor+Highway+Road" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.8rem; padding:0.5rem 1rem; display:inline-flex; align-items:center; gap:0.4rem;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        View Google Reviews ↗
+                    </a>
+                </div>
             </div>
-            <div class="review-card" style="margin-top:2rem; text-align:center; color:var(--text-secondary);">
-                Product reviews are shown on their product pages after approval.
+        </div>
+
+        <div class="reviews-marquee-wrapper" id="reviews-marquee" aria-label="Customer Google Reviews Carousel">
+            <div class="reviews-marquee-track">
+                <!-- Group 1 (Primary) -->
+                <div class="reviews-marquee-group">
+                    <!-- 1. Bhagyashri Sankhe -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “Excellent toys collection... good service. Must go and purchase. We had a great experience.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">B</span>
+                            <div class="reviewer-name">Bhagyashri Sankhe</div>
+                        </div>
+                    </article>
+
+                    <!-- 2. LAXMI ROY -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “A nostalgia hit straight back to childhood! Loved the collection of Hot Wheels, soft toys, and remote control machines.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">L</span>
+                            <div class="reviewer-name">LAXMI ROY</div>
+                        </div>
+                    </article>
+
+                    <!-- 3. Kranti More -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “They have great and innovative gift options! We really liked their products and service.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">K</span>
+                            <div class="reviewer-name">Kranti More</div>
+                        </div>
+                    </article>
+
+                    <!-- 4. Meghan Vaiude -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “Friendly owner gives best deals. Genuinely good store. Highly recommended.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">M</span>
+                            <div class="reviewer-name">Meghan Vaiude</div>
+                        </div>
+                    </article>
+
+                    <!-- 5. Arin Moraes -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “A wonderland for kids and adults too! The owner and staff are so welcoming.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">A</span>
+                            <div class="reviewer-name">Arin Moraes</div>
+                        </div>
+                    </article>
+
+                    <!-- 6. Sagar Singh -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “Best place for kids. Too many options in affordable price.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">S</span>
+                            <div class="reviewer-name">Sagar Singh</div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Group 2 (Duplicate for Seamless Infinite Marquee Loop) -->
+                <div class="reviews-marquee-group" aria-hidden="true">
+                    <!-- 1. Bhagyashri Sankhe -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “Excellent toys collection... good service. Must go and purchase. We had a great experience.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">B</span>
+                            <div class="reviewer-name">Bhagyashri Sankhe</div>
+                        </div>
+                    </article>
+
+                    <!-- 2. LAXMI ROY -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “A nostalgia hit straight back to childhood! Loved the collection of Hot Wheels, soft toys, and remote control machines.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">L</span>
+                            <div class="reviewer-name">LAXMI ROY</div>
+                        </div>
+                    </article>
+
+                    <!-- 3. Kranti More -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “They have great and innovative gift options! We really liked their products and service.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">K</span>
+                            <div class="reviewer-name">Kranti More</div>
+                        </div>
+                    </article>
+
+                    <!-- 4. Meghan Vaiude -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “Friendly owner gives best deals. Genuinely good store. Highly recommended.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">M</span>
+                            <div class="reviewer-name">Meghan Vaiude</div>
+                        </div>
+                    </article>
+
+                    <!-- 5. Arin Moraes -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “A wonderland for kids and adults too! The owner and staff are so welcoming.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">A</span>
+                            <div class="reviewer-name">Arin Moraes</div>
+                        </div>
+                    </article>
+
+                    <!-- 6. Sagar Singh -->
+                    <article class="google-review-card">
+                        <div class="review-card-header">
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-google-badge">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Google Review
+                            </span>
+                        </div>
+                        <blockquote class="review-quote">
+                            “Best place for kids. Too many options in affordable price.”
+                        </blockquote>
+                        <div class="reviewer-meta">
+                            <span class="reviewer-avatar-initial">S</span>
+                            <div class="reviewer-name">Sagar Singh</div>
+                        </div>
+                    </article>
+                </div>
             </div>
         </div>
     </section>
@@ -1121,20 +1596,14 @@
         mountAuthListener(supabase);
         wireStoreActions(supabase);
 
-        const storeStoryImage = document.getElementById('store-story-image');
-        const storeStoryFallback = document.getElementById('store-story-image-fallback');
-        storeStoryImage?.addEventListener('error', () => {
-            storeStoryImage.hidden = true;
-            if (storeStoryFallback) storeStoryFallback.hidden = false;
-        });
-
-        const newHeader = document.querySelector('.header');
-        window.addEventListener('scroll', () => {
-            newHeader?.classList.toggle('scrolled', window.scrollY > 60);
-        }, { passive: true });
-        newHeader?.classList.toggle('scrolled', window.scrollY > 60);
-
         const waNumber = config?.whatsapp_number || '';
+
+        const storyWaBtn = document.getElementById('story-wa-btn');
+        if (storyWaBtn && waNumber) {
+            import('/src/js/data.js').then(({ buildWhatsAppLink }) => {
+                storyWaBtn.href = buildWhatsAppLink(waNumber);
+            });
+        }
 
         // Dynamic overrides
         const heroImg = document.getElementById('hero-img');
@@ -1152,6 +1621,15 @@
             ).join('');
         } else {
             featGrid.innerHTML = '<p>No featured products found.</p>';
+        }
+
+        // ── Reviews Marquee touch / pointer pause interaction ───
+        const marqueeWrapper = document.getElementById('reviews-marquee');
+        if (marqueeWrapper) {
+            marqueeWrapper.addEventListener('pointerdown', () => marqueeWrapper.classList.add('is-paused'));
+            ['pointerup', 'pointerleave', 'pointercancel'].forEach(evt => {
+                marqueeWrapper.addEventListener(evt, () => marqueeWrapper.classList.remove('is-paused'));
+            });
         }
 
         wireScrollReveal();

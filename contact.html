@@ -29,16 +29,42 @@
         </div>
 
         <div class="page-content reveal reveal-delay-1">
-            <p><strong>[PLACEHOLDER]</strong> Reach out to us on WhatsApp or Visit our Store.</p>
+            <h2>Get in Touch</h2>
+            <p>Have questions about toys, collectible figures, or gift options? Reach out directly via WhatsApp or visit our physical store in Palghar.</p>
             
-            <h2>Section 1</h2>
-            <p>This is a structurally static informational page designed during Phase A. Real content will be injected here during content population. The layout uses standard typography constraints defined in global.css and inherits the dark theme context naturally.</p>
-            
-            <h2>Section 2</h2>
-            <p>We ensure that this page strictly complies with the aesthetic principles of Toys World. It includes the dynamic global header and global footer correctly mapped onto the DOM.</p>
-            
+            <div style="background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-lg); padding:2rem; margin:2rem 0;">
+                <h3 style="font-family:var(--font-heading); font-size:1.15rem; color:#fff; margin-bottom:1rem; text-transform:uppercase; letter-spacing:0.04em;">Store Location</h3>
+                <address style="color:var(--text-secondary); line-height:1.7; font-style:normal; margin-bottom:1.5rem;">
+                    <strong style="color:#fff;">TOYS WORLD &amp; GIFT GALLERY</strong><br>
+                    Manor Highway Road, opposite Holy Spirit High School,<br>
+                    near Royal Enfield Showroom, Tembhode, Mahim,<br>
+                    Palghar, Maharashtra 401404
+                </address>
+
+                <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                    <a id="contact-wa-btn" href="https://wa.me/919272040160" target="_blank" rel="noopener" class="btn btn-whatsapp">💬 Chat on WhatsApp</a>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=TOYS+WORLD+%26+GIFT+GALLERY,+Manor+Highway+Road,+opposite+Holy+Spirit+High+School,+near+Royal+Enfield+Showroom,+Tembhode,+Mahim,+Palghar,+Maharashtra+401404" target="_blank" rel="noopener" class="btn btn-outline">📍 Get Directions ↗</a>
+                </div>
+            </div>
+
+            <div style="margin:2.5rem 0; border-radius:var(--radius-lg); overflow:hidden; border:1px solid rgba(255,255,255,0.1); height:350px;">
+                <iframe
+                    title="Toys World & Gift Gallery Location Map"
+                    src="https://maps.google.com/maps?q=TOYS+WORLD+%26+GIFT+GALLERY,+Manor+Highway+Road,+opposite+Holy+Spirit+High+School,+near+Royal+Enfield+Showroom,+Tembhode,+Mahim,+Palghar,+Maharashtra+401404&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <h2>Social Media</h2>
+            <p>Follow our latest arrivals, unboxings and showcase on Instagram: <a href="https://instagram.com/toys_world48" target="_blank" rel="noopener" style="color:var(--accent-gold); text-decoration:underline;">@toys_world48</a></p>
+
             <div style="margin-top:3rem;">
-                <a href="/shop.html" class="btn btn-outline">Return to Shop</a>
+                <a href="/shop.html" class="btn btn-outline">Explore Catalogue</a>
             </div>
         </div>
     </main>
@@ -51,10 +77,16 @@
 
         async function init() {
             const config = await getConfig();
-            document.getElementById('header-placeholder').innerHTML = renderHeader('', config);
+            document.getElementById('header-placeholder').innerHTML = renderHeader('Contact', config);
             document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
             wireNavDrawer();
             wireScrollReveal();
+
+            if (config?.whatsapp_number) {
+                const { buildWhatsAppLink } = await import('/src/js/data.js');
+                const btn = document.getElementById('contact-wa-btn');
+                if (btn) btn.href = buildWhatsAppLink(config.whatsapp_number);
+            }
         }
         init();
     </script>

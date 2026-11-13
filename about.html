@@ -29,18 +29,38 @@
         </div>
 
         <div class="page-content reveal reveal-delay-1">
-            <img src="/images/toys-world-logo.png" alt="Toys World & Gift Gallery" style="width:min(18rem, 80vw); margin:0 auto 2.5rem; border-radius:var(--radius-md);" />
-            <h2>Our Story</h2>
-            <p>Toys World & Gift Gallery is a local toy and gift shop based in Palghar, Maharashtra. We bring together a selection of toys, collectibles, and gift ideas for children, families, and collectors to explore.</p>
+            <img src="/images/toys-world-logo.png" alt="Toys World & Gift Gallery" style="width:min(18rem, 80vw); margin:0 auto 2.5rem; display:block; border-radius:var(--radius-md);" />
+            <h2>Welcome to Toys World</h2>
+            <p>Discover a world of wonder at TOYS WORLD &amp; GIFT GALLERY, your destination for joy and play in Palghar. Located on Manor Highway Road, this toy shop offers toys, collectibles and gifts for all ages. From memorable gifts to additions to your collection, there is something for everyone.</p>
             
             <h2>Something for Everyone</h2>
-            <p>Browse a varied collection including anime figures, gaming collectibles, Hot Wheels and die-cast cars, RC toys, soft toys, and other gifts and toys.</p>
+            <p>We curate a wide variety of toys and collectibles: authentic anime figures, premium die-cast and Hot Wheels models, remote-controlled vehicles, soft plush toys, and creative gifts for birthdays and special occasions.</p>
             
-            <h2>Visit Us</h2>
-            <p>Explore our online catalogue and contact the shop on WhatsApp to ask about product prices and availability. We will be happy to help you find the right toy or gift.</p>
-            
-            <div style="margin-top:3rem;">
-                <a href="/shop.html" class="btn btn-outline">Return to Shop</a>
+            <h2>Visit Our Store</h2>
+            <p style="margin-bottom:1rem;">
+                <strong>TOYS WORLD &amp; GIFT GALLERY</strong><br>
+                Manor Highway Road, opposite Holy Spirit High School,<br>
+                near Royal Enfield Showroom, Tembhode, Mahim,<br>
+                Palghar, Maharashtra 401404
+            </p>
+
+            <div style="margin:2rem 0; border-radius:var(--radius-lg); overflow:hidden; border:1px solid rgba(255,255,255,0.1); height:320px;">
+                <iframe
+                    title="Toys World & Gift Gallery Location Map"
+                    src="https://maps.google.com/maps?q=TOYS+WORLD+%26+GIFT+GALLERY,+Manor+Highway+Road,+opposite+Holy+Spirit+High+School,+near+Royal+Enfield+Showroom,+Tembhode,+Mahim,+Palghar,+Maharashtra+401404&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:2.5rem;">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=TOYS+WORLD+%26+GIFT+GALLERY,+Manor+Highway+Road,+opposite+Holy+Spirit+High+School,+near+Royal+Enfield+Showroom,+Tembhode,+Mahim,+Palghar,+Maharashtra+401404" target="_blank" rel="noopener" class="btn btn-outline">📍 Get Directions ↗</a>
+                <a id="about-wa-btn" href="https://wa.me/919272040160" target="_blank" rel="noopener" class="btn btn-whatsapp">💬 Enquire on WhatsApp</a>
+                <a href="/shop.html" class="btn btn-outline">Explore Catalogue</a>
             </div>
         </div>
     </main>
@@ -53,10 +73,16 @@
 
         async function init() {
             const config = await getConfig();
-            document.getElementById('header-placeholder').innerHTML = renderHeader('', config);
+            document.getElementById('header-placeholder').innerHTML = renderHeader('Our Story', config);
             document.getElementById('footer-placeholder').innerHTML = renderFooter(config);
             wireNavDrawer();
             wireScrollReveal();
+
+            if (config?.whatsapp_number) {
+                const { buildWhatsAppLink } = await import('/src/js/data.js');
+                const btn = document.getElementById('about-wa-btn');
+                if (btn) btn.href = buildWhatsAppLink(config.whatsapp_number);
+            }
         }
         init();
     </script>
